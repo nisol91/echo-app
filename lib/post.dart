@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// example on how to fetch data from http call and create a list
+
 List<Post> list = List();
 Future<List<Post>> fetchPost() async {
   final response =
@@ -13,8 +15,8 @@ Future<List<Post>> fetchPost() async {
     list = (json.decode(response.body) as List)
         .map((data) => new Post.fromJson(data))
         .toList();
-    print(list[3].title);
-    print(list[5].title);
+    print(list[0].title);
+    print(list[1].title);
     return list;
   } else {
     // If that call was not successful, throw an error.
@@ -39,52 +41,3 @@ class Post {
     );
   }
 }
-
-// void main() => runApp(MyApp());
-
-// class MyApp extends StatefulWidget {
-//   MyApp({Key key}) : super(key: key);
-
-//   @override
-//   _MyAppState createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   Future<Post> post;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchPost();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Fetch Data Example',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Fetch Data Example'),
-//         ),
-//         body: Center(
-//           child: FutureBuilder<Post>(
-//             future: post,
-//             builder: (context, snapshot) {
-//               if (snapshot.hasData) {
-//                 return Text(snapshot.data.title);
-//               } else if (snapshot.hasError) {
-//                 return Text("${snapshot.error}");
-//               }
-
-//               // By default, show a loading spinner.
-//               return CircularProgressIndicator();
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

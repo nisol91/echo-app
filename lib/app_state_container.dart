@@ -116,7 +116,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
           // Add the use to the global state
           // state.user = firebaseUser;
         });
-        print('UTENTE -> ${res.user.email}');
+        print('UTENTE appena loggato con google -> ${res.user.email}');
         return true;
       }
     } catch (e) {
@@ -126,10 +126,15 @@ class _AppStateContainerState extends State<AppStateContainer> {
   }
 
   Future<Null> signOutWithGoogle() async {
-    // Sign out with firebase
-    await _auth.signOut();
-    // Sign out with google
-    await googleSignIn.signOut();
+    try {
+      // Sign out with firebase
+      await _auth.signOut();
+      // Sign out with google
+      await googleSignIn.signOut();
+      print('logged out from google!!!');
+    } catch (e) {
+      print('error logging out from google');
+    }
   }
 
   //===========================================

@@ -1,3 +1,4 @@
+import 'package:blank_flutter_app/corporate_list.dart';
 import 'package:flutter/material.dart';
 import 'auth_screen.dart';
 import 'dog_model.dart';
@@ -5,6 +6,7 @@ import 'new_dog_form.dart';
 import 'dog_list.dart';
 import './models/app_state.dart';
 import 'app_state_container.dart';
+import 'corporate_list.dart';
 
 void main() {
   runApp(new AppStateContainer(
@@ -90,6 +92,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  _corporatePage() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return CorporateList();
+        },
+      ),
+    );
+  }
+
   AppState appState;
 
   Widget get _pageToDisplay {
@@ -156,6 +168,10 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: _logInPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.library_add),
+            onPressed: _corporatePage,
           ),
         ],
       ),

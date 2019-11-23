@@ -68,8 +68,6 @@ class _DogCardState extends State<DogCard> {
   void initState() {
     super.initState();
     renderDogPic();
-    renderDogInfo();
-    getPosts();
   }
 
   renderDogPic() async {
@@ -80,14 +78,6 @@ class _DogCardState extends State<DogCard> {
         renderUrl = dog.imageUrl;
       });
     }
-  }
-
-  renderDogInfo() async {}
-
-  getPosts() async {
-    await fetchPost();
-    // print(list);
-    // print(fetchPost()[3].title);
   }
 
   // qui costruisco tutti i widget con il metodo get
