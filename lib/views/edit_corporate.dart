@@ -1,27 +1,38 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:blank_flutter_app/views/corporate_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flushbar/flushbar.dart';
+
 import 'package:provider/provider.dart';
 import '../models/corporate_model.dart';
 import '../viewmodels/crud_model_corporate.dart';
 
-class AddCorporate extends StatefulWidget {
+class ModifyCorporate extends StatefulWidget {
+  final Corporate corporate;
+
+  ModifyCorporate({@required this.corporate});
+
   @override
-  _AddCorporateState createState() => _AddCorporateState();
+  _ModifyCorporateState createState() => _ModifyCorporateState();
 }
 
-class _AddCorporateState extends State<AddCorporate> {
+class _ModifyCorporateState extends State<ModifyCorporate> {
   final _formKey = GlobalKey<FormState>();
-  String corporateType = 'Bag';
+
+  String corporateType;
+
   String title;
+
   String price;
 
   @override
   Widget build(BuildContext context) {
-    var corporateProvider = Provider.of<CrudModel>(context);
+    final corporateProvider = Provider.of<CrudModel>(context);
+    corporateType = widget.corporate.img[0].toUpperCase() +
+        widget.corporate.img.substring(1);
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text('Add Corporate'),
+          child: Text('Modify Corporate Details'),
         ),
       ),
       body: Padding(
@@ -31,9 +42,10 @@ class _AddCorporateState extends State<AddCorporate> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                  initialValue: widget.corporate.name,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Corporate Name',
+                    hintText: 'Corporate Title',
                     fillColor: Colors.grey[300],
                     filled: true,
                   ),
@@ -47,6 +59,7 @@ class _AddCorporateState extends State<AddCorporate> {
                 height: 16,
               ),
               TextFormField(
+                  initialValue: widget.corporate.description,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -76,20 +89,28 @@ class _AddCorporateState extends State<AddCorporate> {
                 }).toList(),
               ),
               RaisedButton(
-                splashColor: Colors.red,
+                splashColor: Colors.blueGrey,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                    await corporateProvider.addCorporate(Corporate(
-                        name: title,
-                        creationDate: Timestamp.now(),
-                        // creationDate: DateTime.now(),
-                        description: price,
-                        img: corporateType.toLowerCase()));
-                    Navigator.pop(context);
+                    await corporateProvider.updateCorporate(
+                        Corporate(
+                            name: title,
+                            description: price,
+                            img: corporateType.toLowerCase()),
+                        widget.corporate.id);
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => CorporateListView()));
+                    Flushbar(
+                      title: "Hey Ninja",
+                      message: "Successfully edited Corporate ${title}",
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.blueAccent[100],
+                    )..show(context);
                   }
                 },
-                child: Text('add Corporate',
+                child: Text('Modify Corporate',
                     style: TextStyle(color: Colors.white)),
                 color: Colors.blue,
               )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/corporate_model.dart';
+import '../views/corporate_details.dart';
 
 class CorporateCard extends StatelessWidget {
   final Corporate corporateDetails;
@@ -10,7 +11,10 @@ class CorporateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetails(product: productDetails)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CorporateDetails(corporate: corporateDetails)));
       },
       child: Padding(
         padding: EdgeInsets.all(3),

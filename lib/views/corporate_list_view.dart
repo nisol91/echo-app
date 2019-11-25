@@ -4,6 +4,7 @@ import '../models/corporate_model.dart';
 import '../viewmodels/crud_model_corporate.dart';
 import 'package:provider/provider.dart';
 import '../widgets/corporate_card.dart';
+import 'package:flushbar/flushbar.dart';
 
 class CorporateListView extends StatefulWidget {
   @override

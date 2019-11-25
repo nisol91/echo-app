@@ -1,3 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
+
 import './views/corporate_list_view.dart';
 import './views/corporate_list.dart';
 import 'package:flutter/material.dart';
@@ -32,16 +35,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => locator<CrudModel>()),
       ],
       child: MaterialApp(
-        title: 'Doggos Rating App',
+        title: 'Echo App',
         theme: _themeData,
         routes: {
-          '/': (BuildContext context) =>
-              new MyHomePage(title: 'Doggos Rating App'),
+          '/': (BuildContext context) => new MyHomePage(title: 'Home Page'),
           '/auth': (BuildContext context) => new AuthScreen(),
           '/addCorporate': (BuildContext context) => new AddCorporate(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
-        // home: new MyHomePage(title: 'Doggos Rating App'),
+        // home: new MyHomePage(),
       ),
     );
   }
@@ -114,13 +116,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _corporatePage_2() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return CorporateListView();
-        },
-      ),
-    );
+    final container = AppStateContainer.of(context);
+    print(await container.ensureLoggedInOnStartUp());
+    if (await container.ensureLoggedInOnStartUp() != null) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return CorporateListView();
+          },
+        ),
+      );
+    } else {
+      Flushbar(
+        title: "Hey Ninja",
+        message: "You need to login, to access this page",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.blueAccent[100],
+      )..show(context);
+    }
   }
 
   AppState appState;

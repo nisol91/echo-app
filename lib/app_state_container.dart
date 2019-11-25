@@ -147,7 +147,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  Future<GoogleSignInAccount> _ensureLoggedInOnStartUp() async {
+  Future<GoogleSignInAccount> ensureLoggedInOnStartUp() async {
     // That class has a currentUser if there's already a user signed in on
     // this device.
     GoogleSignInAccount user = googleSignIn.currentUser;
@@ -168,7 +168,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   Future<Null> initUser() async {
     // First, check if a user exists.
-    googleUser = await _ensureLoggedInOnStartUp();
+    googleUser = await ensureLoggedInOnStartUp();
     // If the user is null, we aren't loading anyhting
     // because there isn't anything to load.
     // This will force the homepage to navigate to the auth page.
