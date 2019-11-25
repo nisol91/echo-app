@@ -13,7 +13,7 @@ class CorporateCard extends StatelessWidget {
         // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetails(product: productDetails)));
       },
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(3),
         child: Card(
           elevation: 5,
           child: Container(
@@ -23,7 +23,7 @@ class CorporateCard extends StatelessWidget {
               children: <Widget>[
                 Hero(
                   tag: corporateDetails.id,
-                  child: Text('corporateDetails.img'),
+                  child: Text('image url'),
                   // child: Image.asset(
                   //   'assets/${corporateDetails.img}.jpg',
                   //   height: MediaQuery.of(context).size.height * 0.35,

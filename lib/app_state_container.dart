@@ -38,8 +38,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
   // manipulate it with widget.state.
   AppState state;
 
-  String dogName;
-
   // This is used to sign into Google, not Firebase.
 
   GoogleSignInAccount googleUser;
@@ -113,8 +111,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
           // Updating the isLoading will force the Homepage to change because of
           // The inheritedWidget setup.
           state.isLoading = false;
-          // Add the use to the global state
-          // state.user = firebaseUser;
         });
         print('UTENTE appena loggato con google -> ${res.user.email}');
         return true;

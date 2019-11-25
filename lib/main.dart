@@ -10,6 +10,7 @@ import 'app_state_container.dart';
 import './viewmodels/crud_model_corporate.dart';
 import 'locator.dart';
 import 'package:provider/provider.dart';
+import './views/add_corporate.dart';
 
 void main() {
   setupLocator();
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           '/': (BuildContext context) =>
               new MyHomePage(title: 'Doggos Rating App'),
           '/auth': (BuildContext context) => new AuthScreen(),
+          '/addCorporate': (BuildContext context) => new AddCorporate(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(title: 'Doggos Rating App'),

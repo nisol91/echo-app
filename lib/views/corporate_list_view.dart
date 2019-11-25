@@ -20,7 +20,7 @@ class _CorporateListViewState extends State<CorporateListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/addProduct');
+          Navigator.pushNamed(context, '/addCorporate');
         },
         child: Icon(Icons.add),
       ),
@@ -28,6 +28,8 @@ class _CorporateListViewState extends State<CorporateListView> {
         title: Center(child: Text('Corporate View II')),
       ),
       body: Container(
+        height: 200,
+        padding: EdgeInsets.all(10),
         child: StreamBuilder(
             stream: corporateProvider.fetchCorporatesAsStream(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -35,10 +37,8 @@ class _CorporateListViewState extends State<CorporateListView> {
                 corporates = snapshot.data.documents
                     .map((doc) => Corporate.fromMap(doc.data, doc.documentID))
                     .toList();
-                print('cristoddio');
-                print(corporates);
-
                 return ListView.builder(
+                  scrollDirection: Axis.horizontal,
                   itemCount: corporates.length,
                   itemBuilder: (buildContext, index) =>
                       CorporateCard(corporateDetails: corporates[index]),
