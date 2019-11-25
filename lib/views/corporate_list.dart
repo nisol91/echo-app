@@ -12,12 +12,12 @@ class _CorporateListState extends State<CorporateList> {
   void initState() {
     super.initState();
     Firestore.instance
-        .collection('doggos')
+        .collection('corporate')
         .snapshots()
         .listen((data) => data.documents.forEach((doc) => print(doc['name'])));
 
-    Firestore.instance.collection('doggos').document().setData(
-        {'name': 'Mount Baker', 'description': 'volcano', 'location': 'yes'});
+    // Firestore.instance.collection('doggos').document().setData(
+    //     {'name': 'Mount Baker', 'description': 'volcano', 'location': 'yes'});
   }
 
   Future<QuerySnapshot> getAllDocuments() {
@@ -36,10 +36,10 @@ class _CorporateListState extends State<CorporateList> {
       floatingActionButton: new FloatingActionButton(
         child: new Icon(Icons.add),
         onPressed: () {
-          Firestore.instance.collection('mountains').document().setData(
+          Firestore.instance.collection('doggos').document().setData(
             {
-              'title': 'Mount Vesuvius',
-              'type': 'volcano',
+              'name': 'Mount Nuovo II!!!!!',
+              'description': 'neve',
             },
           );
         },
@@ -52,7 +52,7 @@ class MountainList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('doggos').snapshots(),
+      stream: Firestore.instance.collection('corporate').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {

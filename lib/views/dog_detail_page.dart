@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'dog_model.dart';
+import '../models/dog_model.dart';
 
 class DogDetailPage extends StatefulWidget {
   final Dog dog;

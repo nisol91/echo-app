@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dog_model.dart';
+import '../models/dog_model.dart';
 
 class AddDogFormPage extends StatefulWidget {
   @override

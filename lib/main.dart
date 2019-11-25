@@ -1,14 +1,18 @@
-import 'package:blank_flutter_app/corporate_list.dart';
+import './views/corporate_list_view.dart';
+import './views/corporate_list.dart';
 import 'package:flutter/material.dart';
-import 'auth_screen.dart';
-import 'dog_model.dart';
-import 'new_dog_form.dart';
-import 'dog_list.dart';
-import './models/app_state.dart';
+import './views/auth_screen.dart';
+import './models/dog_model.dart';
+import './views/new_dog_form.dart';
+import './widgets/dog_list.dart';
+import './state/app_state.dart';
 import 'app_state_container.dart';
-import 'corporate_list.dart';
+import './viewmodels/crud_model_corporate.dart';
+import 'locator.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  setupLocator();
   runApp(new AppStateContainer(
     child: new MyApp(),
   ));
@@ -22,16 +26,21 @@ class MyApp extends StatelessWidget {
       );
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Doggos Rating App',
-      theme: _themeData,
-      routes: {
-        '/': (BuildContext context) =>
-            new MyHomePage(title: 'Doggos Rating App'),
-        '/auth': (BuildContext context) => new AuthScreen(),
-      },
-      // theme: ThemeData(brightness: Brightness.dark),
-      // home: new MyHomePage(title: 'Doggos Rating App'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (_) => locator<CrudModel>()),
+      ],
+      child: MaterialApp(
+        title: 'Doggos Rating App',
+        theme: _themeData,
+        routes: {
+          '/': (BuildContext context) =>
+              new MyHomePage(title: 'Doggos Rating App'),
+          '/auth': (BuildContext context) => new AuthScreen(),
+        },
+        // theme: ThemeData(brightness: Brightness.dark),
+        // home: new MyHomePage(title: 'Doggos Rating App'),
+      ),
     );
   }
 }
@@ -97,6 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(
         builder: (BuildContext context) {
           return CorporateList();
+        },
+      ),
+    );
+  }
+
+  _corporatePage_2() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return CorporateListView();
         },
       ),
     );
@@ -172,6 +191,10 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.library_add),
             onPressed: _corporatePage,
+          ),
+          IconButton(
+            icon: Icon(Icons.library_add),
+            onPressed: _corporatePage_2,
           ),
         ],
       ),

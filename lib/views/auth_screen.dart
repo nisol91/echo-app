@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_state_container.dart';
+import '../app_state_container.dart';
 
 class AuthScreen extends StatefulWidget {
   @override

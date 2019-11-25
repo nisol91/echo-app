@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'dog_model.dart';
-import 'dog_detail_page.dart';
-import 'post.dart';
+import '../models/dog_model.dart';
+import '../views/dog_detail_page.dart';
+import '../models/post.dart';
 
 class DogCard extends StatefulWidget {
   final Dog dog;
