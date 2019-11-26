@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
+import 'registration_page.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -9,6 +10,16 @@ class AuthScreen extends StatefulWidget {
 }
 
 class AuthScreenState extends State<AuthScreen> {
+  _logInPageEmail() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return RegisterPage();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // new page needs scaffolding!
@@ -48,6 +59,32 @@ class AuthScreenState extends State<AuthScreen> {
                       ),
                       new Text(
                         'Sign in With Google',
+                        textAlign: TextAlign.center,
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              new RaisedButton(
+                onPressed: () {
+                  _logInPageEmail();
+                },
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                    side: BorderSide(color: Colors.grey)),
+                child: new Container(
+                  width: 250.0,
+                  height: 50.0,
+                  alignment: Alignment.center,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Text(
+                        'Register with your own email',
                         textAlign: TextAlign.center,
                         style: new TextStyle(
                           fontSize: 16.0,
