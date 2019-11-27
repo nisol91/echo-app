@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -113,34 +114,51 @@ class _RegisterPageState extends State<RegisterPage> {
                                   email: emailInputController.text,
                                   password: pwdInputController.text)
                               .then((currentUser) => Firestore.instance
-                                      .collection("users")
-                                      .document(currentUser.user.uid)
-                                      .setData({
+                                  .collection("users")
+                                  .document(currentUser.user.uid)
+                                  .setData({
                                     "uid": currentUser.user.uid,
                                     "fname": firstNameInputController.text,
                                     "surname": lastNameInputController.text,
                                     "email": emailInputController.text,
                                   })
-                                      // .then((result) => {
-                                      //       Navigator.pushAndRemoveUntil(
-                                      //           context,
-                                      //           MaterialPageRoute(
-                                      //               builder: (context) => MyHomePage(
-                                      //                   // title:
-                                      //                   //     firstNameInputController
-                                      //                   //             .text +
-                                      //                   //         "'s Tasks",
-                                      //                   // uid: currentUser.uid,
-                                      //                   )),
-                                      //           (_) => false),
-                                      //       firstNameInputController.clear(),
-                                      //       lastNameInputController.clear(),
-                                      //       emailInputController.clear(),
-                                      //       pwdInputController.clear(),
-                                      //       confirmPwdInputController.clear()
-                                      //     })
-                                      .catchError((err) => print(err)))
+                                  .then((currentUser) => {
+                                        FirebaseAuth.instance
+                                            .signInWithEmailAndPassword(
+                                                email:
+                                                    emailInputController.text,
+                                                password:
+                                                    pwdInputController.text),
+                                        // Navigator.pushAndRemoveUntil(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) => MyHomePage(
+                                        //             // title:
+                                        //             //     firstNameInputController
+                                        //             //             .text +
+                                        //             //         "'s Tasks",
+                                        //             // uid: currentUser.uid,
+                                        //             )),
+                                        //     (_) => false),
+
+                                        firstNameInputController.clear(),
+                                        lastNameInputController.clear(),
+                                        emailInputController.clear(),
+                                        pwdInputController.clear(),
+                                        confirmPwdInputController.clear()
+                                      })
+                                  .catchError((err) => print(err)))
                               .catchError((err) => print(err));
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/', (Route<dynamic> route) => false);
+
+                          Flushbar(
+                            title: "Hey Ninja",
+                            message: "Successfully Registered",
+                            duration: Duration(seconds: 3),
+                            backgroundColor: Colors.blueAccent[100],
+                          )..show(context);
                         } else {
                           showDialog(
                               context: context,
@@ -168,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                  )
+                  ),
                 ],
               ),
             ))));

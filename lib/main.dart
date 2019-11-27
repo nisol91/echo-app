@@ -117,8 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _corporatePage_2() async {
     final container = AppStateContainer.of(context);
-    print(await container.ensureLoggedInOnStartUp());
-    if (await container.ensureLoggedInOnStartUp() != null) {
+    print(await container.ensureGoogleLoggedInOnStartUp());
+    if (await container.ensureGoogleLoggedInOnStartUp() != null ||
+        await container.ensureEmailLoggedInOnStartup() != null) {
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {

@@ -11,3 +11,4 @@ For help getting started with Flutter, view our online
 
 1. the corporate CRUD uses the locator.dart file.
 2. splash page and auth uses the app_state with inherited widget.
+3. the other queries are directly with firestore methods.

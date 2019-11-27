@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
 import 'registration_page.dart';
@@ -95,7 +96,7 @@ class AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               new RaisedButton(
-                onPressed: () => container.signOutWithGoogle(),
+                onPressed: () => container.signOut(),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -108,7 +109,7 @@ class AuthScreenState extends State<AuthScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       new Text(
-                        'Sign Out from google',
+                        'Sign Out',
                         textAlign: TextAlign.center,
                         style: new TextStyle(
                           fontSize: 16.0,
@@ -118,6 +119,26 @@ class AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
               ),
+              Text("Forgot your password?"),
+              FlatButton(
+                child: Text("Reset here"),
+                onPressed: () {
+                  // FirebaseAuth.instance.sendPasswordResetEmail(userEmail)
+                  //   .addOnCompleteListener(new OnCompleteListener<Void>() {
+                  //       @Override
+                  //       public void onComplete(@NonNull Task<Void> task) {
+                  //           if (task.isSuccessful()) {
+                  //               Toast.makeText(ResetActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                  //           } else {
+                  //               Toast.makeText(ResetActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                  //           }
+
+                  //           progressBar.setVisibility(View.GONE);
+                  //       }
+                  //   });
+                  Navigator.pop(context);
+                },
+              )
             ],
           ),
         ));

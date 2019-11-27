@@ -46,6 +46,9 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   final googleSignIn = new GoogleSignIn();
 
+  //for firebase user
+  FirebaseUser firebaseUser;
+
   @override
   void initState() {
     // You'll almost certainly want to do some logic
@@ -64,8 +67,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  //===========================================
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> signInWithEmail(String email, String password) async {
@@ -81,14 +82,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
       }
     } catch (e) {
       return false;
-    }
-  }
-
-  Future<void> logOut() async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      print("error logging out");
     }
   }
 
@@ -121,13 +114,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
   }
 
-  Future<Null> signOutWithGoogle() async {
+  Future<Null> signOut() async {
     try {
       // Sign out with firebase
       await _auth.signOut();
       // Sign out with google
       await googleSignIn.signOut();
-      print('logged out from google!!!');
+      print('logged out!!!');
     } catch (e) {
       print('error logging out from google');
     }
@@ -147,7 +140,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  Future<GoogleSignInAccount> ensureLoggedInOnStartUp() async {
+  Future<GoogleSignInAccount> ensureGoogleLoggedInOnStartUp() async {
     // That class has a currentUser if there's already a user signed in on
     // this device.
     GoogleSignInAccount user = googleSignIn.currentUser;
@@ -161,24 +154,34 @@ class _AppStateContainerState extends State<AppStateContainer> {
     return user;
   }
 
-  //===========================================
+  Future<FirebaseUser> ensureEmailLoggedInOnStartup() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    firebaseUser = user;
+    print('FIREBASE USER ${firebaseUser}');
+    return user;
+  }
 
-  // All new:
-  // This method is called on start up no matter what.
+  //===========================================
 
   Future<Null> initUser() async {
     // First, check if a user exists.
-    googleUser = await ensureLoggedInOnStartUp();
+    googleUser = await ensureGoogleLoggedInOnStartUp();
+    firebaseUser = await ensureEmailLoggedInOnStartup();
     // If the user is null, we aren't loading anyhting
     // because there isn't anything to load.
     // This will force the homepage to navigate to the auth page.
-    if (googleUser == null) {
+    if (googleUser == null && firebaseUser == null) {
       setState(() {
         state.isLoading = false;
         print('NO USER LOGGED IN');
       });
-    } else {
-      print(' USER LOGGED IN -> ${googleUser.email}');
+    } else if (googleUser != null && firebaseUser == null) {
+      print('GOOGLE USER LOGGED IN -> ${googleUser.email}');
+
+      // Do some other stuff, handle later.
+      startCountdown();
+    } else if (googleUser == null && firebaseUser != null) {
+      print('FIREBASE USER LOGGED IN -> ${firebaseUser.email}');
 
       // Do some other stuff, handle later.
       startCountdown();
