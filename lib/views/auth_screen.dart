@@ -1,7 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
+import '../main.dart';
 import 'registration_page.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -11,6 +15,41 @@ class AuthScreen extends StatefulWidget {
 }
 
 class AuthScreenState extends State<AuthScreen> {
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  final _formRecoverMailKey = GlobalKey<FormState>();
+  TextEditingController emailInputController;
+  TextEditingController forgetEmailInputController;
+
+  TextEditingController pwdInputController;
+
+  @override
+  initState() {
+    emailInputController = new TextEditingController();
+    forgetEmailInputController = new TextEditingController();
+
+    pwdInputController = new TextEditingController();
+    super.initState();
+  }
+
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
+
+  String pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
+
   _logInPageEmail() async {
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -38,6 +77,69 @@ class AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SingleChildScrollView(
+                  child: Form(
+                      key: _loginFormKey,
+                      child: Column(children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Email*',
+                              hintText: "john.doe@gmail.com"),
+                          controller: emailInputController,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: emailValidator,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'Password*', hintText: "********"),
+                          controller: pwdInputController,
+                          obscureText: true,
+                          validator: pwdValidator,
+                        ),
+                        RaisedButton(
+                          child: Text("Login"),
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            if (_loginFormKey.currentState.validate()) {
+                              FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: emailInputController.text,
+                                      password: pwdInputController.text)
+                                  .then((currentUser) => Firestore.instance
+                                      .collection("users")
+                                      .document(currentUser.user.uid)
+                                      .get()
+                                      // .then((DocumentSnapshot result) =>
+                                      // Navigator.pushReplacement(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             MyHomePage()))
+
+                                      .catchError((err) => print(err)))
+                                  .catchError((err) => print(err));
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
+
+                              Flushbar(
+                                title: "Hey Ninjaaa",
+                                message:
+                                    "Successfully Logged in!!! ${emailInputController.text}",
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.blueAccent[100],
+                              )..show(context);
+                            }
+                          },
+                        ),
+                        Text("Don't have an account yet?"),
+                        FlatButton(
+                          child: Text("Register here!"),
+                          onPressed: () {},
+                        )
+                      ]))),
               new RaisedButton(
                 onPressed: () => container.loginWithGoogle(),
                 color: Colors.white,
@@ -96,7 +198,21 @@ class AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               new RaisedButton(
-                onPressed: () => container.signOut(),
+                onPressed: () => {
+                  container.signOut(),
+                  if (container.firebaseUser != null ||
+                      container.googleUser != null)
+                    {
+                      Flushbar(
+                        title: "Hey Ninja",
+                        message: "Logged Out!!",
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.blueAccent[100],
+                      )..show(context)
+                    }
+                  else
+                    {print('no user logged')}
+                },
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -121,24 +237,99 @@ class AuthScreenState extends State<AuthScreen> {
               ),
               Text("Forgot your password?"),
               FlatButton(
-                child: Text("Reset here"),
-                onPressed: () {
-                  // FirebaseAuth.instance.sendPasswordResetEmail(userEmail)
-                  //   .addOnCompleteListener(new OnCompleteListener<Void>() {
-                  //       @Override
-                  //       public void onComplete(@NonNull Task<Void> task) {
-                  //           if (task.isSuccessful()) {
-                  //               Toast.makeText(ResetActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
-                  //           } else {
-                  //               Toast.makeText(ResetActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
-                  //           }
+                  child: Text("Reset here"),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Form(
+                            key: _formRecoverMailKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Email*',
+                                        hintText: "john.doe@gmail.com"),
+                                    controller: forgetEmailInputController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: emailValidator,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: RaisedButton(
+                                    child: Text("Submit"),
+                                    onPressed: () {
+                                      String usermail;
+                                      Firestore.instance
+                                          .collection('users')
+                                          .where('email',
+                                              isEqualTo:
+                                                  forgetEmailInputController
+                                                      .text)
+                                          .getDocuments()
+                                          .then((doc) {
+                                        print(doc.documents[0]['email']);
+                                        usermail = doc.documents[0]['email'];
+                                        print(forgetEmailInputController.text);
+                                        if (usermail.isNotEmpty &&
+                                            _formRecoverMailKey.currentState
+                                                .validate()) {
+                                          _formRecoverMailKey.currentState
+                                              .save();
+                                          FirebaseAuth.instance
+                                              .sendPasswordResetEmail(
+                                                  email:
+                                                      forgetEmailInputController
+                                                          .text);
+                                          forgetEmailInputController.clear();
 
-                  //           progressBar.setVisibility(View.GONE);
-                  //       }
-                  //   });
-                  Navigator.pop(context);
-                },
-              )
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          Navigator.pop(context);
+                                          Flushbar(
+                                            title: "Hey Ninja",
+                                            message: "Check your email adress",
+                                            duration: Duration(seconds: 3),
+                                            backgroundColor:
+                                                Colors.blueAccent[100],
+                                          )..show(context);
+                                        } else {
+                                          print('EMAIL NON VALIDATA');
+                                        }
+                                      }).catchError((err) => {
+                                                FocusScope.of(context)
+                                                    .requestFocus(
+                                                        new FocusNode()),
+                                                Flushbar(
+                                                  title: "Hey Ninja",
+                                                  message: "Invalid user",
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                  backgroundColor:
+                                                      Colors.red[100],
+                                                )..show(context)
+                                              });
+                                      // .snapshots()
+                                      // .listen((data) => data.documents
+                                      //     .forEach((doc) => {
+                                      //           print(doc["email"]),
+                                      //           usermail = doc["email"]
+                                      //         }));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
             ],
           ),
         ));
