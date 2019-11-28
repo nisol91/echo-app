@@ -175,13 +175,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
         state.isLoading = false;
         print('NO USER LOGGED IN');
       });
-    } else if (googleUser != null && firebaseUser == null) {
-      print('GOOGLE USER LOGGED IN -> ${googleUser.email}');
-
-      // Do some other stuff, handle later.
-      startCountdown();
-    } else if (googleUser == null && firebaseUser != null) {
-      print('FIREBASE USER LOGGED IN -> ${firebaseUser.email}');
+    } else if (googleUser != null && firebaseUser != null) {
+      setState(() {
+        state.isLoading = false;
+        print('USER LOGGED IN -> ${googleUser.email}');
+      });
 
       // Do some other stuff, handle later.
       startCountdown();

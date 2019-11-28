@@ -1,3 +1,4 @@
+import './views/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 
@@ -100,6 +101,16 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(
         builder: (BuildContext context) {
           return AuthScreen();
+        },
+      ),
+    );
+  }
+
+  _profilePage() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return ProfilePage();
         },
       ),
     );
@@ -211,6 +222,10 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.library_add),
             onPressed: _corporatePage_2,
+          ),
+          IconButton(
+            icon: Icon(Icons.panorama_fish_eye),
+            onPressed: _profilePage,
           ),
         ],
       ),
