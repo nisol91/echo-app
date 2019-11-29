@@ -3,7 +3,6 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../app_state_container.dart';
-import '../main.dart';
 import 'registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -119,9 +118,25 @@ class AuthScreenState extends State<AuthScreen> {
                                       //             MyHomePage()))
 
                                       .catchError((err) => print(err)))
-                                  .catchError((err) => print(err));
+                                  .catchError((err) {
+                                print('======================');
+
+                                print(err);
+                                print('======================');
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                Flushbar(
+                                  title: "Hey Ninjaaa",
+                                  message: "wrong password!! try again",
+                                  duration: Duration(seconds: 3),
+                                  backgroundColor: Colors.red[100],
+                                )..show(context);
+                                throw ('wrong username or password');
+                              });
                               FocusScope.of(context)
                                   .requestFocus(new FocusNode());
+                              AppStateContainer.of(context).getUser();
+
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   '/', (Route<dynamic> route) => false);
 
@@ -152,12 +167,17 @@ class AuthScreenState extends State<AuthScreen> {
                     )..show(context);
                   } else if (await FirebaseAuth.instance.currentUser() ==
                       null) {
-                    container.loginWithGoogle().then((_) => Flushbar(
-                          title: "Hey Ninja",
-                          message: 'logged in with google',
-                          duration: Duration(seconds: 3),
-                          backgroundColor: Colors.blueAccent[100],
-                        )..show(context));
+                    container.loginWithGoogle().then((_) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/', (Route<dynamic> route) => false);
+
+                      Flushbar(
+                        title: "Hey Ninja",
+                        message: 'logged in with google',
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.blueAccent[100],
+                      )..show(context);
+                    });
                   }
                 },
                 color: Colors.white,

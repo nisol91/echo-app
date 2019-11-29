@@ -1,14 +1,12 @@
-import './views/profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flushbar/flushbar.dart';
 
+import './views/profile_page.dart';
+import 'package:flushbar/flushbar.dart';
 import './views/corporate_list_view.dart';
 import './views/corporate_list.dart';
 import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
-import './models/dog_model.dart';
-import './views/new_dog_form.dart';
-import './widgets/dog_list.dart';
 import './state/app_state.dart';
 import 'app_state_container.dart';
 import './viewmodels/crud_model_corporate.dart';
@@ -60,40 +58,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Dog> initialDoggos = []
-    ..add(Dog('Ruby', 'Portland, OR, USA',
-        'Ruby is a very good girl. Yes: Fetch, loungin\'. No: Dogs who get on furniture.'))
-    ..add(Dog('Rex', 'Seattle, WA, USA', 'Best in Show 1999'))
-    ..add(Dog('Rod Stewart', 'Prague, CZ',
-        'Star good boy on international snooze team.'));
-  // ..add(Dog('Herbert', 'Dallas, TX, USA', 'A Very Good Boy'))
-  // ..add(Dog('Herbert', 'Dallas, TX, USA', 'A Very Good Boy'))
-  // ..add(Dog('Herbert', 'Dallas, TX, USA', 'A Very Good Boy'))
-  // ..add(Dog('Herbert', 'Dallas, TX, USA', 'A Very Good Boy'))
-  // ..add(Dog('Buddy', 'North Pole, Earth', 'Self proclaimed human lover.'));
+  String email = '';
+  bool areYouAdmin = false;
 
-  _showNewDogForm() async {
-    // Any time you're pushing a new route and expect that route
-    // to return something back to you,
-    // you need to use an async function.
-    // In this case, the function will create a form page
-    // which the user can fill out and submit.
-    // On submission, the information in that form page
-    // will be passed back to this function.
-
-    // push a new route like you did in the last section
-    Dog newDog = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return AddDogFormPage();
-        },
-      ),
-    );
-    // A null check, to make sure that the user didn't abandon the form.
-    if (newDog != null) {
-      // Add a newDog to our mock dog array.
-      initialDoggos.add(newDog);
-    }
+  @override
+  initState() {
+    super.initState();
   }
 
   _logInPage() async {
@@ -179,24 +149,24 @@ class _MyHomePageState extends State<MyHomePage> {
   // new
   Widget get _homeView {
     return Container(
-      child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            // Where the linear gradient begins and ends
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            // Add one stop for each color. Stops should increase from 0 to 1
-            stops: [0.1, 0.5, 0.7, 0.9],
-            colors: [
-              // Colors are easy thanks to Flutter's Colors class.
-              Colors.blueGrey[900],
-              Colors.blueGrey[500],
-              Colors.blueGrey[400],
-              Colors.blueGrey[200],
-            ],
-          )),
-          child: Center(child: DogList(initialDoggos))),
-    );
+        //   child: Container(
+        //       decoration: BoxDecoration(
+        //           gradient: LinearGradient(
+        //         // Where the linear gradient begins and ends
+        //         begin: Alignment.topRight,
+        //         end: Alignment.bottomLeft,
+        //         // Add one stop for each color. Stops should increase from 0 to 1
+        //         stops: [0.1, 0.5, 0.7, 0.9],
+        //         colors: [
+        //           // Colors are easy thanks to Flutter's Colors class.
+        //           Colors.blueGrey[900],
+        //           Colors.blueGrey[500],
+        //           Colors.blueGrey[400],
+        //           Colors.blueGrey[200],
+        //         ],
+        //       )),
+        //       child: Center(child: DogList(initialDoggos))),
+        );
   }
 
   @override
@@ -220,10 +190,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // You can add as many as you'd like.
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add_circle_outline),
-            onPressed: _showNewDogForm,
-          ),
-          IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: _logInPage,
           ),
@@ -231,10 +197,12 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.library_add),
             onPressed: _corporatePage,
           ),
-          IconButton(
-            icon: Icon(Icons.library_add),
-            onPressed: _corporatePage_2,
-          ),
+          (AppStateContainer.of(context).areYouAdmin == true)
+              ? IconButton(
+                  icon: Icon(Icons.library_add),
+                  onPressed: _corporatePage_2,
+                )
+              : Container(),
           IconButton(
             icon: Icon(Icons.panorama_fish_eye),
             onPressed: _profilePage,

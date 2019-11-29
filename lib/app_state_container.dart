@@ -51,6 +51,9 @@ class _AppStateContainerState extends State<AppStateContainer> {
   //for firebase user
   FirebaseUser firebaseUser;
 
+  String email = '';
+  bool areYouAdmin = false;
+
   @override
   void initState() {
     // You'll almost certainly want to do some logic
@@ -83,6 +86,47 @@ class _AppStateContainerState extends State<AppStateContainer> {
         return false;
       }
     } catch (e) {
+      return false;
+    }
+  }
+
+  //===========================================
+
+  Future<bool> getUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
+      email = user.email;
+
+      new Future.delayed(new Duration(milliseconds: 10), () {
+        Firestore.instance
+            .collection('users')
+            .where('email', isEqualTo: email)
+            .getDocuments()
+            .then((doc) {
+          if (doc.documents[0]['role'] == 'admin') {
+            print('true');
+            if (!mounted) {
+              return false;
+            }
+            setState(() {
+              areYouAdmin = true;
+            });
+            return true;
+          } else {
+            print('false');
+            setState(() {
+              areYouAdmin = false;
+            });
+            return false;
+          }
+        });
+      });
+    } else {
+      print('false');
+      setState(() {
+        areYouAdmin = false;
+      });
+
       return false;
     }
   }
@@ -124,6 +168,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
       "email": user.email,
     });
 
+    getUser();
     assert(user.uid == currentUser.uid);
     print('signInWithGoogle succeeded: $user');
     return true;
@@ -135,6 +180,8 @@ class _AppStateContainerState extends State<AppStateContainer> {
       await _auth.signOut();
       // Sign out with google
       await googleSignIn.signOut();
+      getUser();
+
       print('logged out!!!');
     } catch (e) {
       print('error logging out from google');

@@ -37,7 +37,9 @@ class _CorporateListViewState extends State<CorporateListView> {
             .then((doc) {
           if (doc.documents[0]['role'] == 'admin') {
             print('true');
-
+            if (!mounted) {
+              return false;
+            }
             setState(() {
               areYouAdmin = true;
             });

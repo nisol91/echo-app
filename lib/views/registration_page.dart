@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../app_state_container.dart';
 import '../main.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -152,6 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   .catchError((err) => print(err)))
                               .catchError((err) => print(err));
                           FocusScope.of(context).requestFocus(new FocusNode());
+                          AppStateContainer.of(context).getUser();
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               '/', (Route<dynamic> route) => false);
 
