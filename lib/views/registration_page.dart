@@ -122,6 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     "surname": lastNameInputController.text,
                                     "email": emailInputController.text,
                                     "points": 0,
+                                    "role": 'user',
                                   })
                                   .then((currentUser) => {
                                         FirebaseAuth.instance

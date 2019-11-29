@@ -112,7 +112,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
     if (!utente.exists) {
       print('ancora non esisteva');
       Firestore.instance.collection("users").document(user.uid).setData({
-        "punti": 0,
+        "points": 0,
         "fname": user.displayName,
         "surname": '',
       });
@@ -121,57 +121,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
     Firestore.instance.collection("users").document(user.uid).updateData({
       "uid": user.uid,
       "email": user.email,
+      "role": 'user',
     });
 
     assert(user.uid == currentUser.uid);
     print('signInWithGoogle succeeded: $user');
     return true;
   }
-
-  // Future<bool> loginWithGoogle() async {
-  //   try {
-  //     GoogleSignIn googleSignIn = GoogleSignIn();
-  //     GoogleSignInAccount account = await googleSignIn.signIn();
-  //     if (account == null) return false;
-  //     AuthResult res =
-  //         await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
-  //       idToken: (await account.authentication).idToken,
-  //       accessToken: (await account.authentication).accessToken,
-  //     ));
-
-  //     if (res.user == null) {
-  //       return false;
-  //     } else {
-  //       setState(() {
-  //         // Updating the isLoading will force the Homepage to change because of
-  //         // The inheritedWidget setup.
-  //         state.isLoading = false;
-  //       });
-
-  //       FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  //       if (user.email != res.user.email) {
-  //         Firestore.instance
-  //             .collection("users")
-  //             .document(res.user.uid)
-  //             .setData({
-  //           "uid": res.user.uid,
-  //           "fname": '',
-  //           "surname": '',
-  //           "email": res.user.email,
-  //           "points": 0,
-  //         });
-  //         print('UTENTE appena registrato con google -> ${res.user.email}');
-  //         return true;
-  //       } else {
-  //         print("utente gia registrato");
-  //         return false;
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print("Error logging with google");
-  //     return false;
-  //   }
-  // }
 
   Future<Null> signOut() async {
     try {

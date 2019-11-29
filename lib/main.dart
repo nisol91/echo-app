@@ -107,13 +107,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _profilePage() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return ProfilePage();
-        },
-      ),
-    );
+    final container = AppStateContainer.of(context);
+    print(await container.ensureGoogleLoggedInOnStartUp());
+    if (await container.ensureGoogleLoggedInOnStartUp() != null ||
+        await container.ensureEmailLoggedInOnStartup() != null) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return ProfilePage();
+          },
+        ),
+      );
+    } else {
+      Flushbar(
+        title: "Hey Ninja",
+        message: "You need to login, to access this page",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.blueAccent[100],
+      )..show(context);
+    }
   }
 
   _corporatePage() async {
