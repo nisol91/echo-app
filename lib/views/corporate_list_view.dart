@@ -29,7 +29,7 @@ class _CorporateListViewState extends State<CorporateListView> {
     if (user != null) {
       email = user.email;
 
-      new Future.delayed(new Duration(milliseconds: 100), () {
+      new Future.delayed(new Duration(milliseconds: 10), () {
         Firestore.instance
             .collection('users')
             .where('email', isEqualTo: email)

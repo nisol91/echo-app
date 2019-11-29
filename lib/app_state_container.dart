@@ -115,13 +115,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
         "points": 0,
         "fname": user.displayName,
         "surname": '',
+        "role": 'user',
       });
     }
 
     Firestore.instance.collection("users").document(user.uid).updateData({
       "uid": user.uid,
       "email": user.email,
-      "role": 'user',
     });
 
     assert(user.uid == currentUser.uid);
