@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'state/app_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -88,31 +90,88 @@ class _AppStateContainerState extends State<AppStateContainer> {
   //===========================================
 
   Future<bool> loginWithGoogle() async {
-    try {
-      GoogleSignIn googleSignIn = GoogleSignIn();
-      GoogleSignInAccount account = await googleSignIn.signIn();
-      if (account == null) return false;
-      AuthResult res =
-          await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
-        idToken: (await account.authentication).idToken,
-        accessToken: (await account.authentication).accessToken,
-      ));
-      if (res.user == null) {
-        return false;
-      } else {
-        setState(() {
-          // Updating the isLoading will force the Homepage to change because of
-          // The inheritedWidget setup.
-          state.isLoading = false;
-        });
-        print('UTENTE appena loggato con google -> ${res.user.email}');
-        return true;
-      }
-    } catch (e) {
-      print("Error logging with google");
-      return false;
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+
+    DocumentSnapshot utente =
+        await Firestore.instance.collection("users").document(user.uid).get();
+    if (!utente.exists) {
+      print('ancora non esisteva');
+      Firestore.instance.collection("users").document(user.uid).setData({
+        "punti": 0,
+        "fname": user.displayName,
+        "surname": '',
+      });
     }
+
+    Firestore.instance.collection("users").document(user.uid).updateData({
+      "uid": user.uid,
+      "email": user.email,
+    });
+
+    assert(user.uid == currentUser.uid);
+    print('signInWithGoogle succeeded: $user');
+    return true;
   }
+
+  // Future<bool> loginWithGoogle() async {
+  //   try {
+  //     GoogleSignIn googleSignIn = GoogleSignIn();
+  //     GoogleSignInAccount account = await googleSignIn.signIn();
+  //     if (account == null) return false;
+  //     AuthResult res =
+  //         await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
+  //       idToken: (await account.authentication).idToken,
+  //       accessToken: (await account.authentication).accessToken,
+  //     ));
+
+  //     if (res.user == null) {
+  //       return false;
+  //     } else {
+  //       setState(() {
+  //         // Updating the isLoading will force the Homepage to change because of
+  //         // The inheritedWidget setup.
+  //         state.isLoading = false;
+  //       });
+
+  //       FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  //       if (user.email != res.user.email) {
+  //         Firestore.instance
+  //             .collection("users")
+  //             .document(res.user.uid)
+  //             .setData({
+  //           "uid": res.user.uid,
+  //           "fname": '',
+  //           "surname": '',
+  //           "email": res.user.email,
+  //           "points": 0,
+  //         });
+  //         print('UTENTE appena registrato con google -> ${res.user.email}');
+  //         return true;
+  //       } else {
+  //         print("utente gia registrato");
+  //         return false;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print("Error logging with google");
+  //     return false;
+  //   }
+  // }
 
   Future<Null> signOut() async {
     try {
@@ -175,10 +234,18 @@ class _AppStateContainerState extends State<AppStateContainer> {
         state.isLoading = false;
         print('NO USER LOGGED IN');
       });
-    } else if (googleUser != null && firebaseUser != null) {
+    } else if (googleUser != null) {
       setState(() {
         state.isLoading = false;
         print('USER LOGGED IN -> ${googleUser.email}');
+      });
+
+      // Do some other stuff, handle later.
+      startCountdown();
+    } else if (firebaseUser != null) {
+      setState(() {
+        state.isLoading = false;
+        print('USER LOGGED IN -> ${firebaseUser.email}');
       });
 
       // Do some other stuff, handle later.

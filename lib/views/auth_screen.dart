@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '../app_state_container.dart';
 import '../main.dart';
 import 'registration_page.dart';
@@ -141,7 +142,24 @@ class AuthScreenState extends State<AuthScreen> {
                         )
                       ]))),
               new RaisedButton(
-                onPressed: () => container.loginWithGoogle(),
+                onPressed: () async {
+                  if (await FirebaseAuth.instance.currentUser() != null) {
+                    Flushbar(
+                      title: "Hey Ninja",
+                      message: 'already logged in',
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.blueAccent[100],
+                    )..show(context);
+                  } else if (await FirebaseAuth.instance.currentUser() ==
+                      null) {
+                    container.loginWithGoogle().then((_) => Flushbar(
+                          title: "Hey Ninja",
+                          message: 'logged in with google',
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.blueAccent[100],
+                        )..show(context));
+                  }
+                },
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -155,10 +173,22 @@ class AuthScreenState extends State<AuthScreen> {
                     children: [
                       new Padding(
                         padding: const EdgeInsets.only(right: 20.0),
-                        child: new Image.network(
-                          'https://blog.hubspot.com/hubfs/image8-2.jpg',
-                          width: 60.0,
+                        child: Stack(
+                          children: <Widget>[
+                            Center(child: CircularProgressIndicator()),
+                            Center(
+                              child: FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                image:
+                                    'https://blog.hubspot.com/hubfs/image8-2.jpg',
+                              ),
+                            ),
+                          ],
                         ),
+                        //   new Image.network(
+                        //     'https://blog.hubspot.com/hubfs/image8-2.jpg',
+                        //     width: 60.0,
+                        //   ),
                       ),
                       new Text(
                         'Sign in With Google',
