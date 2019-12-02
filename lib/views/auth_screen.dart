@@ -107,22 +107,39 @@ class AuthScreenState extends State<AuthScreen> {
                                       email: emailInputController.text,
                                       password: pwdInputController.text)
                                   .then((currentUser) => Firestore.instance
-                                      .collection("users")
-                                      .document(currentUser.user.uid)
-                                      .get()
-                                      // .then((DocumentSnapshot result) =>
-                                      // Navigator.pushReplacement(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             MyHomePage()))
+                                          .collection("users")
+                                          .document(currentUser.user.uid)
+                                          .get()
+                                          .whenComplete(() {
+                                        FocusScope.of(context)
+                                            .requestFocus(new FocusNode());
+                                        AppStateContainer.of(context).getUser();
 
-                                      .catchError((err) => print(err)))
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                '/',
+                                                (Route<dynamic> route) =>
+                                                    false);
+
+                                        Flushbar(
+                                          title: "Hey Ninjaaa",
+                                          message:
+                                              "Successfully Logged in!!! ${emailInputController.text}",
+                                          duration: Duration(seconds: 3),
+                                          backgroundColor:
+                                              Colors.blueAccent[100],
+                                        )..show(context);
+                                      })
+                                          // .then((DocumentSnapshot result) =>
+                                          // Navigator.pushReplacement(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             MyHomePage()))
+
+                                          .catchError((err) => print(err)))
                                   .catchError((err) {
-                                print('======================');
-
                                 print(err);
-                                print('======================');
                                 FocusScope.of(context)
                                     .requestFocus(new FocusNode());
                                 Flushbar(
@@ -133,20 +150,6 @@ class AuthScreenState extends State<AuthScreen> {
                                 )..show(context);
                                 throw ('wrong username or password');
                               });
-                              FocusScope.of(context)
-                                  .requestFocus(new FocusNode());
-                              AppStateContainer.of(context).getUser();
-
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/', (Route<dynamic> route) => false);
-
-                              Flushbar(
-                                title: "Hey Ninjaaa",
-                                message:
-                                    "Successfully Logged in!!! ${emailInputController.text}",
-                                duration: Duration(seconds: 3),
-                                backgroundColor: Colors.blueAccent[100],
-                              )..show(context);
                             }
                           },
                         ),
@@ -249,19 +252,16 @@ class AuthScreenState extends State<AuthScreen> {
               ),
               new RaisedButton(
                 onPressed: () => {
-                  container.signOut(),
-                  if (container.firebaseUser != null ||
-                      container.googleUser != null)
-                    {
-                      Flushbar(
-                        title: "Hey Ninja",
-                        message: "Logged Out!!",
-                        duration: Duration(seconds: 3),
-                        backgroundColor: Colors.blueAccent[100],
-                      )..show(context)
-                    }
-                  else
-                    {print('no user logged')}
+                  print(container.firebaseUser),
+                  print(container.googleUser),
+                  container.signOut().whenComplete(() {
+                    Flushbar(
+                      title: "Hey Ninja",
+                      message: "Logged Out!!",
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.blueAccent[100],
+                    )..show(context);
+                  }),
                 },
                 color: Colors.white,
                 shape: RoundedRectangleBorder(

@@ -178,8 +178,15 @@ class _AppStateContainerState extends State<AppStateContainer> {
     try {
       // Sign out with firebase
       await _auth.signOut();
+      setState(() {
+        firebaseUser = null;
+      });
       // Sign out with google
       await googleSignIn.signOut();
+      setState(() {
+        googleUser = null;
+      });
+
       getUser();
 
       print('logged out!!!');
