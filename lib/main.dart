@@ -149,23 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // new
   Widget get _homeView {
     return Container(
-        //   child: Container(
-        //       decoration: BoxDecoration(
-        //           gradient: LinearGradient(
-        //         // Where the linear gradient begins and ends
-        //         begin: Alignment.topRight,
-        //         end: Alignment.bottomLeft,
-        //         // Add one stop for each color. Stops should increase from 0 to 1
-        //         stops: [0.1, 0.5, 0.7, 0.9],
-        //         colors: [
-        //           // Colors are easy thanks to Flutter's Colors class.
-        //           Colors.blueGrey[900],
-        //           Colors.blueGrey[500],
-        //           Colors.blueGrey[400],
-        //           Colors.blueGrey[200],
-        //         ],
-        //       )),
-        //       child: Center(child: DogList(initialDoggos))),
+        //
         );
   }
 
@@ -197,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.library_add),
             onPressed: _corporatePage,
           ),
-          (AppStateContainer.of(context).areYouAdmin == true)
+          (container.areYouAdmin == true)
               ? IconButton(
                   icon: Icon(Icons.library_add),
                   onPressed: _corporatePage_2,

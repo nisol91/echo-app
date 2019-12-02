@@ -18,7 +18,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   initState() {
     super.initState();
-    print(loaded);
     getUser();
   }
 
@@ -62,15 +61,32 @@ class _ProfilePageState extends State<ProfilePage> {
 //, pero tanto è solo per una sicurezza della pagina utente se per caso qualcuno
 // riuscisse a navigarci direttamente, comunque non la vede se non è loggato con una mail
   Widget get _pageToDisplay {
-    if (email != '') {
-      print('dentro a profile view');
-      print(email);
-      return _profileView;
-    } else {
-      print('dentro a page to display');
+    if (loaded == false) {
+      print('loading');
 
-      return _noAccess;
+      return _loading;
+    } else {
+      if (email != '') {
+        print('dentro a profile view');
+        print(email);
+        return _profileView;
+      } else {
+        print('dentro a no access');
+
+        return _noAccess;
+      }
     }
+  }
+
+  Widget get _loading {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[CircularProgressIndicator()],
+      ),
+    );
   }
 
   Widget get _noAccess {

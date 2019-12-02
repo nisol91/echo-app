@@ -66,7 +66,9 @@ class _AppStateContainerState extends State<AppStateContainer> {
     } else {
       state = new AppState.loading();
       // fake some config loading
+      print('INIT APP');
       initUser();
+      getUser();
     }
   }
 
@@ -92,32 +94,30 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  Future<bool> getUser() async {
+  Future<void> getUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     if (user != null) {
       email = user.email;
 
-      new Future.delayed(new Duration(milliseconds: 10), () {
+      await Future.delayed(new Duration(milliseconds: 10), () {
         Firestore.instance
             .collection('users')
             .where('email', isEqualTo: email)
             .getDocuments()
             .then((doc) {
           if (doc.documents[0]['role'] == 'admin') {
-            print('true');
+            print('ADMIN===========');
             if (!mounted) {
-              return false;
+              return;
             }
             setState(() {
               areYouAdmin = true;
             });
-            return true;
           } else {
             print('false');
             setState(() {
               areYouAdmin = false;
             });
-            return false;
           }
         });
       });
@@ -126,8 +126,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
       setState(() {
         areYouAdmin = false;
       });
-
-      return false;
     }
   }
 

@@ -17,9 +17,6 @@ class _CorporateListState extends State<CorporateList> {
         .collection('corporate')
         .snapshots()
         .listen((data) => data.documents.forEach((doc) => print(doc['name'])));
-
-    // Firestore.instance.collection('doggos').document().setData(
-    //     {'name': 'Mount Baker', 'description': 'volcano', 'location': 'yes'});
   }
 
   Future<QuerySnapshot> getAllDocuments() {

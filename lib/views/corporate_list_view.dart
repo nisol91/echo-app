@@ -15,94 +15,71 @@ class CorporateListView extends StatefulWidget {
 
 class _CorporateListViewState extends State<CorporateListView> {
   List<Corporate> corporates;
-  String email = '';
-  bool areYouAdmin = false;
 
   @override
   initState() {
     super.initState();
-    getUser();
-  }
-
-  Future<bool> getUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if (user != null) {
-      email = user.email;
-
-      new Future.delayed(new Duration(milliseconds: 10), () {
-        Firestore.instance
-            .collection('users')
-            .where('email', isEqualTo: email)
-            .getDocuments()
-            .then((doc) {
-          if (doc.documents[0]['role'] == 'admin') {
-            print('true');
-            if (!mounted) {
-              return false;
-            }
-            setState(() {
-              areYouAdmin = true;
-            });
-            return true;
-          } else {
-            print('false');
-
-            return false;
-          }
-        });
-      });
-    } else {
-      print('false');
-      return false;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final corporateProvider = Provider.of<CrudModel>(context);
+    var container = AppStateContainer.of(context);
 
+    final corporateProvider = Provider.of<CrudModel>(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addCorporate');
-        },
-        child: Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        title: Center(child: Text('Corporate View II')),
-      ),
-      body: (areYouAdmin == true)
-          ? Container(
-              height: 200,
-              padding: EdgeInsets.all(10),
-              child: StreamBuilder(
-                  stream: corporateProvider.fetchCorporatesAsStream(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      corporates = snapshot.data.documents
-                          .map((doc) =>
-                              Corporate.fromMap(doc.data, doc.documentID))
-                          .toList();
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: corporates.length,
-                        itemBuilder: (buildContext, index) =>
-                            CorporateCard(corporateDetails: corporates[index]),
-                      );
-                    } else {
-                      return Text('fetching');
-                    }
-                  }),
-            )
-          : Container(
-              child: Column(
-                children: <Widget>[
-                  CircularProgressIndicator(),
-                  Text('devi essere admin per poter accedere a questa pagina'),
-                ],
-              ),
-            ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/addCorporate');
+          },
+          child: Icon(Icons.add),
+        ),
+        appBar: AppBar(
+          title: Center(child: Text('Corporate View II')),
+        ),
+        body: Container(
+          height: 200,
+          padding: EdgeInsets.all(10),
+          child: StreamBuilder(
+              stream: corporateProvider.fetchCorporatesAsStream(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (container.areYouAdmin == false) {
+                  print('non sei admin');
+                  return Container(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                            'devi essere admin per poter accedere a questa pagina'),
+                      ],
+                    ),
+                  );
+                } else {
+                  if (snapshot.hasData) {
+                    print('fatto');
+
+                    corporates = snapshot.data.documents
+                        .map((doc) =>
+                            Corporate.fromMap(doc.data, doc.documentID))
+                        .toList();
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: corporates.length,
+                      itemBuilder: (buildContext, index) =>
+                          CorporateCard(corporateDetails: corporates[index]),
+                    );
+                  } else {
+                    print('loading');
+
+                    return Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[CircularProgressIndicator()],
+                      ),
+                    );
+                  }
+                }
+              }),
+        ));
     ;
   }
 }
