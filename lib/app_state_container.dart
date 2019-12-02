@@ -55,6 +55,8 @@ class _AppStateContainerState extends State<AppStateContainer> {
   String email = '';
   bool areYouAdmin = false;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     // You'll almost certainly want to do some logic
@@ -75,23 +77,21 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<bool> signInWithEmail(String email, String password) async {
-    try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      FirebaseUser user = result.user;
-      if (user != null) {
-        print(user);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
+  // Future<bool> signInWithEmail(String email, String password) async {
+  //   try {
+  //     AuthResult result = await _auth.signInWithEmailAndPassword(
+  //         email: email, password: password);
+  //     FirebaseUser user = result.user;
+  //     if (user != null) {
+  //       print(user);
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
 
   //===========================================
 

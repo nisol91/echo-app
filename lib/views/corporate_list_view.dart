@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
 import '../models/corporate_model.dart';
 import '../viewmodels/crud_model_corporate.dart';
 import 'package:provider/provider.dart';
 import '../widgets/corporate_card.dart';
-import 'package:flushbar/flushbar.dart';
 
 class CorporateListView extends StatefulWidget {
   @override

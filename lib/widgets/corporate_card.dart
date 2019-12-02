@@ -1,3 +1,5 @@
+import '../app_state_container.dart';
+import '../views/corporate_details_users.dart';
 import 'package:flutter/material.dart';
 import '../models/corporate_model.dart';
 import '../views/corporate_details.dart';
@@ -9,12 +11,22 @@ class CorporateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var container = AppStateContainer.of(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => CorporateDetails(corporate: corporateDetails)));
+        if (container.areYouAdmin == true) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) =>
+                      CorporateDetails(corporate: corporateDetails)));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) =>
+                      CorporateDetailsUsers(corporate: corporateDetails)));
+        }
       },
       child: Padding(
         padding: EdgeInsets.all(3),
