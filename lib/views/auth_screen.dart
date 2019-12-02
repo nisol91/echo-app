@@ -129,15 +129,7 @@ class AuthScreenState extends State<AuthScreen> {
                                           backgroundColor:
                                               Colors.blueAccent[100],
                                         )..show(context);
-                                      })
-                                          // .then((DocumentSnapshot result) =>
-                                          // Navigator.pushReplacement(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             MyHomePage()))
-
-                                          .catchError((err) => print(err)))
+                                      }).catchError((err) => print(err)))
                                   .catchError((err) {
                                 print(err);
                                 FocusScope.of(context)
@@ -208,10 +200,6 @@ class AuthScreenState extends State<AuthScreen> {
                             ),
                           ],
                         ),
-                        //   new Image.network(
-                        //     'https://blog.hubspot.com/hubfs/image8-2.jpg',
-                        //     width: 60.0,
-                        //   ),
                       ),
                       new Text(
                         'Sign in With Google',
@@ -364,12 +352,6 @@ class AuthScreenState extends State<AuthScreen> {
                                                       Colors.red[100],
                                                 )..show(context)
                                               });
-                                      // .snapshots()
-                                      // .listen((data) => data.documents
-                                      //     .forEach((doc) => {
-                                      //           print(doc["email"]),
-                                      //           usermail = doc["email"]
-                                      //         }));
                                     },
                                   ),
                                 )

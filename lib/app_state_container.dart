@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+//EFFETTIVA IMPLEMENTAZIONE DELLO STATO DELL APP (INHERITED WIDGET)
 class AppStateContainer extends StatefulWidget {
   // Your apps state is managed by the container
   final AppState state;

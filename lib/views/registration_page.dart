@@ -132,18 +132,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                                     emailInputController.text,
                                                 password:
                                                     pwdInputController.text),
-                                        // Navigator.pushAndRemoveUntil(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) => MyHomePage(
-                                        //             // title:
-                                        //             //     firstNameInputController
-                                        //             //             .text +
-                                        //             //         "'s Tasks",
-                                        //             // uid: currentUser.uid,
-                                        //             )),
-                                        //     (_) => false),
-
                                         firstNameInputController.clear(),
                                         lastNameInputController.clear(),
                                         emailInputController.clear(),
