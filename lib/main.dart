@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         title: 'Echo App',
         theme: _themeData,
         routes: {
-          '/': (BuildContext context) => new MyHomePage(title: 'Home Page'),
+          '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(),
@@ -134,17 +134,18 @@ class _MyHomePageState extends State<MyHomePage>
 
   AppState appState;
 
-  Widget get _pageToDisplay {
-    if (appState.isLoading) {
-      return _loadingView;
-    } else {
-      return _homeView;
-    }
-  }
-
   Widget get _loadingView {
-    return new Center(
-      child: new CircularProgressIndicator(),
+    return new Scaffold(
+      body: new Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text('ECHO'),
+            new CircularProgressIndicator(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -153,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage>
     final corporateProvider = Provider.of<CrudModel>(context);
 
     return Container(
-      height: 200,
+      width: MediaQuery.of(context).size.width * 1,
       padding: EdgeInsets.all(10),
       child: StreamBuilder(
           stream: corporateProvider.fetchCorporatesAsStream(),
@@ -203,47 +204,48 @@ class _MyHomePageState extends State<MyHomePage>
     // Everything this build method is called, which is when the state
     // changes, Flutter will 'get' the _pageToDisplay widget, which will
     // return the screen we want based on the appState.isLoading
-    Widget body = _pageToDisplay;
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        backgroundColor: Colors.blueGrey[400],
-        bottom: new TabBar(controller: controller, tabs: <Tab>[
-          new Tab(icon: new Icon(Icons.arrow_forward)),
-          new Tab(icon: new Icon(Icons.arrow_downward)),
-          new Tab(icon: new Icon(Icons.arrow_back))
-        ]),
-        // This is how you add new buttons to the top right of a material appBar.
-        // You can add as many as you'd like.
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: _logInPage,
-          ),
-          IconButton(
-            icon: Icon(Icons.library_add),
-            onPressed: _corporatePage,
-          ),
-          (container.areYouAdmin == true)
-              ? IconButton(
+    return (!appState.isLoading)
+        ? new Scaffold(
+            appBar: new AppBar(
+              title: new Text(widget.title),
+              backgroundColor: Colors.blueGrey[400],
+              bottom: new TabBar(controller: controller, tabs: <Tab>[
+                new Tab(icon: new Icon(Icons.arrow_forward)),
+                new Tab(icon: new Icon(Icons.arrow_downward)),
+                new Tab(icon: new Icon(Icons.arrow_back))
+              ]),
+              // This is how you add new buttons to the top right of a material appBar.
+              // You can add as many as you'd like.
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.account_circle),
+                  onPressed: _logInPage,
+                ),
+                IconButton(
                   icon: Icon(Icons.library_add),
-                  onPressed: _corporatePage_2,
-                )
-              : Container(),
-          IconButton(
-            icon: Icon(Icons.panorama_fish_eye),
-            onPressed: _profilePage,
-          ),
-        ],
-      ),
-      body: TabBarView(
-        controller: controller,
-        children: [
-          body,
-          new CorporateList(),
-          new AuthScreen(),
-        ],
-      ),
-    );
+                  onPressed: _corporatePage,
+                ),
+                (container.areYouAdmin == true)
+                    ? IconButton(
+                        icon: Icon(Icons.library_add),
+                        onPressed: _corporatePage_2,
+                      )
+                    : Container(),
+                IconButton(
+                  icon: Icon(Icons.panorama_fish_eye),
+                  onPressed: _profilePage,
+                ),
+              ],
+            ),
+            body: TabBarView(
+              controller: controller,
+              children: [
+                _homeView,
+                new CorporateList(),
+                new AuthScreen(),
+              ],
+            ),
+          )
+        : _loadingView;
   }
 }

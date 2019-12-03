@@ -17,6 +17,6 @@ class AppState {
 
   @override
   String toString() {
-    return 'AppState{isLoading: $isLoading, user: ${'user?.displayName' ?? 'null'}}';
+    return 'AppState{isLoading: $isLoading}';
   }
 }

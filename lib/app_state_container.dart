@@ -68,10 +68,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
       state = widget.state;
     } else {
       state = new AppState.loading();
+      print(state);
       // fake some config loading
       print('INIT APP');
-      initUser();
-      getUser();
+      initUser()
+          .whenComplete(() => getUser().whenComplete(() => startCountdown()));
     }
   }
 
@@ -200,7 +201,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
   // Then the HomeScreen main view will appear
 
   Future<Null> startCountdown() async {
-    const timeOut = const Duration(seconds: 2);
+    const timeOut = const Duration(seconds: 5);
     new Timer(timeOut, () {
       setState(() => state.isLoading = false);
     });
@@ -240,25 +241,16 @@ class _AppStateContainerState extends State<AppStateContainer> {
     // This will force the homepage to navigate to the auth page.
     if (googleUser == null && firebaseUser == null) {
       setState(() {
-        state.isLoading = false;
         print('NO USER LOGGED IN');
       });
     } else if (googleUser != null) {
       setState(() {
-        state.isLoading = false;
         print('USER LOGGED IN -> ${googleUser.email}');
       });
-
-      // Do some other stuff, handle later.
-      startCountdown();
     } else if (firebaseUser != null) {
       setState(() {
-        state.isLoading = false;
         print('USER LOGGED IN -> ${firebaseUser.email}');
       });
-
-      // Do some other stuff, handle later.
-      startCountdown();
     }
   }
 
