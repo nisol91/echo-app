@@ -72,9 +72,27 @@ class _AppStateContainerState extends State<AppStateContainer> {
       print(state);
       // fake some config loading
       print('INIT APP');
-      initUser()
-          .whenComplete(() => getUser().whenComplete(() => startCountdown()));
+      initUser().whenComplete(() => getUser().whenComplete(
+          () => startCountdown().whenComplete(() => streamUser())));
     }
+  }
+
+  //===========================================
+  //METODO PER ORA NON UTILIZZATO
+
+  void streamUser() {
+    // StreamController streamController = StreamController();
+
+    // streamController.stream.listen(
+    //   (data) => print('il caricamento dovrebbe essere $data'),
+    //   onError: (err) => print('Got an error! $err'),
+    //   onDone: () => print('App caricata!'),
+    //   cancelOnError: false,
+    // );
+
+    // streamController.sink.add('finito');
+    // streamController.sink.addError('Houston, we have a problem!');
+    // streamController.sink.close();
   }
 
   //===========================================
@@ -226,11 +244,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 // If all goes well, when you launch the app
-  // you'll see a loading spinner for 2 seconds
+  // you'll see a loading spinner for n seconds
   // Then the HomeScreen main view will appear
+  //QUESTO METODO VIENE CHIAMATO UNA VOLTA CHE I METODI DI INIZIALIZZAZIONE
+  // SONO STATI COMPLETATI
 
   Future<Null> startCountdown() async {
-    const timeOut = const Duration(seconds: 5);
+    const timeOut = const Duration(seconds: 3);
     new Timer(timeOut, () {
       setState(() => state.isLoading = false);
     });

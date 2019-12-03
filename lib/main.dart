@@ -148,7 +148,6 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  // new
   Widget get _homeView {
     final corporateProvider = Provider.of<CrudModel>(context);
 
@@ -177,7 +176,9 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[CircularProgressIndicator()],
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                  ],
                 ),
               );
             }
@@ -221,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage>
                   onPressed: _logInPage,
                 ),
                 IconButton(
-                  icon: Icon(Icons.library_add),
+                  icon: Icon(Icons.settings),
                   onPressed: _corporatePage,
                 ),
                 (container.areYouAdmin == true)
