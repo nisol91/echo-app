@@ -6,16 +6,23 @@ class Corporate {
   String name;
   String img;
   Timestamp creationDate;
+  bool featured;
 
   Corporate(
-      {this.id, this.description, this.name, this.img, this.creationDate});
+      {this.id,
+      this.description,
+      this.name,
+      this.img,
+      this.creationDate,
+      this.featured});
 
   Corporate.fromMap(Map snapshot, String id)
       : id = id ?? '',
         description = snapshot['description'] ?? '',
         name = snapshot['name'] ?? '',
         img = snapshot['img'] ?? '',
-        creationDate = snapshot['creationDate'];
+        creationDate = snapshot['creationDate'],
+        featured = snapshot['featured'] ?? false;
 
   toJson() {
     return {
@@ -23,6 +30,7 @@ class Corporate {
       "name": name,
       "img": img,
       "creationDate": creationDate,
+      "featured": featured,
     };
   }
 }

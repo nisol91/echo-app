@@ -12,6 +12,7 @@ import 'locator.dart';
 import 'package:provider/provider.dart';
 import 'models/corporate_model.dart';
 import 'widgets/corporate_card.dart';
+import 'widgets/featured_corporate_card.dart';
 
 void main() {
   setupLocator();
@@ -176,9 +177,24 @@ class _MyHomePageState extends State<MyHomePage>
                   children: <Widget>[
                     Expanded(
                       child: SizedBox(
-                        height: 200,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
+                          itemCount: corporates.length,
+                          itemBuilder: (buildContext, index) => CorporateCard(
+                              corporateDetails: corporates[index]),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
                           itemCount: corporates.length,
                           itemBuilder: (buildContext, index) => CorporateCard(
                               corporateDetails: corporates[index]),
@@ -269,8 +285,10 @@ class _MyHomePageState extends State<MyHomePage>
                 controller: controller,
                 children: [
                   _homeView,
-                  new CorporateList(),
-                  new AuthScreen(),
+                  Text('tab 2'),
+                  Text('tab 3'),
+                  // new CorporateList(),
+                  // new AuthScreen(),
                 ],
               ),
             ))
