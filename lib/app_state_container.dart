@@ -54,6 +54,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   String email = '';
   bool areYouAdmin = false;
+  bool isMailVerified;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -78,26 +79,32 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  // Future<bool> signInWithEmail(String email, String password) async {
-  //   try {
-  //     AuthResult result = await _auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     FirebaseUser user = result.user;
-  //     if (user != null) {
-  //       print(user);
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
+  Future<AuthResult> signInWithEmail(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      //ricorda che per trovare il firebaseUser dall authResult:
+      // FirebaseUser user = result.user;
+      if (result != null) {
+        if (result.user.isEmailVerified) {
+          print(result);
+          return result;
+        } else {
+          signOut();
+        }
+      } else {
+        print('ERROR -> user null');
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   //===========================================
 
-  Future<AuthResult> registerUser(
-      String username, String email, String password) async {
+  Future<AuthResult> registerUser(String email, String password) async {
     AuthResult currentUser = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     try {
@@ -111,10 +118,15 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  Future<void> getUser() async {
+  Future<FirebaseUser> getUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     if (user != null) {
       email = user.email;
+      if (user.isEmailVerified) {
+        setState(() {
+          isMailVerified = true;
+        });
+      }
 
       await Future.delayed(new Duration(milliseconds: 10), () {
         Firestore.instance
@@ -125,7 +137,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
           if (doc.documents[0]['role'] == 'admin') {
             print('ADMIN===========');
             if (!mounted) {
-              return;
+              return null;
             }
             setState(() {
               areYouAdmin = true;
@@ -138,11 +150,13 @@ class _AppStateContainerState extends State<AppStateContainer> {
           }
         });
       });
+      return user;
     } else {
       print('false');
       setState(() {
         areYouAdmin = false;
       });
+      return null;
     }
   }
 
@@ -242,6 +256,8 @@ class _AppStateContainerState extends State<AppStateContainer> {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     firebaseUser = user;
     print('FIREBASE USER ${firebaseUser}');
+    // print('EMAIL VERIFIED ??? ${firebaseUser.isEmailVerified}');
+
     return user;
   }
 

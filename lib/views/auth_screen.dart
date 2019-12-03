@@ -102,10 +102,9 @@ class AuthScreenState extends State<AuthScreen> {
                           textColor: Colors.white,
                           onPressed: () {
                             if (_loginFormKey.currentState.validate()) {
-                              FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                      email: emailInputController.text,
-                                      password: pwdInputController.text)
+                              container
+                                  .signInWithEmail(emailInputController.text,
+                                      pwdInputController.text)
                                   .then((currentUser) => Firestore.instance
                                           .collection("users")
                                           .document(currentUser.user.uid)
@@ -131,16 +130,28 @@ class AuthScreenState extends State<AuthScreen> {
                                         )..show(context);
                                       }).catchError((err) => print(err)))
                                   .catchError((err) {
-                                print(err);
+                                print('ERROREEEEEE ${err}');
                                 FocusScope.of(context)
                                     .requestFocus(new FocusNode());
-                                Flushbar(
-                                  title: "Hey Ninjaaa",
-                                  message: "wrong password!! try again",
-                                  duration: Duration(seconds: 3),
-                                  backgroundColor: Colors.red[100],
-                                )..show(context);
-                                throw ('wrong username or password');
+                                container.getUser();
+                                if (container.isMailVerified == true) {
+                                  Flushbar(
+                                    title: "Hey Ninjaaa",
+                                    message: "wrong username or password",
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.red[100],
+                                  )..show(context);
+                                  throw ('wrong username or password');
+                                } else {
+                                  Flushbar(
+                                    title: "Hey Ninjaaa",
+                                    message:
+                                        "email not verified, check your inbox",
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.red[100],
+                                  )..show(context);
+                                  throw ('email not verified');
+                                }
                               });
                             }
                           },

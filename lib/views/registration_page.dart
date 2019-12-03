@@ -51,6 +51,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var container = AppStateContainer.of(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Register"),
@@ -110,10 +112,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_registerFormKey.currentState.validate()) {
                         if (pwdInputController.text ==
                             confirmPwdInputController.text) {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: emailInputController.text,
-                                  password: pwdInputController.text)
+                          container
+                              .registerUser(emailInputController.text,
+                                  pwdInputController.text)
                               .then((currentUser) => Firestore.instance
                                   .collection("users")
                                   .document(currentUser.user.uid)
@@ -125,13 +126,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                     "points": 0,
                                     "role": 'user',
                                   })
-                                  .then((currentUser) => {
-                                        FirebaseAuth.instance
-                                            .signInWithEmailAndPassword(
-                                                email:
-                                                    emailInputController.text,
-                                                password:
-                                                    pwdInputController.text),
+                                  .then((_) => {
+                                        container.signOut(),
+                                        //per ora alla registration non voglio mettere il login automatico
+                                        //cosi obbligo l'utente a verificare la mail prima di tutto.
+                                        // container.signInWithEmail(
+                                        //     emailInputController.text,
+                                        //     pwdInputController.text),
                                         firstNameInputController.clear(),
                                         lastNameInputController.clear(),
                                         emailInputController.clear(),
@@ -147,7 +148,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           Flushbar(
                             title: "Hey Ninja",
-                            message: "Successfully Registered",
+                            message:
+                                "Successfully Registered, now verify your email and sign in with your credentials",
                             duration: Duration(seconds: 3),
                             backgroundColor: Colors.blueAccent[100],
                           )..show(context);
