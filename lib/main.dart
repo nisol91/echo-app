@@ -22,9 +22,19 @@ void main() {
 
 class MyApp extends StatelessWidget {
   ThemeData get _themeData => new ThemeData(
-        primaryColor: Colors.blueGrey[100],
-        accentColor: Colors.indigo,
-        scaffoldBackgroundColor: Colors.grey[300],
+        primaryColor: Colors.lightGreen[500],
+        accentColor: Colors.lightGreen[900],
+        scaffoldBackgroundColor: Colors.white,
+        // Define the default font family.
+        fontFamily: 'Montserrat',
+
+        // Define the default TextTheme. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
       );
   @override
   Widget build(BuildContext context) {
@@ -203,25 +213,28 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    // This is the InheritedWidget in action.
-    // You can reference the StatefulWidget that
-    // wraps it like this, which allows you to access any
-    // public method or property on it.
+    var tema = Theme.of(context);
+
     var container = AppStateContainer.of(context);
-    // For example, get grab its property called state!
+
     appState = container.state;
-    // Everything this build method is called, which is when the state
-    // changes, Flutter will 'get' the _pageToDisplay widget, which will
-    // return the screen we want based on the appState.isLoading
+
     return (!appState.isLoading)
         ? new Scaffold(
             appBar: new AppBar(
               title: new Text(widget.title),
-              backgroundColor: Colors.blueGrey[400],
+              backgroundColor: tema.primaryColor,
               bottom: new TabBar(controller: controller, tabs: <Tab>[
-                new Tab(icon: new Icon(Icons.arrow_forward)),
-                new Tab(icon: new Icon(Icons.arrow_downward)),
-                new Tab(icon: new Icon(Icons.arrow_back))
+                new Tab(
+                    icon: new Icon(
+                  Icons.arrow_forward,
+                  color: tema.accentColor,
+                )),
+                new Tab(
+                    icon: new Icon(Icons.arrow_downward,
+                        color: tema.accentColor)),
+                new Tab(
+                    icon: new Icon(Icons.arrow_back, color: tema.accentColor))
               ]),
               // This is how you add new buttons to the top right of a material appBar.
               // You can add as many as you'd like.
@@ -229,20 +242,24 @@ class _MyHomePageState extends State<MyHomePage>
                 IconButton(
                   icon: Icon(Icons.account_circle),
                   onPressed: _logInPage,
+                  color: tema.accentColor,
                 ),
                 IconButton(
                   icon: Icon(Icons.settings),
                   onPressed: _corporatePage,
+                  color: tema.accentColor,
                 ),
                 (container.areYouAdmin == true)
                     ? IconButton(
                         icon: Icon(Icons.library_add),
                         onPressed: _corporatePage_2,
+                        color: tema.accentColor,
                       )
                     : Container(),
                 IconButton(
                   icon: Icon(Icons.panorama_fish_eye),
                   onPressed: _profilePage,
+                  color: tema.accentColor,
                 ),
               ],
             ),
