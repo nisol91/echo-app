@@ -151,39 +151,48 @@ class _MyHomePageState extends State<MyHomePage>
   Widget get _homeView {
     final corporateProvider = Provider.of<CrudModel>(context);
 
-    return Container(
-      width: MediaQuery.of(context).size.width * 1,
-      padding: EdgeInsets.all(10),
-      child: StreamBuilder(
-          stream: corporateProvider.fetchCorporatesAsStream(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              print('fatto');
+    return StreamBuilder(
+        stream: corporateProvider.fetchCorporatesAsStream(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            print('fatto');
 
-              corporates = snapshot.data.documents
-                  .map((doc) => Corporate.fromMap(doc.data, doc.documentID))
-                  .toList();
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: corporates.length,
-                itemBuilder: (buildContext, index) =>
-                    CorporateCard(corporateDetails: corporates[index]),
-              );
-            } else {
-              print('loading');
-
-              return Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            corporates = snapshot.data.documents
+                .map((doc) => Corporate.fromMap(doc.data, doc.documentID))
+                .toList();
+            return Column(
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    CircularProgressIndicator(),
+                    Expanded(
+                      child: SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: corporates.length,
+                          itemBuilder: (buildContext, index) => CorporateCard(
+                              corporateDetails: corporates[index]),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              );
-            }
-          }),
-    );
+              ],
+            );
+          } else {
+            print('loading');
+
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                ],
+              ),
+            );
+          }
+        });
   }
 
   @override
@@ -237,15 +246,17 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
               ],
             ),
-            body: TabBarView(
-              controller: controller,
-              children: [
-                _homeView,
-                new CorporateList(),
-                new AuthScreen(),
-              ],
-            ),
-          )
+            body: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              child: TabBarView(
+                controller: controller,
+                children: [
+                  _homeView,
+                  new CorporateList(),
+                  new AuthScreen(),
+                ],
+              ),
+            ))
         : _loadingView;
   }
 }
