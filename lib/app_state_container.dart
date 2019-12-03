@@ -96,6 +96,21 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
+  Future<AuthResult> registerUser(
+      String username, String email, String password) async {
+    AuthResult currentUser = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    try {
+      await currentUser.user.sendEmailVerification();
+      return currentUser;
+    } catch (e) {
+      print("An error occured while trying to send email verification");
+      print(e.message);
+    }
+  }
+
+  //===========================================
+
   Future<void> getUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     if (user != null) {
