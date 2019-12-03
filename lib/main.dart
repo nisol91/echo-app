@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
 import './state/app_state.dart';
 import 'app_state_container.dart';
-import './viewmodels/crud_model_corporate.dart';
+import './services/crud_model_corporate.dart';
 import 'locator.dart';
 import 'package:provider/provider.dart';
-import './views/add_corporate.dart';
 import 'models/corporate_model.dart';
 import 'widgets/corporate_card.dart';
 

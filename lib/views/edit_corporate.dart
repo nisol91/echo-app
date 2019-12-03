@@ -4,7 +4,7 @@ import 'package:flushbar/flushbar.dart';
 
 import 'package:provider/provider.dart';
 import '../models/corporate_model.dart';
-import '../viewmodels/crud_model_corporate.dart';
+import '../services/crud_model_corporate.dart';
 
 class ModifyCorporate extends StatefulWidget {
   final Corporate corporate;

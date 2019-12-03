@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// QUESTO FILE è UN TEMPLATE PER I MODEL
+
 // example on how to fetch data from http call and create a list
 
 List<Post> list = List();

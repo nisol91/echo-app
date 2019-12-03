@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/corporate_model.dart';
-import '../viewmodels/crud_model_corporate.dart';
+import '../services/crud_model_corporate.dart';
 
 class AddCorporate extends StatefulWidget {
   @override

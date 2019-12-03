@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/corporate_model.dart';
-import '../viewmodels/crud_model_corporate.dart';
+import '../services/crud_model_corporate.dart';
 import 'package:provider/provider.dart';
 import 'edit_corporate.dart';
 
