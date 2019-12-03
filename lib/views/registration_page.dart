@@ -125,6 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     "email": emailInputController.text,
                                     "points": 0,
                                     "role": 'user',
+                                    "creationDate": Timestamp.now(),
                                   })
                                   .then((_) => {
                                         container.signOut(),

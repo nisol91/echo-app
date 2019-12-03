@@ -83,7 +83,6 @@ class _AddCorporateState extends State<AddCorporate> {
                     await corporateProvider.addCorporate(Corporate(
                         name: title,
                         creationDate: Timestamp.now(),
-                        // creationDate: DateTime.now(),
                         description: price,
                         img: corporateType.toLowerCase()));
                     Navigator.pop(context);

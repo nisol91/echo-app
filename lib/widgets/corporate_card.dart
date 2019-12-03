@@ -55,7 +55,7 @@ class CorporateCard extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 22,
-                            fontStyle: FontStyle.italic),
+                            fontStyle: FontStyle.normal),
                       ),
                       Text(
                         '${corporateDetails.name} \$',
