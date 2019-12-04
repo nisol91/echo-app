@@ -206,14 +206,35 @@ class _MyHomePageState extends State<MyHomePage>
                   children: <Widget>[
                     Expanded(
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.55,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: corporates.length,
-                          itemBuilder: (buildContext, index) => CorporateCard(
-                              corporateDetails: corporates[index]),
-                        ),
-                      ),
+                          height: MediaQuery.of(context).size.height * 0.5774,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  // Box decoration takes a gradient
+                                  gradient: LinearGradient(
+                                    // Where the linear gradient begins and ends
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    // Add one stop for each color. Stops should increase from 0 to 1
+                                    stops: [0.1, 0.99],
+                                    colors: [
+                                      // Colors are easy thanks to Flutter's Colors class.
+                                      Colors.transparent,
+                                      tema.accentColor,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: corporates.length,
+                                itemBuilder: (buildContext, index) =>
+                                    CorporateCard(
+                                        corporateDetails: corporates[index]),
+                              ),
+                            ],
+                          )),
                     )
                   ],
                 ),

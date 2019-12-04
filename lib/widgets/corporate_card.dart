@@ -41,6 +41,8 @@ class CorporateCard extends StatelessWidget {
             // height: MediaQuery.of(context).size.height * 0.45,
             width: MediaQuery.of(context).size.width * 0.9,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 // Hero(
                 //   tag: corporateDetails.id,
@@ -75,6 +77,7 @@ class CorporateCard extends StatelessWidget {
                           children: <Widget>[
                             Image.network(
                               '${corporateDetails.img}',
+                              height: 70,
                               loadingBuilder: (BuildContext context,
                                   Widget child,
                                   ImageChunkEvent loadingProgress) {
