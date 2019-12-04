@@ -1,3 +1,5 @@
+import 'package:transparent_image/transparent_image.dart';
+
 import '../app_state_container.dart';
 import '../views/corporate_details_users.dart';
 import 'package:flutter/material.dart';
@@ -53,21 +55,45 @@ class CorporateCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        corporateDetails.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 22,
-                            fontStyle: FontStyle.normal),
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              corporateDetails.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 22,
+                                  fontStyle: FontStyle.normal),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        '${corporateDetails.name} \$',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 22,
-                            fontStyle: FontStyle.italic,
-                            color: tema.accentColor),
-                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: <Widget>[
+                            Image.network(
+                              '${corporateDetails.img}',
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: LinearProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )
