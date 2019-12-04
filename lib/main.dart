@@ -23,7 +23,10 @@ void main() {
 class MyApp extends StatelessWidget {
   ThemeData get _themeData => new ThemeData(
         primaryColor: Colors.lightGreen[500],
+        secondaryHeaderColor: Colors.green[300],
         accentColor: Colors.lightGreen[900],
+        dividerColor: Colors.green[600],
+
         scaffoldBackgroundColor: Colors.white,
         // Define the default font family.
         fontFamily: 'Montserrat',
@@ -160,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget get _homeView {
     final corporateProvider = Provider.of<CrudModel>(context);
+    var tema = Theme.of(context);
 
     return StreamBuilder(
         stream: corporateProvider.fetchCorporatesAsStream(),
@@ -175,13 +179,24 @@ class _MyHomePageState extends State<MyHomePage>
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: corporates.length,
-                          itemBuilder: (buildContext, index) => CorporateCard(
-                              corporateDetails: corporates[index]),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: tema.dividerColor, width: 3))),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: corporates.length,
+                            itemBuilder: (buildContext, index) =>
+                                (corporates[index].featured == true)
+                                    ? CorporateCard(
+                                        corporateDetails: corporates[index],
+                                        featuredColor: tema.primaryColor,
+                                      )
+                                    : Container(),
+                          ),
                         ),
                       ),
                     )
@@ -191,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage>
                   children: <Widget>[
                     Expanded(
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.55,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: corporates.length,

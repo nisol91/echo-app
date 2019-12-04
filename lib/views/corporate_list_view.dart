@@ -32,10 +32,10 @@ class _CorporateListViewState extends State<CorporateListView> {
           child: Icon(Icons.add),
         ),
         appBar: AppBar(
-          title: Center(child: Text('Corporate View II')),
+          title: Center(child: Text('Corporate View Admin')),
         ),
         body: Container(
-          height: 200,
+          height: MediaQuery.of(context).size.height * 1,
           padding: EdgeInsets.all(10),
           child: StreamBuilder(
               stream: corporateProvider.fetchCorporatesAsStream(),
@@ -59,7 +59,7 @@ class _CorporateListViewState extends State<CorporateListView> {
                             Corporate.fromMap(doc.data, doc.documentID))
                         .toList();
                     return ListView.builder(
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: Axis.vertical,
                       itemCount: corporates.length,
                       itemBuilder: (buildContext, index) =>
                           CorporateCard(corporateDetails: corporates[index]),

@@ -6,11 +6,13 @@ import '../views/corporate_details.dart';
 
 class CorporateCard extends StatelessWidget {
   final Corporate corporateDetails;
+  final Color featuredColor;
 
-  CorporateCard({this.corporateDetails});
+  CorporateCard({this.corporateDetails, this.featuredColor});
 
   @override
   Widget build(BuildContext context) {
+    var tema = Theme.of(context);
     var container = AppStateContainer.of(context);
     return GestureDetector(
       onTap: () {
@@ -31,6 +33,7 @@ class CorporateCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(3),
         child: Card(
+          color: featuredColor,
           elevation: 5,
           child: Container(
             // height: MediaQuery.of(context).size.height * 0.45,
@@ -63,7 +66,7 @@ class CorporateCard extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             fontSize: 22,
                             fontStyle: FontStyle.italic,
-                            color: Colors.orangeAccent),
+                            color: tema.accentColor),
                       ),
                     ],
                   ),
