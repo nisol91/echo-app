@@ -43,14 +43,14 @@ class CorporateDetails extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Hero(
-            tag: corporate.id,
-            child: Image.asset(
-              'assets/${corporate.img}.jpg',
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: MediaQuery.of(context).size.width,
-            ),
-          ),
+          // Hero(
+          //   tag: corporate.id,
+          //   child: Image.asset(
+          //     'assets/${corporate.img}.jpg',
+          //     height: MediaQuery.of(context).size.height * 0.35,
+          //     width: MediaQuery.of(context).size.width,
+          //   ),
+          // ),
           SizedBox(
             height: 20,
           ),

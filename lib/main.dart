@@ -12,7 +12,6 @@ import 'locator.dart';
 import 'package:provider/provider.dart';
 import 'models/corporate_model.dart';
 import 'widgets/corporate_card.dart';
-import 'widgets/featured_corporate_card.dart';
 
 void main() {
   setupLocator();
@@ -285,8 +284,9 @@ class _MyHomePageState extends State<MyHomePage>
                 controller: controller,
                 children: [
                   _homeView,
-                  Text('tab 2'),
-                  Text('tab 3'),
+                  Text(
+                      'tab con lista di tutte le aziende e filtro per ricerca'),
+                  Text('tab cosa ci metto?una mappa? una lista di citta?'),
                   // new CorporateList(),
                   // new AuthScreen(),
                 ],

@@ -37,14 +37,14 @@ class CorporateCard extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.9,
             child: Column(
               children: <Widget>[
-                Hero(
-                  tag: corporateDetails.id,
-                  child: Text('image url'),
-                  // child: Image.asset(
-                  //   'assets/${corporateDetails.img}.jpg',
-                  //   height: MediaQuery.of(context).size.height * 0.35,
-                  // ),
-                ),
+                // Hero(
+                //   tag: corporateDetails.id,
+                //   child: Text('image url'),
+                //   // child: Image.asset(
+                //   //   'assets/${corporateDetails.img}.jpg',
+                //   //   height: MediaQuery.of(context).size.height * 0.35,
+                //   // ),
+                // ),
                 Padding(
                   padding: EdgeInsets.all(16),
                   child: Row(
