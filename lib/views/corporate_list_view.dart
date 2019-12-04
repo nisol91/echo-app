@@ -36,7 +36,7 @@ class _CorporateListViewState extends State<CorporateListView> {
         ),
         body: Container(
           height: MediaQuery.of(context).size.height * 1,
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(1),
           child: StreamBuilder(
               stream: corporateProvider.fetchCorporatesAsStream(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
