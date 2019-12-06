@@ -283,7 +283,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
 
-  Future<Null> initUser() async {
+  Future<bool> initUser() async {
     // First, check if a user exists.
     googleUser = await ensureGoogleLoggedInOnStartUp();
     firebaseUser = await ensureEmailLoggedInOnStartup();
@@ -294,15 +294,19 @@ class _AppStateContainerState extends State<AppStateContainer> {
       setState(() {
         print('NO USER LOGGED IN');
       });
+      return false;
     } else if (googleUser != null) {
       setState(() {
         print('USER LOGGED IN -> ${googleUser.email}');
       });
+      return true;
     } else if (firebaseUser != null) {
       setState(() {
         print('USER LOGGED IN -> ${firebaseUser.email}');
       });
+      return true;
     }
+    return false;
   }
 
   //===========================================
