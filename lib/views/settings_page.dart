@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Corporate List"),
+        title: new Text("Settings"),
       ),
       body: new MountainList(),
       // body: Text('data'),
