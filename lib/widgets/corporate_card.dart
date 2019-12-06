@@ -44,14 +44,6 @@ class CorporateCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                // Hero(
-                //   tag: corporateDetails.id,
-                //   child: Text('image url'),
-                //   // child: Image.asset(
-                //   //   'assets/${corporateDetails.img}.jpg',
-                //   //   height: MediaQuery.of(context).size.height * 0.35,
-                //   // ),
-                // ),
                 Padding(
                   padding: EdgeInsets.all(16),
                   child: Row(

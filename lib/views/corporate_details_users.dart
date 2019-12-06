@@ -16,28 +16,7 @@ class CorporateDetailsUsers extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Corporate Details Users'),
-        actions: <Widget>[
-          // IconButton(
-          //   iconSize: 35,
-          //   icon: Icon(Icons.delete_forever),
-          //   onPressed: () async {
-          //     await corporateProvider.removeCorporate(corporate.id);
-          //     Navigator.pop(context);
-          //   },
-          // ),
-          // IconButton(
-          //   iconSize: 35,
-          //   icon: Icon(Icons.edit),
-          //   onPressed: () {
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (_) => ModifyCorporate(
-          //                   corporate: corporate,
-          //                 )));
-          //   },
-          // )
-        ],
+        actions: <Widget>[],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
