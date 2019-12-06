@@ -30,15 +30,19 @@ class MyApp extends StatelessWidget {
 
         scaffoldBackgroundColor: Colors.white,
         // Define the default font family.
-        fontFamily: 'Montserrat',
+        fontFamily: 'Lato',
 
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+            body2: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 22,
+              fontStyle: FontStyle.normal,
+            )),
       );
   @override
   Widget build(BuildContext context) {
@@ -52,6 +56,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
           '/addCorporate': (BuildContext context) => new AddCorporate(),
+          '/corporateListAdmin': (BuildContext context) => CorporateListView(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(),
