@@ -1,7 +1,9 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import '../models/corporate_model.dart';
 import '../services/crud_model_corporate.dart';
 import 'package:provider/provider.dart';
+import 'corporate_list_view.dart';
 import 'edit_corporate.dart';
 
 class CorporateDetails extends StatelessWidget {
@@ -18,13 +20,49 @@ class CorporateDetails extends StatelessWidget {
         title: Text('Corporate Details'),
         actions: <Widget>[
           IconButton(
-            iconSize: 35,
-            icon: Icon(Icons.delete_forever),
-            onPressed: () async {
-              await corporateProvider.removeCorporate(corporate.id);
-              Navigator.pop(context);
-            },
-          ),
+              iconSize: 35,
+              icon: Icon(Icons.delete_forever),
+              onPressed: () {
+                return showDialog<void>(
+                    context: context,
+                    barrierDismissible: false, // user must tap button!
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title:
+                            new Text('You are going to delete this corporate'),
+                        content: new Text(
+                          'Are you sure my friend?',
+                          style: new TextStyle(fontSize: 30.0),
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                              onPressed: () {
+                                print('no');
+                                Navigator.pop(context);
+                              },
+                              child: new Text('no')),
+                          new FlatButton(
+                              onPressed: () {
+                                print('yes');
+                                {
+                                  corporateProvider
+                                      .removeCorporate(corporate.id);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+
+                                  Flushbar(
+                                    title: "Hey Ninja",
+                                    message: "Successfully deleted",
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.red[100],
+                                  )..show(context);
+                                }
+                              },
+                              child: new Text('yes')),
+                        ],
+                      );
+                    });
+              }),
           IconButton(
             iconSize: 35,
             icon: Icon(Icons.edit),
