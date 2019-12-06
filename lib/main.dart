@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import './views/add_corporate.dart';
 import './views/profile_page.dart';
 import 'package:flushbar/flushbar.dart';
 import './views/corporate_list_view.dart';
-import './views/corporate_list.dart';
+import './views/settings_page.dart';
 import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
 import './state/app_state.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         theme: _themeData,
         routes: {
           '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
+          '/addCorporate': (BuildContext context) => new AddCorporate(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(),
@@ -116,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage>
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return CorporateList();
+          return SettingsPage();
         },
       ),
     );

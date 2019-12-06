@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 // QUESTO FILE è SOLO UN ESPERIMENTO, NON è UFFICIALE
 //NOTA: questa è una lista piu rudimentale e statica (senza stream) rispetto a corporate_list_view
 
-class CorporateList extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _CorporateListState createState() => new _CorporateListState();
+  _SettingsPageState createState() => new _SettingsPageState();
 }
 
-class _CorporateListState extends State<CorporateList> {
+class _SettingsPageState extends State<SettingsPage> {
   Firestore _firestore = Firestore.instance;
   @override
   void initState() {
