@@ -165,8 +165,8 @@ class _AddCorporateState extends State<AddCorporate> {
                       creationDate: Timestamp.now(),
                     ));
                     FocusScope.of(context).requestFocus(new FocusNode());
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
-
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                     Flushbar(
                       title: "Hey Ninja",
                       message: "Successfully added",

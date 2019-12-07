@@ -164,24 +164,31 @@ class _ModifyCorporateState extends State<ModifyCorporate> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                    await corporateProvider.updateCorporate(
-                        Corporate(
-                          name: name,
-                          description: description,
-                          address: address,
-                          img: logoUrl,
-                          corporateType: corporateType,
-                          featured: isFeatured,
-                        ),
-                        widget.corporate.id);
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
-                    Flushbar(
-                      title: "Hey Ninja",
-                      message: "Successfully edited Corporate ${name}",
-                      duration: Duration(seconds: 3),
-                      backgroundColor: Colors.blueAccent[100],
-                    )..show(context);
+                    await corporateProvider
+                        .updateCorporate(
+                            Corporate(
+                              name: name,
+                              description: description,
+                              address: address,
+                              img: logoUrl,
+                              corporateType: corporateType,
+                              featured: isFeatured,
+                            ),
+                            widget.corporate.id)
+                        .whenComplete(() {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      //cosi non funziona
+                      // Navigator.popUntil(
+                      //     context, ModalRoute.withName('/corporateListAdmin'));
+                      Flushbar(
+                        title: "Hey Ninja",
+                        message: "Successfully edited Corporate ${name}",
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.blueAccent[100],
+                      )..show(context);
+                    });
                   }
                 },
                 child: Text('Modify Corporate',
