@@ -123,31 +123,31 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
-                        fontStyle: FontStyle.italic),
+                        fontStyle: FontStyle.normal),
                   ),
                   Text(
                     lastname ?? lastname,
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.orangeAccent),
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey[500]),
                   ),
                   Text(
                     email ?? email,
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.orangeAccent),
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey[500]),
                   ),
                   Text(
                     points ?? points,
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.orangeAccent),
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey[500]),
                   )
                 ],
               )

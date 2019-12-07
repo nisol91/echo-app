@@ -24,10 +24,21 @@ class CorporateDetailsUsers extends StatelessWidget {
         children: <Widget>[
           Hero(
             tag: corporate.id,
-            child: Image.asset(
-              'assets/${corporate.img}.jpg',
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: MediaQuery.of(context).size.width,
+            child: Image.network(
+              '${corporate.img}',
+              height: 70,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: LinearProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null,
+                  ),
+                );
+              },
             ),
           ),
           SizedBox(

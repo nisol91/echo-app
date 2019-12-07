@@ -77,29 +77,46 @@ class CorporateDetails extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            corporate.name,
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 22,
-                fontStyle: FontStyle.italic),
-          ),
-          Text(
-            '${corporate.name} \$',
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 22,
-                fontStyle: FontStyle.italic,
-                color: Colors.orangeAccent),
-          )
-        ],
+      body: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.network(
+              '${corporate.img}',
+              height: 70,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: LinearProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null,
+                  ),
+                );
+              },
+            ),
+            Text(
+              corporate.name,
+              style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 22,
+                  fontStyle: FontStyle.italic),
+            ),
+            Text(
+              '${corporate.name} \$',
+              style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 22,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.orangeAccent),
+            )
+          ],
+        ),
       ),
     );
   }
