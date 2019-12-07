@@ -14,6 +14,7 @@ class CorporateDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final corporateProvider = Provider.of<CrudModel>(context);
+    var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -102,19 +103,12 @@ class CorporateDetails extends StatelessWidget {
             ),
             Text(
               corporate.name,
-              style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22,
-                  fontStyle: FontStyle.italic),
+              style: tema.textTheme.body2,
             ),
             Text(
-              '${corporate.name} \$',
-              style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.orangeAccent),
-            )
+              corporate.description,
+              style: tema.textTheme.body1,
+            ),
           ],
         ),
       ),

@@ -12,19 +12,21 @@ class CorporateDetailsUsers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final corporateProvider = Provider.of<CrudModel>(context);
+    var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Corporate Details Users'),
         actions: <Widget>[],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Hero(
-            tag: corporate.id,
-            child: Image.network(
+      body: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.network(
               '${corporate.img}',
               height: 70,
               loadingBuilder: (BuildContext context, Widget child,
@@ -40,26 +42,16 @@ class CorporateDetailsUsers extends StatelessWidget {
                 );
               },
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            corporate.name,
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 22,
-                fontStyle: FontStyle.italic),
-          ),
-          Text(
-            '${corporate.name} \$',
-            style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 22,
-                fontStyle: FontStyle.italic,
-                color: Colors.orangeAccent),
-          )
-        ],
+            Text(
+              corporate.name,
+              style: tema.textTheme.body2,
+            ),
+            Text(
+              corporate.description,
+              style: tema.textTheme.body1,
+            ),
+          ],
+        ),
       ),
     );
   }

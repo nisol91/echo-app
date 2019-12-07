@@ -11,6 +11,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String name = '';
   String lastname = '';
   String email = '';
+  String profilePic = '';
 
   String points;
   bool loaded = false;
@@ -26,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user != null) {
       email = user.email;
       name = user.displayName;
+      profilePic = user.photoUrl;
 
       new Future.delayed(new Duration(milliseconds: 100), () {
         Firestore.instance
@@ -35,6 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
             .then((doc) {
           print('MAIL FETCH ${doc.documents[0]['email']}');
           print('NAME FETCH ${doc.documents[0]['fname']}');
+
           if (!mounted) {
             return;
           }
@@ -107,16 +110,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Hero(
-                    tag: 'a',
-                    child: Image.asset(
-                      '',
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
+                  Image.network(
+                    '${profilePic ?? profilePic}',
+                    height: 70,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: LinearProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                   Text(
                     name ?? name,
@@ -162,20 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('User Page'),
-          actions: <Widget>[
-            IconButton(
-              iconSize: 35,
-              icon: Icon(Icons.delete_forever),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
-            IconButton(
-              iconSize: 35,
-              icon: Icon(Icons.edit),
-              onPressed: () {},
-            )
-          ],
+          actions: <Widget>[],
         ),
         body: _pageToDisplay);
   }
