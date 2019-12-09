@@ -105,6 +105,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget get _profileView {
+    var tema = Theme.of(context);
+
     return Container(
         width: MediaQuery.of(context).size.height * 1,
         child: (loaded == true)
@@ -167,10 +169,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          'Settings',
+                          style: tema.textTheme.body2,
+                        ),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     flex: 5,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 40),
+                      padding: const EdgeInsets.only(top: 10),
                       child: Container(
                           width: MediaQuery.of(context).size.width * 1,
                           height: MediaQuery.of(context).size.width * 0.7,
@@ -189,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('User Page'),
+          title: Text('User & Settings'),
           actions: <Widget>[],
         ),
         body: _pageToDisplay);

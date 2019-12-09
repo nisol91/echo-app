@@ -321,21 +321,16 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 IconButton(
                   icon: Icon(Icons.settings),
-                  onPressed: _corporatePage,
+                  onPressed: _profilePage,
                   color: tema.accentColor,
                 ),
                 (container.areYouAdmin == true)
                     ? IconButton(
-                        icon: Icon(Icons.library_add),
+                        icon: Icon(Icons.verified_user),
                         onPressed: _corporatePage_2,
                         color: tema.accentColor,
                       )
                     : Container(),
-                IconButton(
-                  icon: Icon(Icons.panorama_fish_eye),
-                  onPressed: _profilePage,
-                  color: tema.accentColor,
-                ),
               ],
             ),
             body: Container(

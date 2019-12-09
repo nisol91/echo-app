@@ -14,45 +14,27 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    Firestore.instance
-        .collection('corporate')
-        .snapshots()
-        .listen((data) => data.documents.forEach((doc) => print(doc['name'])));
+    Firestore.instance.collection('settings').snapshots().listen(
+        (data) => data.documents.forEach((doc) => print(doc.data['name'])));
   }
 
   Future<QuerySnapshot> getAllDocuments() {
-    return _firestore.collection('doggos').getDocuments();
+    return _firestore.collection('settings').getDocuments();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Settings"),
-      ),
-      body: new MountainList(),
-      // body: Text('data'),
-
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.add),
-        onPressed: () {
-          Firestore.instance.collection('doggos').document().setData(
-            {
-              'name': 'Mount Nuovo II!!!!!',
-              'description': 'neve',
-            },
-          );
-        },
-      ),
+      body: new SettingsList(),
     );
   }
 }
 
-class MountainList extends StatelessWidget {
+class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('doggos').snapshots(),
+      stream: Firestore.instance.collection('settings').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {

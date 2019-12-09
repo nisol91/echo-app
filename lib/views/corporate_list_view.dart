@@ -32,7 +32,7 @@ class _CorporateListViewState extends State<CorporateListView> {
           child: Icon(Icons.add),
         ),
         appBar: AppBar(
-          title: Center(child: Text('Corporate View Admin')),
+          title: Center(child: Text('Admin Dashboard')),
         ),
         body: Container(
           height: MediaQuery.of(context).size.height * 1,
