@@ -101,6 +101,7 @@ class AuthScreenState extends State<AuthScreen> {
                                       controller: emailInputController,
                                       keyboardType: TextInputType.emailAddress,
                                       validator: emailValidator,
+                                      cursorColor: tema.accentColor,
                                     ),
                                     TextFormField(
                                       decoration: InputDecoration(
@@ -109,11 +110,11 @@ class AuthScreenState extends State<AuthScreen> {
                                       controller: pwdInputController,
                                       obscureText: true,
                                       validator: pwdValidator,
+                                      cursorColor: tema.accentColor,
                                     ),
                                     RaisedButton(
                                       child: Text("Login"),
                                       color: tema.primaryColor,
-                                      textColor: Colors.white,
                                       onPressed: () {
                                         if (_loginFormKey.currentState
                                             .validate()) {

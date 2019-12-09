@@ -52,10 +52,20 @@ class CorporateCard extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               corporateDetails.name,
                               style: tema.textTheme.body2,
+                              textAlign: TextAlign.start,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                corporateDetails.description,
+                                style: tema.textTheme.body1,
+                                textAlign: TextAlign.start,
+                              ),
                             ),
                           ],
                         ),

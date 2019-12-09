@@ -23,9 +23,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   ThemeData get _themeData => new ThemeData(
-        primaryColor: Colors.lightGreen[500],
-        secondaryHeaderColor: Colors.green[300],
-        accentColor: Colors.lightGreen[900],
+        primaryColor: Colors.green[400],
+        secondaryHeaderColor: Colors.green[200],
+        accentColor: Colors.teal[900],
         dividerColor: Colors.green[600],
 
         scaffoldBackgroundColor: Colors.white,
@@ -36,17 +36,25 @@ class MyApp extends StatelessWidget {
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
-            headline: TextStyle(fontSize: 72.0),
-            title: TextStyle(fontSize: 36.0),
+            headline: TextStyle(
+              fontSize: 72.0,
+              color: Colors.teal[900],
+            ),
+            title: TextStyle(
+              fontSize: 36.0,
+              color: Colors.teal[900],
+            ),
             body1: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 18,
+              fontSize: 16,
               fontStyle: FontStyle.normal,
+              color: Colors.teal[900],
             ),
             body2: TextStyle(
               fontWeight: FontWeight.w900,
               fontSize: 22,
               fontStyle: FontStyle.normal,
+              color: Colors.teal[900],
             )),
       );
   @override
@@ -166,7 +174,10 @@ class _MyHomePageState extends State<MyHomePage>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('ECHO'),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text('ECHO'),
+            ),
             new CircularProgressIndicator(),
           ],
         ),

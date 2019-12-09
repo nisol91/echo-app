@@ -23,6 +23,7 @@ class CorporateDetails extends StatelessWidget {
           IconButton(
               iconSize: 35,
               icon: Icon(Icons.delete_forever),
+              color: tema.accentColor,
               onPressed: () {
                 return showDialog<void>(
                     context: context,
@@ -67,6 +68,7 @@ class CorporateDetails extends StatelessWidget {
           IconButton(
             iconSize: 35,
             icon: Icon(Icons.edit),
+            color: tema.accentColor,
             onPressed: () {
               Navigator.push(
                   context,
@@ -101,9 +103,15 @@ class CorporateDetails extends StatelessWidget {
                 );
               },
             ),
-            Text(
-              corporate.name,
-              style: tema.textTheme.body2,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Text(
+                  corporate.name,
+                  style: tema.textTheme.body2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
             Text(
               corporate.description,

@@ -52,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     var container = AppStateContainer.of(context);
+    var tema = Theme.of(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -68,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                         labelText: 'First Name*', hintText: "John"),
                     controller: firstNameInputController,
+                    cursorColor: tema.accentColor,
                     validator: (value) {
                       if (value.length < 3) {
                         return "Please enter a valid first name.";
@@ -78,6 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                           labelText: 'Last Name*', hintText: "Doe"),
                       controller: lastNameInputController,
+                      cursorColor: tema.accentColor,
                       validator: (value) {
                         if (value.length < 3) {
                           return "Please enter a valid last name.";
@@ -87,6 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                         labelText: 'Email*', hintText: "john.doe@gmail.com"),
                     controller: emailInputController,
+                    cursorColor: tema.accentColor,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
                   ),
@@ -94,6 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                         labelText: 'Password*', hintText: "********"),
                     controller: pwdInputController,
+                    cursorColor: tema.accentColor,
                     obscureText: true,
                     validator: pwdValidator,
                   ),
@@ -101,6 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                         labelText: 'Confirm Password*', hintText: "********"),
                     controller: confirmPwdInputController,
+                    cursorColor: tema.accentColor,
                     obscureText: true,
                     validator: pwdValidator,
                   ),
