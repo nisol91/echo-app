@@ -9,12 +9,15 @@ import 'edit_corporate.dart';
 
 class CorporateDetails extends StatelessWidget {
   final Corporate corporate;
+  final Service service;
 
-  CorporateDetails({@required this.corporate});
+  CorporateDetails({@required this.corporate, this.service});
 
   @override
   Widget build(BuildContext context) {
     final corporateProvider = Provider.of<CrudModelCorporate>(context);
+    // final serviceProvider = Provider.of<CrudModelService>(context);
+
     var tema = Theme.of(context);
 
     return Scaffold(

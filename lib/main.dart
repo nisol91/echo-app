@@ -3,7 +3,6 @@ import './views/add_corporate.dart';
 import './views/profile_page.dart';
 import 'package:flushbar/flushbar.dart';
 import './views/corporate_list_view.dart';
-import './views/settings_page.dart';
 import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
 import './state/app_state.dart';
