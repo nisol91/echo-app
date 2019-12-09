@@ -112,57 +112,71 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image.network(
-                    '${profilePic ?? profilePic}',
-                    height: 70,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: LinearProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes
-                              : null,
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: <Widget>[
+                        Image.network(
+                          '${profilePic ?? profilePic}',
+                          height: 70,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: LinearProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes
+                                    : null,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                        Text(
+                          name ?? name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                              fontStyle: FontStyle.normal),
+                        ),
+                        Text(
+                          lastname ?? lastname,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                              fontStyle: FontStyle.normal,
+                              color: Colors.grey[500]),
+                        ),
+                        Text(
+                          email ?? email,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                              fontStyle: FontStyle.normal,
+                              color: Colors.grey[500]),
+                        ),
+                        Text(
+                          points ?? points,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                              fontStyle: FontStyle.normal,
+                              color: Colors.grey[500]),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    name ?? name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        fontStyle: FontStyle.normal),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: MediaQuery.of(context).size.width * 0.7,
+                          child: SettingsPage()),
+                    ),
                   ),
-                  Text(
-                    lastname ?? lastname,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.grey[500]),
-                  ),
-                  Text(
-                    email ?? email,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.grey[500]),
-                  ),
-                  Text(
-                    points ?? points,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.grey[500]),
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width * 1,
-                      height: MediaQuery.of(context).size.width * 0.7,
-                      child: SettingsPage()),
                 ],
               )
             : Column(
