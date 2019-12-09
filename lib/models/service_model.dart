@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Service {
   String id;
+  String companyId;
+  String companyName;
   String name;
   String description;
   String address;
@@ -12,6 +14,8 @@ class Service {
 
   Service({
     this.id,
+    this.companyId,
+    this.companyName,
     this.name,
     this.description,
     this.address,
@@ -23,6 +27,8 @@ class Service {
 
   Service.fromMap(Map snapshot, String id)
       : id = id ?? '',
+        companyId = snapshot['companyId'] ?? '',
+        companyName = snapshot['companyName'] ?? '',
         name = snapshot['name'] ?? '',
         description = snapshot['description'] ?? '',
         address = snapshot['address'] ?? '',
@@ -33,6 +39,8 @@ class Service {
 
   toJson() {
     return {
+      "companyId": companyId,
+      "companyName": companyName,
       "name": name,
       "description": description,
       "address": address,

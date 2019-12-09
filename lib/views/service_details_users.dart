@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import '../models/company_model.dart';
-import '../services/crud_model_company.dart';
+import '../models/service_model.dart';
+import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
-import 'edit_company.dart';
-import 'service_list_view.dart';
+// import 'edit_service.dart';
 
-class CompanyDetailsUsers extends StatelessWidget {
-  final Company company;
+class ServiceDetailsUsers extends StatelessWidget {
+  final Service service;
 
-  CompanyDetailsUsers({@required this.company});
+  ServiceDetailsUsers({@required this.service});
 
   @override
   Widget build(BuildContext context) {
-    final companyProvider = Provider.of<CrudModelCompany>(context);
+    final serviceProvider = Provider.of<CrudModelService>(context);
     var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company Details Users'),
+        title: Text('Service Details Users'),
         actions: <Widget>[],
       ),
       body: Container(
@@ -28,7 +27,7 @@ class CompanyDetailsUsers extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.network(
-              '${company.img}',
+              '${service.img}',
               height: 70,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent loadingProgress) {
@@ -44,20 +43,12 @@ class CompanyDetailsUsers extends StatelessWidget {
               },
             ),
             Text(
-              company.name,
+              service.name,
               style: tema.textTheme.body2,
             ),
             Text(
-              company.description,
+              service.description,
               style: tema.textTheme.body1,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Container(
-                  color: tema.accentColor,
-                  child: ServiceListView(
-                    companyId: company.id,
-                  )),
             ),
           ],
         ),

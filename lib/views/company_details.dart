@@ -6,17 +6,16 @@ import '../models/service_model.dart';
 import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
 import 'edit_company.dart';
+import 'service_list_view.dart';
 
 class CompanyDetails extends StatelessWidget {
   final Company company;
-  final Service service;
 
-  CompanyDetails({@required this.company, this.service});
+  CompanyDetails({@required this.company});
 
   @override
   Widget build(BuildContext context) {
     final companyProvider = Provider.of<CrudModelCompany>(context);
-    final serviceProvider = Provider.of<CrudModelService>(context);
 
     var tema = Theme.of(context);
 
@@ -34,8 +33,7 @@ class CompanyDetails extends StatelessWidget {
                     barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title:
-                            new Text('You are going to delete this company'),
+                        title: new Text('You are going to delete this company'),
                         content: new Text(
                           'Are you sure my friend?',
                           style: new TextStyle(fontSize: 30.0),
@@ -120,6 +118,14 @@ class CompanyDetails extends StatelessWidget {
             Text(
               company.description,
               style: tema.textTheme.body1,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Container(
+                  color: tema.accentColor,
+                  child: ServiceListView(
+                    companyId: company.id,
+                  )),
             ),
           ],
         ),
