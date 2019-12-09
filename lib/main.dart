@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage>
         title: "Hey Ninja",
         message: "You need to login, to access this page",
         duration: Duration(seconds: 3),
-        backgroundColor: Colors.blueAccent[100],
+        backgroundColor: Theme.of(context).accentColor,
       )..show(context);
     }
   }
@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage>
         title: "Hey Ninja",
         message: "You need to login, to access this page",
         duration: Duration(seconds: 3),
-        backgroundColor: Colors.blueAccent[100],
+        backgroundColor: Theme.of(context).accentColor,
       )..show(context);
     }
   }

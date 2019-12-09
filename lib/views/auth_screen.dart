@@ -149,8 +149,9 @@ class AuthScreenState extends State<AuthScreen> {
                                                           "Successfully Logged in!!! ${emailInputController.text}",
                                                       duration:
                                                           Duration(seconds: 3),
-                                                      backgroundColor: Colors
-                                                          .blueAccent[100],
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .accentColor,
                                                     )..show(context);
                                                   }).catchError(
                                                           (err) => print(err)))
@@ -167,7 +168,8 @@ class AuthScreenState extends State<AuthScreen> {
                                                     "wrong username or password",
                                                 duration: Duration(seconds: 3),
                                                 backgroundColor:
-                                                    Colors.red[100],
+                                                    Theme.of(context)
+                                                        .accentColor,
                                               )..show(context);
                                               throw ('wrong username or password');
                                             } else {
@@ -177,7 +179,8 @@ class AuthScreenState extends State<AuthScreen> {
                                                     "email not verified, check your inbox",
                                                 duration: Duration(seconds: 3),
                                                 backgroundColor:
-                                                    Colors.red[100],
+                                                    Theme.of(context)
+                                                        .accentColor,
                                               )..show(context);
                                               throw ('email not verified');
                                             }
@@ -293,8 +296,9 @@ class AuthScreenState extends State<AuthScreen> {
                                                           "Check your email adress",
                                                       duration:
                                                           Duration(seconds: 3),
-                                                      backgroundColor: Colors
-                                                          .blueAccent[100],
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .accentColor,
                                                     )..show(context);
                                                   } else {
                                                     print('EMAIL NON VALIDATA');
@@ -310,7 +314,9 @@ class AuthScreenState extends State<AuthScreen> {
                                                             duration: Duration(
                                                                 seconds: 3),
                                                             backgroundColor:
-                                                                Colors.red[100],
+                                                                Theme.of(
+                                                                        context)
+                                                                    .accentColor,
                                                           )..show(context)
                                                         });
                                               },
@@ -331,7 +337,7 @@ class AuthScreenState extends State<AuthScreen> {
                                 title: "Hey Ninja",
                                 message: 'already logged in',
                                 duration: Duration(seconds: 3),
-                                backgroundColor: Colors.blueAccent[100],
+                                backgroundColor: Theme.of(context).accentColor,
                               )..show(context);
                             } else if (await FirebaseAuth.instance
                                     .currentUser() ==
@@ -344,7 +350,8 @@ class AuthScreenState extends State<AuthScreen> {
                                   title: "Hey Ninja",
                                   message: 'logged in with google',
                                   duration: Duration(seconds: 3),
-                                  backgroundColor: Colors.blueAccent[100],
+                                  backgroundColor:
+                                      Theme.of(context).accentColor,
                                 )..show(context);
                               });
                             }
@@ -398,7 +405,8 @@ class AuthScreenState extends State<AuthScreen> {
                                     title: "Hey Ninja",
                                     message: "Logged Out!!",
                                     duration: Duration(seconds: 3),
-                                    backgroundColor: Colors.blueAccent[100],
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
                                   )..show(context);
                                 }),
                               },

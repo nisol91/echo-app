@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             message:
                                 "Successfully Registered, now verify your email and sign in with your credentials",
                             duration: Duration(seconds: 3),
-                            backgroundColor: Colors.blueAccent[100],
+                            backgroundColor: Theme.of(context).accentColor,
                           )..show(context);
                         } else {
                           showDialog(

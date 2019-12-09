@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'settings_page.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -156,7 +158,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontSize: 22,
                         fontStyle: FontStyle.normal,
                         color: Colors.grey[500]),
-                  )
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: MediaQuery.of(context).size.width * 0.7,
+                      child: SettingsPage()),
                 ],
               )
             : Column(

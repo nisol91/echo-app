@@ -171,7 +171,7 @@ class _AddCorporateState extends State<AddCorporate> {
                       title: "Hey Ninja",
                       message: "Successfully added",
                       duration: Duration(seconds: 3),
-                      backgroundColor: Colors.blueAccent[100],
+                      backgroundColor: Theme.of(context).accentColor,
                     )..show(context);
                   }
                 },

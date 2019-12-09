@@ -56,7 +56,8 @@ class CorporateDetails extends StatelessWidget {
                                     title: "Hey Ninja",
                                     message: "Successfully deleted",
                                     duration: Duration(seconds: 3),
-                                    backgroundColor: Colors.red[100],
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
                                   )..show(context);
                                 }
                               },

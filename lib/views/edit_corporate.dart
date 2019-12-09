@@ -186,7 +186,7 @@ class _ModifyCorporateState extends State<ModifyCorporate> {
                         title: "Hey Ninja",
                         message: "Successfully edited Corporate ${name}",
                         duration: Duration(seconds: 3),
-                        backgroundColor: Colors.blueAccent[100],
+                        backgroundColor: Theme.of(context).accentColor,
                       )..show(context);
                     });
                   }
