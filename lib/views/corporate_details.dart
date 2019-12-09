@@ -2,8 +2,9 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import '../models/corporate_model.dart';
 import '../services/crud_model_corporate.dart';
+import '../models/service_model.dart';
+import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
-import 'corporate_list_view.dart';
 import 'edit_corporate.dart';
 
 class CorporateDetails extends StatelessWidget {
@@ -13,7 +14,7 @@ class CorporateDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final corporateProvider = Provider.of<CrudModel>(context);
+    final corporateProvider = Provider.of<CrudModelCorporate>(context);
     var tema = Theme.of(context);
 
     return Scaffold(

@@ -23,7 +23,7 @@ class _CorporateListViewState extends State<CorporateListView> {
   Widget build(BuildContext context) {
     var container = AppStateContainer.of(context);
 
-    final corporateProvider = Provider.of<CrudModel>(context);
+    final corporateProvider = Provider.of<CrudModelCorporate>(context);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {

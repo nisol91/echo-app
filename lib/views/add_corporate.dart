@@ -22,7 +22,7 @@ class _AddCorporateState extends State<AddCorporate> {
 
   @override
   Widget build(BuildContext context) {
-    var corporateProvider = Provider.of<CrudModel>(context);
+    var corporateProvider = Provider.of<CrudModelCorporate>(context);
     var tema = Theme.of(context);
 
     return Scaffold(

@@ -41,6 +41,9 @@ class _AppStateContainerState extends State<AppStateContainer> {
   // manipulate it with widget.state.
   AppState state;
 
+  //THEME
+  bool chooseTheme = true;
+
   // This is used to sign into Google, not Firebase.
 
   GoogleSignInAccount googleUser;
@@ -75,6 +78,14 @@ class _AppStateContainerState extends State<AppStateContainer> {
       initUser().whenComplete(() => getUser().whenComplete(
           () => startCountdown().whenComplete(() => streamUser())));
     }
+  }
+
+  //===========================================
+  //change theme dinamically
+  void changeTheme() {
+    setState(() {
+      chooseTheme = !chooseTheme;
+    });
   }
 
   //===========================================

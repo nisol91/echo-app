@@ -7,5 +7,5 @@ GetIt locator = GetIt.I;
 
 void setupLocator() {
   locator.registerLazySingleton(() => Api('corporates'));
-  locator.registerLazySingleton(() => CrudModel());
+  locator.registerLazySingleton(() => CrudModelCorporate());
 }

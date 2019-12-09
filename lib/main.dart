@@ -61,11 +61,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(builder: (_) => locator<CrudModel>()),
+        ChangeNotifierProvider(builder: (_) => locator<CrudModelCorporate>()),
       ],
       child: MaterialApp(
         title: 'Echo App',
-        theme: _themeData,
+        theme: (AppStateContainer.of(context).chooseTheme == true)
+            ? _themeData
+            : ThemeData(brightness: Brightness.dark),
         routes: {
           '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
           '/addCorporate': (BuildContext context) => new AddCorporate(),
@@ -133,16 +135,6 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
-  _corporatePage() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return SettingsPage();
-        },
-      ),
-    );
-  }
-
   _corporatePage_2() async {
     final container = AppStateContainer.of(context);
     print(await container.ensureGoogleLoggedInOnStartUp());
@@ -186,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Widget get _homeView {
-    final corporateProvider = Provider.of<CrudModel>(context);
+    final corporateProvider = Provider.of<CrudModelCorporate>(context);
     var tema = Theme.of(context);
 
     return StreamBuilder(
@@ -302,20 +294,18 @@ class _MyHomePageState extends State<MyHomePage>
               bottom: new TabBar(controller: controller, tabs: <Tab>[
                 new Tab(
                     icon: new Icon(
-                  Icons.arrow_forward,
+                  Icons.home,
                   color: tema.accentColor,
                 )),
+                new Tab(icon: new Icon(Icons.list, color: tema.accentColor)),
                 new Tab(
-                    icon: new Icon(Icons.arrow_downward,
-                        color: tema.accentColor)),
-                new Tab(
-                    icon: new Icon(Icons.arrow_back, color: tema.accentColor))
+                    icon: new Icon(Icons.location_on, color: tema.accentColor))
               ]),
               // This is how you add new buttons to the top right of a material appBar.
               // You can add as many as you'd like.
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.account_circle),
+                  icon: Icon(Icons.account_box),
                   onPressed: _logInPage,
                   color: tema.accentColor,
                 ),
@@ -326,7 +316,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 (container.areYouAdmin == true)
                     ? IconButton(
-                        icon: Icon(Icons.verified_user),
+                        icon: Icon(Icons.dashboard),
                         onPressed: _corporatePage_2,
                         color: tema.accentColor,
                       )

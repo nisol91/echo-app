@@ -6,7 +6,7 @@ import '../models/corporate_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //CRUD PER LE CORPORATE
-class CrudModel extends ChangeNotifier {
+class CrudModelCorporate extends ChangeNotifier {
   Api _api = locator<Api>();
 
   List<Corporate> corporates;

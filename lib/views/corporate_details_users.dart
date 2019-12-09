@@ -11,7 +11,7 @@ class CorporateDetailsUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final corporateProvider = Provider.of<CrudModel>(context);
+    final corporateProvider = Provider.of<CrudModelCorporate>(context);
     var tema = Theme.of(context);
 
     return Scaffold(
