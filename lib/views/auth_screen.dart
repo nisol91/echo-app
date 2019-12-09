@@ -66,10 +66,12 @@ class AuthScreenState extends State<AuthScreen> {
     var width = MediaQuery.of(context).size.width;
     // Get access to the AppState
     final container = AppStateContainer.of(context);
+    var tema = Theme.of(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Log in Page'),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: tema.primaryColor,
         ),
         body: FutureBuilder<bool>(
             future: container.initUser(),
@@ -83,190 +85,137 @@ class AuthScreenState extends State<AuthScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SingleChildScrollView(
-                            child: Form(
-                                key: _loginFormKey,
-                                child: Column(children: <Widget>[
-                                  TextFormField(
-                                    decoration: InputDecoration(
-                                        labelText: 'Email*',
-                                        hintText: "john.doe@gmail.com"),
-                                    controller: emailInputController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: emailValidator,
-                                  ),
-                                  TextFormField(
-                                    decoration: InputDecoration(
-                                        labelText: 'Password*',
-                                        hintText: "********"),
-                                    controller: pwdInputController,
-                                    obscureText: true,
-                                    validator: pwdValidator,
-                                  ),
-                                  RaisedButton(
-                                    child: Text("Login"),
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: Colors.white,
-                                    onPressed: () {
-                                      if (_loginFormKey.currentState
-                                          .validate()) {
-                                        container
-                                            .signInWithEmail(
-                                                emailInputController.text,
-                                                pwdInputController.text)
-                                            .then((currentUser) => Firestore
-                                                    .instance
-                                                    .collection("users")
-                                                    .document(
-                                                        currentUser.user.uid)
-                                                    .get()
-                                                    .whenComplete(() {
-                                                  FocusScope.of(context)
-                                                      .requestFocus(
-                                                          new FocusNode());
-                                                  AppStateContainer.of(context)
-                                                      .getUser();
-
-                                                  Navigator.of(context)
-                                                      .pushNamedAndRemoveUntil(
-                                                          '/',
-                                                          (Route<dynamic>
-                                                                  route) =>
-                                                              false);
-
-                                                  Flushbar(
-                                                    title: "Hey Ninjaaa",
-                                                    message:
-                                                        "Successfully Logged in!!! ${emailInputController.text}",
-                                                    duration:
-                                                        Duration(seconds: 3),
-                                                    backgroundColor:
-                                                        Colors.blueAccent[100],
-                                                  )..show(context);
-                                                }).catchError(
-                                                        (err) => print(err)))
-                                            .catchError((err) {
-                                          print('ERROREEEEEE ${err}');
-                                          FocusScope.of(context)
-                                              .requestFocus(new FocusNode());
-                                          container.getUser();
-                                          if (container.isMailVerified ==
-                                              true) {
-                                            Flushbar(
-                                              title: "Hey Ninjaaa",
-                                              message:
-                                                  "wrong username or password",
-                                              duration: Duration(seconds: 3),
-                                              backgroundColor: Colors.red[100],
-                                            )..show(context);
-                                            throw ('wrong username or password');
-                                          } else {
-                                            Flushbar(
-                                              title: "Hey Ninjaaa",
-                                              message:
-                                                  "email not verified, check your inbox",
-                                              duration: Duration(seconds: 3),
-                                              backgroundColor: Colors.red[100],
-                                            )..show(context);
-                                            throw ('email not verified');
-                                          }
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Text("Don't have an account yet?"),
-                                  FlatButton(
-                                    child: Text("Register here!"),
-                                    onPressed: () {},
-                                  )
-                                ]))),
-                        new RaisedButton(
-                          onPressed: () async {
-                            if (await FirebaseAuth.instance.currentUser() !=
-                                null) {
-                              Flushbar(
-                                title: "Hey Ninja",
-                                message: 'already logged in',
-                                duration: Duration(seconds: 3),
-                                backgroundColor: Colors.blueAccent[100],
-                              )..show(context);
-                            } else if (await FirebaseAuth.instance
-                                    .currentUser() ==
-                                null) {
-                              container.loginWithGoogle().then((_) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    '/', (Route<dynamic> route) => false);
-
-                                Flushbar(
-                                  title: "Hey Ninja",
-                                  message: 'logged in with google',
-                                  duration: Duration(seconds: 3),
-                                  backgroundColor: Colors.blueAccent[100],
-                                )..show(context);
-                              });
-                            }
-                          },
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: Colors.grey)),
-                          child: new Container(
-                            width: 250.0,
-                            height: 50.0,
-                            alignment: Alignment.center,
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                new Padding(
-                                  padding: const EdgeInsets.only(right: 20.0),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Center(
-                                          child: CircularProgressIndicator()),
-                                      Center(
-                                        child: FadeInImage.memoryNetwork(
-                                          placeholder: kTransparentImage,
-                                          image:
-                                              'https://blog.hubspot.com/hubfs/image8-2.jpg',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                new Text(
-                                  'Sign in With Google',
-                                  textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        Container(
+                          child: Text('LOGO ECHO'),
                         ),
-                        new RaisedButton(
-                          onPressed: () {
-                            _logInPageEmail();
-                          },
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: Colors.grey)),
-                          child: new Container(
-                            width: 250.0,
-                            height: 50.0,
-                            alignment: Alignment.center,
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                new Text(
-                                  'Register with your own email',
-                                  textAlign: TextAlign.center,
-                                  style: new TextStyle(
-                                    fontSize: 16.0,
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: SingleChildScrollView(
+                              child: Form(
+                                  key: _loginFormKey,
+                                  child: Column(children: <Widget>[
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          labelText: 'Email*',
+                                          hintText: "john.doe@gmail.com"),
+                                      controller: emailInputController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      validator: emailValidator,
+                                    ),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                          labelText: 'Password*',
+                                          hintText: "********"),
+                                      controller: pwdInputController,
+                                      obscureText: true,
+                                      validator: pwdValidator,
+                                    ),
+                                    RaisedButton(
+                                      child: Text("Login"),
+                                      color: tema.primaryColor,
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        if (_loginFormKey.currentState
+                                            .validate()) {
+                                          container
+                                              .signInWithEmail(
+                                                  emailInputController.text,
+                                                  pwdInputController.text)
+                                              .then((currentUser) => Firestore
+                                                      .instance
+                                                      .collection("users")
+                                                      .document(
+                                                          currentUser.user.uid)
+                                                      .get()
+                                                      .whenComplete(() {
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            new FocusNode());
+                                                    AppStateContainer.of(
+                                                            context)
+                                                        .getUser();
+
+                                                    Navigator.of(context)
+                                                        .pushNamedAndRemoveUntil(
+                                                            '/',
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+
+                                                    Flushbar(
+                                                      title: "Hey Ninjaaa",
+                                                      message:
+                                                          "Successfully Logged in!!! ${emailInputController.text}",
+                                                      duration:
+                                                          Duration(seconds: 3),
+                                                      backgroundColor: Colors
+                                                          .blueAccent[100],
+                                                    )..show(context);
+                                                  }).catchError(
+                                                          (err) => print(err)))
+                                              .catchError((err) {
+                                            print('ERROREEEEEE ${err}');
+                                            FocusScope.of(context)
+                                                .requestFocus(new FocusNode());
+                                            container.getUser();
+                                            if (container.isMailVerified ==
+                                                true) {
+                                              Flushbar(
+                                                title: "Hey Ninjaaa",
+                                                message:
+                                                    "wrong username or password",
+                                                duration: Duration(seconds: 3),
+                                                backgroundColor:
+                                                    Colors.red[100],
+                                              )..show(context);
+                                              throw ('wrong username or password');
+                                            } else {
+                                              Flushbar(
+                                                title: "Hey Ninjaaa",
+                                                message:
+                                                    "email not verified, check your inbox",
+                                                duration: Duration(seconds: 3),
+                                                backgroundColor:
+                                                    Colors.red[100],
+                                              )..show(context);
+                                              throw ('email not verified');
+                                            }
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ]))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text("Don't have an account yet?"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: new RaisedButton(
+                            onPressed: () {
+                              _logInPageEmail();
+                            },
+                            color: tema.primaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: Colors.transparent)),
+                            child: new Container(
+                              width: 250.0,
+                              height: 50.0,
+                              alignment: Alignment.center,
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  new Text(
+                                    'Register with your own email',
+                                    textAlign: TextAlign.center,
+                                    style: new TextStyle(
+                                      fontSize: 16.0,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -373,6 +322,61 @@ class AuthScreenState extends State<AuthScreen> {
                                 },
                               );
                             }),
+                        new RaisedButton(
+                          onPressed: () async {
+                            if (await FirebaseAuth.instance.currentUser() !=
+                                null) {
+                              Flushbar(
+                                title: "Hey Ninja",
+                                message: 'already logged in',
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.blueAccent[100],
+                              )..show(context);
+                            } else if (await FirebaseAuth.instance
+                                    .currentUser() ==
+                                null) {
+                              container.loginWithGoogle().then((_) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/', (Route<dynamic> route) => false);
+
+                                Flushbar(
+                                  title: "Hey Ninja",
+                                  message: 'logged in with google',
+                                  duration: Duration(seconds: 3),
+                                  backgroundColor: Colors.blueAccent[100],
+                                )..show(context);
+                              });
+                            }
+                          },
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.grey[200])),
+                          child: new Container(
+                            width: 250.0,
+                            height: 50.0,
+                            alignment: Alignment.center,
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                new Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset('assets/google.png'),
+                                  ),
+                                ),
+                                new Text(
+                                  'Sign in With Google',
+                                  textAlign: TextAlign.center,
+                                  style: new TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   );
