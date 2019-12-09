@@ -58,10 +58,6 @@ class ServiceListView extends StatelessWidget {
               selectedServices = services
                   .where((doc) => (doc.companyId == companyId))
                   .toList();
-              print('===================');
-              print(selectedServices);
-
-              print('===================');
 
               return ListView.builder(
                   scrollDirection: Axis.vertical,
