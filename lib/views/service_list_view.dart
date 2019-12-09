@@ -43,18 +43,11 @@ class ServiceListView extends StatelessWidget {
                   .map((doc) => Service.fromMap(doc.data, doc.documentID))
                   .toList();
 
-              print(services);
-
-              //filtro veramente rudimentale ma fa quello che deve:
+              //sono riuscito a migliorare il filtro usando where!!!!ora funziona
               //filtro i servizi per company, ogni servizio ha un company id,
               // se combacia allora lo faccio apparire nella lista
               //di quella company.
-              // for (var i = 0; i < services.length; i++) {
-              //   if (services[i].companyId == companyId) {
-              //     selectedServices..add(services[i]);
-              //   }
-              // }
-              //sono riuscito a migliorare il filtro usando where!!!!ora funziona
+
               selectedServices = services
                   .where((doc) => (doc.companyId == companyId))
                   .toList();
