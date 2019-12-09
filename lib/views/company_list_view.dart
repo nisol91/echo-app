@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
-import '../models/corporate_model.dart';
-import '../services/crud_model_corporate.dart';
+import '../models/company_model.dart';
+import '../services/crud_model_company.dart';
 import 'package:provider/provider.dart';
-import '../widgets/corporate_card.dart';
+import '../widgets/company_card.dart';
 
-class CorporateListView extends StatefulWidget {
+class CompanyListView extends StatefulWidget {
   @override
-  _CorporateListViewState createState() => _CorporateListViewState();
+  _CompanyListViewState createState() => _CompanyListViewState();
 }
 
-class _CorporateListViewState extends State<CorporateListView> {
-  List<Corporate> corporates;
+class _CompanyListViewState extends State<CompanyListView> {
+  List<Company> companies;
 
   @override
   initState() {
@@ -23,11 +23,11 @@ class _CorporateListViewState extends State<CorporateListView> {
   Widget build(BuildContext context) {
     var container = AppStateContainer.of(context);
 
-    final corporateProvider = Provider.of<CrudModelCorporate>(context);
+    final companyProvider = Provider.of<CrudModelCompany>(context);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/addCorporate');
+            Navigator.pushNamed(context, '/addCompany');
           },
           child: Icon(Icons.add),
         ),
@@ -38,7 +38,7 @@ class _CorporateListViewState extends State<CorporateListView> {
           height: MediaQuery.of(context).size.height * 1,
           padding: EdgeInsets.all(1),
           child: StreamBuilder(
-              stream: corporateProvider.fetchCorporatesAsStream(),
+              stream: companyProvider.fetchCompaniesAsStream(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (container.areYouAdmin == false) {
                   print('non sei admin');
@@ -54,15 +54,14 @@ class _CorporateListViewState extends State<CorporateListView> {
                   if (snapshot.hasData) {
                     print('fatto');
 
-                    corporates = snapshot.data.documents
-                        .map((doc) =>
-                            Corporate.fromMap(doc.data, doc.documentID))
+                    companies = snapshot.data.documents
+                        .map((doc) => Company.fromMap(doc.data, doc.documentID))
                         .toList();
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: corporates.length,
+                      itemCount: companies.length,
                       itemBuilder: (buildContext, index) =>
-                          CorporateCard(corporateDetails: corporates[index]),
+                          CompanyCard(companyDetails: companies[index]),
                     );
                   } else {
                     print('loading');

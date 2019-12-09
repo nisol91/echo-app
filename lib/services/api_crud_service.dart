@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
-//GENERICA CRUD, APPLICABILE A QUALSIASI MODEL
-class Api {
+//Api class that will request /Read/Delete/ update data from Firebase.
+class ApiService {
   final Firestore _db = Firestore.instance;
   final String path;
   CollectionReference ref;
 
-  Api(this.path) {
+  ApiService(this.path) {
     ref = _db.collection(path);
   }
 

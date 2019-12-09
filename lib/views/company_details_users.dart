@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import '../models/corporate_model.dart';
-import '../services/crud_model_corporate.dart';
+import '../models/company_model.dart';
+import '../services/crud_model_company.dart';
 import 'package:provider/provider.dart';
-import 'edit_corporate.dart';
+import 'edit_company.dart';
 
-class CorporateDetailsUsers extends StatelessWidget {
-  final Corporate corporate;
+class CompanyDetailsUsers extends StatelessWidget {
+  final Company company;
 
-  CorporateDetailsUsers({@required this.corporate});
+  CompanyDetailsUsers({@required this.company});
 
   @override
   Widget build(BuildContext context) {
-    final corporateProvider = Provider.of<CrudModelCorporate>(context);
+    final companyProvider = Provider.of<CrudModelCompany>(context);
     var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Corporate Details Users'),
+        title: Text('Company Details Users'),
         actions: <Widget>[],
       ),
       body: Container(
@@ -27,7 +27,7 @@ class CorporateDetailsUsers extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.network(
-              '${corporate.img}',
+              '${company.img}',
               height: 70,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent loadingProgress) {
@@ -43,11 +43,11 @@ class CorporateDetailsUsers extends StatelessWidget {
               },
             ),
             Text(
-              corporate.name,
+              company.name,
               style: tema.textTheme.body2,
             ),
             Text(
-              corporate.description,
+              company.description,
               style: tema.textTheme.body1,
             ),
           ],

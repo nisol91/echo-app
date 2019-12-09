@@ -1,16 +1,16 @@
 import 'package:transparent_image/transparent_image.dart';
 
 import '../app_state_container.dart';
-import '../views/corporate_details_users.dart';
+import '../views/company_details_users.dart';
 import 'package:flutter/material.dart';
-import '../models/corporate_model.dart';
-import '../views/corporate_details.dart';
+import '../models/company_model.dart';
+import '../views/company_details.dart';
 
-class CorporateCard extends StatelessWidget {
-  final Corporate corporateDetails;
+class CompanyCard extends StatelessWidget {
+  final Company companyDetails;
   final Color featuredColor;
 
-  CorporateCard({this.corporateDetails, this.featuredColor});
+  CompanyCard({this.companyDetails, this.featuredColor});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,13 @@ class CorporateCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) =>
-                      CorporateDetails(corporate: corporateDetails)));
+                  builder: (_) => CompanyDetails(company: companyDetails)));
         } else {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (_) =>
-                      CorporateDetailsUsers(corporate: corporateDetails)));
+                      CompanyDetailsUsers(company: companyDetails)));
         }
       },
       child: Padding(
@@ -55,14 +54,14 @@ class CorporateCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              corporateDetails.name,
+                              companyDetails.name,
                               style: tema.textTheme.body2,
                               textAlign: TextAlign.start,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
-                                corporateDetails.description,
+                                companyDetails.description,
                                 style: tema.textTheme.body1,
                                 textAlign: TextAlign.start,
                               ),
@@ -75,7 +74,7 @@ class CorporateCard extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             Image.network(
-                              '${corporateDetails.img}',
+                              '${companyDetails.img}',
                               height: 70,
                               loadingBuilder: (BuildContext context,
                                   Widget child,

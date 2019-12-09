@@ -1,34 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:blank_flutter_app/views/company_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/corporate_model.dart';
-import '../services/crud_model_corporate.dart';
-import 'corporate_list_view.dart';
+import 'package:flushbar/flushbar.dart';
 
-class AddCorporate extends StatefulWidget {
+import 'package:provider/provider.dart';
+import '../models/company_model.dart';
+import '../services/crud_model_company.dart';
+
+class ModifyCompany extends StatefulWidget {
+  final Company company;
+
+  ModifyCompany({@required this.company});
+
   @override
-  _AddCorporateState createState() => _AddCorporateState();
+  _ModifyCompanyState createState() => _ModifyCompanyState();
 }
 
-class _AddCorporateState extends State<AddCorporate> {
+class _ModifyCompanyState extends State<ModifyCompany> {
   final _formKey = GlobalKey<FormState>();
+
   String name;
   String description;
   String address;
   String logoUrl;
-  String corporateType = 'Other';
+  String companyType = 'Other';
   bool isFeatured = false;
 
   @override
   Widget build(BuildContext context) {
-    var corporateProvider = Provider.of<CrudModelCorporate>(context);
+    final companyProvider = Provider.of<CrudModelCompany>(context);
+
     var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text('Add Corporate'),
+          child: Text('Modify Company Details'),
         ),
       ),
       body: Padding(
@@ -40,15 +46,16 @@ class _AddCorporateState extends State<AddCorporate> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                    initialValue: widget.company.name,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Corporate Name',
+                      hintText: 'Company Title',
                       fillColor: Colors.grey[300],
                       filled: true,
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter Corporate Title';
+                        return 'Please enter Company Title';
                       }
                     },
                     onSaved: (value) => name = value),
@@ -56,16 +63,16 @@ class _AddCorporateState extends State<AddCorporate> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                    keyboardType: TextInputType.numberWithOptions(),
+                    initialValue: widget.company.description,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Description',
+                      hintText: 'Company Description',
                       fillColor: Colors.grey[300],
                       filled: true,
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter The description';
+                        return 'Please enter Company Description';
                       }
                     },
                     onSaved: (value) => description = value),
@@ -73,6 +80,7 @@ class _AddCorporateState extends State<AddCorporate> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                    initialValue: widget.company.address,
                     keyboardType: TextInputType.numberWithOptions(),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -90,6 +98,7 @@ class _AddCorporateState extends State<AddCorporate> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                    initialValue: widget.company.img,
                     keyboardType: TextInputType.numberWithOptions(),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -99,7 +108,7 @@ class _AddCorporateState extends State<AddCorporate> {
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Please enter The logo url';
+                        return 'Please enter The logo Url';
                       }
                     },
                     onSaved: (value) => logoUrl = value),
@@ -110,10 +119,10 @@ class _AddCorporateState extends State<AddCorporate> {
                   width: MediaQuery.of(context).size.height * 1,
                   child: DropdownButton<String>(
                     isExpanded: true,
-                    value: corporateType,
+                    value: companyType,
                     onChanged: (String newValue) {
                       setState(() {
-                        corporateType = newValue;
+                        companyType = newValue;
                       });
                     },
                     items: <String>['Food', 'Transport', 'Tech', 'Other']
@@ -123,7 +132,7 @@ class _AddCorporateState extends State<AddCorporate> {
                         child: Text(value),
                       );
                     }).toList(),
-                    hint: Text('Select corporate service'),
+                    hint: Text('Select company service'),
                   ),
                 ),
               ),
@@ -151,31 +160,38 @@ class _AddCorporateState extends State<AddCorporate> {
                 ),
               ),
               RaisedButton(
-                splashColor: tema.secondaryHeaderColor,
+                splashColor: Colors.blueGrey,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                    await corporateProvider.addCorporate(Corporate(
-                      name: name,
-                      description: description,
-                      address: address,
-                      img: logoUrl,
-                      corporateType: corporateType,
-                      featured: isFeatured,
-                      creationDate: Timestamp.now(),
-                    ));
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Flushbar(
-                      title: "Hey Ninja",
-                      message: "Successfully added",
-                      duration: Duration(seconds: 3),
-                      backgroundColor: Theme.of(context).accentColor,
-                    )..show(context);
+                    await companyProvider
+                        .updateCompany(
+                            Company(
+                              name: name,
+                              description: description,
+                              address: address,
+                              img: logoUrl,
+                              companyType: companyType,
+                              featured: isFeatured,
+                            ),
+                            widget.company.id)
+                        .whenComplete(() {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      //cosi non funziona
+                      // Navigator.popUntil(
+                      //     context, ModalRoute.withName('/companyListAdmin'));
+                      Flushbar(
+                        title: "Hey Ninja",
+                        message: "Successfully edited Company ${name}",
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Theme.of(context).accentColor,
+                      )..show(context);
+                    });
                   }
                 },
-                child: Text('add Corporate',
+                child: Text('Modify Company',
                     style: TextStyle(color: Colors.white)),
                 color: tema.accentColor,
               )

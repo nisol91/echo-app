@@ -6,7 +6,7 @@ class Service {
   String description;
   String address;
   String img;
-  String corporateType;
+  String companyType;
   bool featured;
   Timestamp creationDate;
 
@@ -16,7 +16,7 @@ class Service {
     this.description,
     this.address,
     this.img,
-    this.corporateType,
+    this.companyType,
     this.featured,
     this.creationDate,
   });
@@ -27,7 +27,7 @@ class Service {
         description = snapshot['description'] ?? '',
         address = snapshot['address'] ?? '',
         img = snapshot['img'] ?? '',
-        corporateType = snapshot['corporateType'] ?? '',
+        companyType = snapshot['companyType'] ?? '',
         featured = snapshot['featured'],
         creationDate = snapshot['creationDate'];
 
@@ -37,7 +37,7 @@ class Service {
       "description": description,
       "address": address,
       "img": img,
-      "corporateType": corporateType,
+      "companyType": companyType,
       "featured": featured,
       "creationDate": creationDate,
     };

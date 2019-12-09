@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../locator.dart';
-import '../services/api_crud.dart';
+import '../services/api_crud_service.dart';
 import '../models/service_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//CRUD PER LE CORPORATE
+//CRUD PER I SERVICE
+//The CRUD Model will use the Api class to Handle the different operations.
+
 class CrudModelService extends ChangeNotifier {
-  Api _api = locator<Api>();
+  ApiService _api = locator<ApiService>();
 
   List<Service> services;
 

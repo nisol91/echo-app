@@ -1,33 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Corporate {
+class Company {
   String id;
   String name;
   String description;
   String address;
   String img;
-  String corporateType;
+  String companyType;
   bool featured;
   Timestamp creationDate;
 
-  Corporate({
+  Company({
     this.id,
     this.name,
     this.description,
     this.address,
     this.img,
-    this.corporateType,
+    this.companyType,
     this.featured,
     this.creationDate,
   });
 
-  Corporate.fromMap(Map snapshot, String id)
+  Company.fromMap(Map snapshot, String id)
       : id = id ?? '',
         name = snapshot['name'] ?? '',
         description = snapshot['description'] ?? '',
         address = snapshot['address'] ?? '',
         img = snapshot['img'] ?? '',
-        corporateType = snapshot['corporateType'] ?? '',
+        companyType = snapshot['companyType'] ?? '',
         featured = snapshot['featured'],
         creationDate = snapshot['creationDate'];
 
@@ -37,7 +37,7 @@ class Corporate {
       "description": description,
       "address": address,
       "img": img,
-      "corporateType": corporateType,
+      "companyType": companyType,
       "featured": featured,
       "creationDate": creationDate,
     };

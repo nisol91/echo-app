@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './views/add_corporate.dart';
+import './views/add_company.dart';
 import './views/profile_page.dart';
 import 'package:flushbar/flushbar.dart';
-import './views/corporate_list_view.dart';
+import './views/company_list_view.dart';
 import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
 import './state/app_state.dart';
 import 'app_state_container.dart';
-import './services/crud_model_corporate.dart';
+import './services/crud_model_company.dart';
 import 'locator.dart';
 import 'package:provider/provider.dart';
-import 'models/corporate_model.dart';
-import 'widgets/corporate_card.dart';
+import 'models/company_model.dart';
+import 'services/crud_model_service.dart';
+import 'widgets/company_card.dart';
 
 void main() {
   setupLocator();
@@ -60,7 +61,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(builder: (_) => locator<CrudModelCorporate>()),
+        ChangeNotifierProvider(builder: (_) => locator<CrudModelCompany>()),
+        ChangeNotifierProvider(builder: (_) => locator<CrudModelService>()),
       ],
       child: MaterialApp(
         title: 'Echo App',
@@ -69,9 +71,8 @@ class MyApp extends StatelessWidget {
             : ThemeData(brightness: Brightness.dark),
         routes: {
           '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
-          '/addCorporate': (BuildContext context) => new AddCorporate(),
-          '/corporateListAdmin': (BuildContext context) =>
-              new CorporateListView(),
+          '/addCompany': (BuildContext context) => new AddCompany(),
+          '/companyListAdmin': (BuildContext context) => new CompanyListView(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(),
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   String email = '';
   bool areYouAdmin = false;
-  List<Corporate> corporates;
+  List<Company> companies;
   TabController controller;
 
   @override
@@ -134,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
-  _corporatePage_2() async {
+  _companyPage_2() async {
     final container = AppStateContainer.of(context);
     print(await container.ensureGoogleLoggedInOnStartUp());
     if (await container.ensureGoogleLoggedInOnStartUp() != null ||
@@ -142,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage>
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return CorporateListView();
+            return CompanyListView();
           },
         ),
       );
@@ -177,17 +178,17 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Widget get _homeView {
-    final corporateProvider = Provider.of<CrudModelCorporate>(context);
+    final companyProvider = Provider.of<CrudModelCompany>(context);
     var tema = Theme.of(context);
 
     return StreamBuilder(
-        stream: corporateProvider.fetchCorporatesAsStream(),
+        stream: companyProvider.fetchCompaniesAsStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             print('fatto');
 
-            corporates = snapshot.data.documents
-                .map((doc) => Corporate.fromMap(doc.data, doc.documentID))
+            companies = snapshot.data.documents
+                .map((doc) => Company.fromMap(doc.data, doc.documentID))
                 .toList();
             return Column(
               children: <Widget>[
@@ -203,11 +204,11 @@ class _MyHomePageState extends State<MyHomePage>
                           height: MediaQuery.of(context).size.height * 0.25,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: corporates.length,
+                            itemCount: companies.length,
                             itemBuilder: (buildContext, index) =>
-                                (corporates[index].featured == true)
-                                    ? CorporateCard(
-                                        corporateDetails: corporates[index],
+                                (companies[index].featured == true)
+                                    ? CompanyCard(
+                                        companyDetails: companies[index],
                                         featuredColor: tema.primaryColor,
                                       )
                                     : Container(),
@@ -243,10 +244,10 @@ class _MyHomePageState extends State<MyHomePage>
                               ),
                               ListView.builder(
                                 scrollDirection: Axis.vertical,
-                                itemCount: corporates.length,
+                                itemCount: companies.length,
                                 itemBuilder: (buildContext, index) =>
-                                    CorporateCard(
-                                        corporateDetails: corporates[index]),
+                                    CompanyCard(
+                                        companyDetails: companies[index]),
                               ),
                             ],
                           )),
@@ -316,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage>
                 (container.areYouAdmin == true)
                     ? IconButton(
                         icon: Icon(Icons.dashboard),
-                        onPressed: _corporatePage_2,
+                        onPressed: _companyPage_2,
                         color: tema.accentColor,
                       )
                     : Container(),
@@ -331,7 +332,7 @@ class _MyHomePageState extends State<MyHomePage>
                   Text(
                       'tab con lista di tutte le aziende e filtro per ricerca'),
                   Text('tab cosa ci metto?una mappa? una lista di citta?'),
-                  // new CorporateList(),
+                  // new CompanyList(),
                   // new AuthScreen(),
                 ],
               ),

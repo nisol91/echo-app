@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../app_state_container.dart';
 
 // QUESTO FILE è SOLO UN ESPERIMENTO, NON è UFFICIALE
-//NOTA: questa è una lista piu rudimentale e statica (senza stream) rispetto a corporate_list_view
+//NOTA: questa è una lista piu rudimentale e statica (senza stream) rispetto a company_list_view
 
 class SettingsPage extends StatefulWidget {
   @override

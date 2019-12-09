@@ -1,28 +1,28 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import '../models/corporate_model.dart';
-import '../services/crud_model_corporate.dart';
+import '../models/company_model.dart';
+import '../services/crud_model_company.dart';
 import '../models/service_model.dart';
 import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
-import 'edit_corporate.dart';
+import 'edit_company.dart';
 
-class CorporateDetails extends StatelessWidget {
-  final Corporate corporate;
+class CompanyDetails extends StatelessWidget {
+  final Company company;
   final Service service;
 
-  CorporateDetails({@required this.corporate, this.service});
+  CompanyDetails({@required this.company, this.service});
 
   @override
   Widget build(BuildContext context) {
-    final corporateProvider = Provider.of<CrudModelCorporate>(context);
-    // final serviceProvider = Provider.of<CrudModelService>(context);
+    final companyProvider = Provider.of<CrudModelCompany>(context);
+    final serviceProvider = Provider.of<CrudModelService>(context);
 
     var tema = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Corporate Details'),
+        title: Text('Company Details'),
         actions: <Widget>[
           IconButton(
               iconSize: 35,
@@ -35,7 +35,7 @@ class CorporateDetails extends StatelessWidget {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title:
-                            new Text('You are going to delete this corporate'),
+                            new Text('You are going to delete this company'),
                         content: new Text(
                           'Are you sure my friend?',
                           style: new TextStyle(fontSize: 30.0),
@@ -51,8 +51,7 @@ class CorporateDetails extends StatelessWidget {
                               onPressed: () {
                                 print('yes');
                                 {
-                                  corporateProvider
-                                      .removeCorporate(corporate.id);
+                                  companyProvider.removeCompany(company.id);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
 
@@ -78,8 +77,8 @@ class CorporateDetails extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => ModifyCorporate(
-                            corporate: corporate,
+                      builder: (_) => ModifyCompany(
+                            company: company,
                           )));
             },
           )
@@ -93,7 +92,7 @@ class CorporateDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.network(
-              '${corporate.img}',
+              '${company.img}',
               height: 70,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent loadingProgress) {
@@ -112,14 +111,14 @@ class CorporateDetails extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  corporate.name,
+                  company.name,
                   style: tema.textTheme.body2,
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             Text(
-              corporate.description,
+              company.description,
               style: tema.textTheme.body1,
             ),
           ],
