@@ -1,7 +1,5 @@
 import 'package:transparent_image/transparent_image.dart';
-
 import '../app_state_container.dart';
-import '../views/service_details_users.dart';
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
 import '../views/service_details.dart';
@@ -18,18 +16,10 @@ class ServiceCard extends StatelessWidget {
     var container = AppStateContainer.of(context);
     return GestureDetector(
       onTap: () {
-        if (container.areYouAdmin == true) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => ServiceDetails(service: serviceDetails)));
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      ServiceDetailsUsers(service: serviceDetails)));
-        }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ServiceDetails(service: serviceDetails)));
       },
       child: Padding(
         padding: EdgeInsets.all(3),

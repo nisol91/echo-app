@@ -1,7 +1,5 @@
 import 'package:transparent_image/transparent_image.dart';
-
 import '../app_state_container.dart';
-import '../views/company_details_users.dart';
 import 'package:flutter/material.dart';
 import '../models/company_model.dart';
 import '../views/company_details.dart';
@@ -18,18 +16,10 @@ class CompanyCard extends StatelessWidget {
     var container = AppStateContainer.of(context);
     return GestureDetector(
       onTap: () {
-        if (container.areYouAdmin == true) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => CompanyDetails(company: companyDetails)));
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      CompanyDetailsUsers(company: companyDetails)));
-        }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CompanyDetails(company: companyDetails)));
       },
       child: Padding(
         padding: EdgeInsets.all(3),
