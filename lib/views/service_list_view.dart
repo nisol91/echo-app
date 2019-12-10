@@ -71,6 +71,5 @@ class ServiceListView extends StatelessWidget {
             }
           }),
     );
-    ;
   }
 }

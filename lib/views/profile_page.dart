@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../app_state_container.dart';
+import '../widgets/service_card.dart';
 
 import 'settings_page.dart';
 
@@ -24,6 +26,30 @@ class _ProfilePageState extends State<ProfilePage> {
     getUser();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    checkFav();
+  }
+
+  checkFav() {
+    Firestore.instance
+        .collection("users")
+        .document(AppStateContainer.of(context).id)
+        .get()
+        .then((doc) {
+      print('CRISTOOOOO${doc.data}');
+      var a = doc.data.containsKey('Service_fav:');
+      print(a);
+      // if (doc.data.containsKey('Service_fav:')) {
+      //   print('DOCDATA->>>>>${doc.data}');
+      // } else {
+      //   print('NOOOOO');
+      // }
+    });
+  }
+
+//QUESTA FUNZIONE ANDREBBE TOLTA E SOSTITUITA COL GETUSER() DELL APP STATE
   Future<bool> getUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     if (user != null) {
@@ -46,7 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
           setState(() {
             name = doc.documents[0]['fname'];
             lastname = doc.documents[0]['surname'];
-
             email = doc.documents[0]['email'];
             points = doc.documents[0]['points'].toString();
 
@@ -102,6 +127,19 @@ class _ProfilePageState extends State<ProfilePage> {
           fontSize: 10,
           fontStyle: FontStyle.italic),
     );
+  }
+
+  Widget get _favServList {
+    // return Container(
+    //   height: MediaQuery.of(context).size.height * 0.5,
+    //   padding: EdgeInsets.all(1),
+    //   child: ListView.builder(
+    //       scrollDirection: Axis.vertical,
+    //       itemCount: _favServices.length,
+    //       itemBuilder: (buildContext, index) {
+    //         return ServiceCard(serviceDetails: _favServices[index]);
+    //       }),
+    // );
   }
 
   Widget get _profileView {
@@ -169,6 +207,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
+                  // Row(
+                  //   children: <Widget>[_favServList],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
