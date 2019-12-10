@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    flex: 2,
+                    flex: 6,
                     child: Column(
                       children: <Widget>[
                         Image.network(
@@ -207,23 +207,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  // Row(
-                  //   children: <Widget>[_favServList],
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          'Settings',
-                          style: tema.textTheme.body2,
-                        ),
-                      ),
-                    ],
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            'FavList',
+                            style: tema.textTheme.body2,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   Expanded(
-                    flex: 5,
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            'Settings',
+                            style: tema.textTheme.body2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
