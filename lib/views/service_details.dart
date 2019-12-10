@@ -116,13 +116,18 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               disabledColor: Colors.grey,
               iconSize: 35,
               icon: Icon(
-                (favourite) ? Icons.cloud_queue : Icons.wb_cloudy,
+                (favourite) ? Icons.wb_cloudy : Icons.cloud_queue,
               ),
               onPressed: () {
                 setState(() {
                   favourite = !favourite;
                   // codice firestore che posta nel db dell utente un array con le info del servizio
                 });
+                if (favourite == true) {
+                  print('vero');
+                } else {
+                  print('falso');
+                }
               },
             ),
             Image.network(
