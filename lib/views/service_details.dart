@@ -1,4 +1,5 @@
 import 'package:blank_flutter_app/views/service_list_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
@@ -24,6 +25,29 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   @override
   initState() {
     super.initState();
+
+    print('SERVICE ID${widget.service.id}');
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    checkFav();
+  }
+
+  checkFav() {
+    Firestore.instance
+        .collection("users")
+        .document(AppStateContainer.of(context).id)
+        .get()
+        .then((doc) {
+      print('CRISTOOOOO${doc.data}');
+      if (doc.data['Service_fav:${widget.service.id}'] != null) {
+        setState(() {
+          favourite = true;
+        });
+      }
+    });
   }
 
   @override
@@ -32,7 +56,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     var container = AppStateContainer.of(context);
 
     var tema = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Service Details'),
@@ -123,10 +146,29 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   favourite = !favourite;
                   // codice firestore che posta nel db dell utente un array con le info del servizio
                 });
+                print('CONTAINER EMAIL${container.email}');
+                print('CONTAINER ID${container.id}');
+
                 if (favourite == true) {
                   print('vero');
+                  Firestore.instance
+                      .collection("users")
+                      .document(container.id)
+                      .updateData({
+                    "Service_fav:${widget.service.id}": [
+                      widget.service.name,
+                      widget.service.description,
+                      widget.service.companyName,
+                    ],
+                  });
                 } else {
                   print('falso');
+                  Firestore.instance
+                      .collection("users")
+                      .document(container.id)
+                      .updateData({
+                    "Service_fav:${widget.service.id}": FieldValue.delete(),
+                  });
                 }
               },
             ),

@@ -56,8 +56,11 @@ class _AppStateContainerState extends State<AppStateContainer> {
   FirebaseUser firebaseUser;
 
   String email = '';
+  String id = '';
+
   bool areYouAdmin = false;
   bool isMailVerified;
+  String userId;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -177,6 +180,14 @@ class _AppStateContainerState extends State<AppStateContainer> {
               areYouAdmin = false;
             });
           }
+          // print('==========!!!!!!!!');
+          // print(doc.documents[0]['uid']);
+          // print('==========!!!!!!!!');
+
+          setState(() {
+            email = doc.documents[0]['email'];
+            id = doc.documents[0]['uid'];
+          });
         });
       });
       return user;
