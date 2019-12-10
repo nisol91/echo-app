@@ -9,10 +9,22 @@ import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
 // import 'edit_service.dart';
 
-class ServiceDetails extends StatelessWidget {
+class ServiceDetails extends StatefulWidget {
+  // RegisterPage({Key key}) : super(key: key);
+  ServiceDetails({@required this.service});
   final Service service;
 
-  ServiceDetails({@required this.service});
+  @override
+  _ServiceDetailsState createState() => _ServiceDetailsState();
+}
+
+class _ServiceDetailsState extends State<ServiceDetails> {
+  bool favourite = false;
+
+  @override
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +111,22 @@ class ServiceDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+              color: tema.accentColor,
+              disabledColor: Colors.grey,
+              iconSize: 35,
+              icon: Icon(
+                (favourite) ? Icons.cloud_queue : Icons.wb_cloudy,
+              ),
+              onPressed: () {
+                setState(() {
+                  favourite = !favourite;
+                  // codice firestore che posta nel db dell utente un array con le info del servizio
+                });
+              },
+            ),
             Image.network(
-              '${service.img}',
+              '${widget.service.img}',
               height: 70,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent loadingProgress) {
@@ -119,14 +145,14 @@ class ServiceDetails extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  service.name,
+                  widget.service.name,
                   style: tema.textTheme.body2,
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             Text(
-              service.description,
+              widget.service.description,
               style: tema.textTheme.body1,
             ),
           ],
