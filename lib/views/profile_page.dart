@@ -39,13 +39,12 @@ class _ProfilePageState extends State<ProfilePage> {
         .get()
         .then((doc) {
       print('CRISTOOOOO${doc.data}');
-      var a = doc.data.containsKey('Service_fav:');
-      print(a);
-      // if (doc.data.containsKey('Service_fav:')) {
-      //   print('DOCDATA->>>>>${doc.data}');
-      // } else {
-      //   print('NOOOOO');
-      // }
+
+      print('================');
+      print(doc.data.keys
+          .toList()
+          .where((item) => item.contains('Service_fav:')));
+      print('================');
     });
   }
 
