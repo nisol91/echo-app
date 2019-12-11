@@ -32,24 +32,27 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     checkFav();
   }
 
   checkFav() {
-    Firestore.instance
-        .collection("users")
-        .document(AppStateContainer.of(context).id)
-        .collection('Service_favourite')
-        .document('Service_fav:${widget.service.id}')
-        .get()
-        .then((doc) {
-      print('USER SERVICES -> ${doc.data}');
-      if (doc.data != null) {
-        setState(() {
-          favourite = true;
-        });
-      }
-    });
+    if (AppStateContainer.of(context).id != '') {
+      Firestore.instance
+          .collection("users")
+          .document(AppStateContainer.of(context).id)
+          .collection('Service_favourite')
+          .document('Service_fav:${widget.service.id}')
+          .get()
+          .then((doc) {
+        print('USER SERVICES -> ${doc.data}');
+        if (doc.data != null) {
+          setState(() {
+            favourite = true;
+          });
+        }
+      });
+    }
   }
 
   @override
