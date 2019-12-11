@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../app_state_container.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 import '../widgets/service_card.dart';
 
 import 'settings_page.dart';
@@ -36,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void createFavList() {
-    new Future.delayed(new Duration(milliseconds: 1000), () {
+    new Future.delayed(new Duration(milliseconds: 2000), () {
       Firestore.instance
           .collection("users")
           .document(AppStateContainer.of(context).id)
@@ -156,15 +157,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: Column(
-                                children: <Widget>[
-                                  Text(_favServices[index]['service_name']),
-                                  Text(_favServices[index]
-                                      ['service_description']),
-                                ],
-                              ),
-                            ),
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(_favServices[index]['service_name']),
+                                    Text(_favServices[index]
+                                        ['service_description']),
+                                  ],
+                                )),
                           ),
                         ),
                       ),
@@ -178,11 +178,11 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: LinearProgressIndicator(
-                    backgroundColor: Colors.grey,
-                  ),
-                )
+                    padding: const EdgeInsets.all(15.0),
+                    child: PKCardSkeleton(
+                      isCircularImage: true,
+                      isBottomLinesActive: true,
+                    ))
               ],
             ),
     );
