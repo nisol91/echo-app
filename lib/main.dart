@@ -177,6 +177,44 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
+  Widget _companyListViewHome(height) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: SizedBox(
+              height: height,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      // Box decoration takes a gradient
+                      gradient: LinearGradient(
+                        // Where the linear gradient begins and ends
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        // Add one stop for each color. Stops should increase from 0 to 1
+                        stops: [0.1, 0.99],
+                        colors: [
+                          // Colors are easy thanks to Flutter's Colors class.
+                          Colors.transparent,
+                          Theme.of(context).accentColor,
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: companies.length,
+                    itemBuilder: (buildContext, index) =>
+                        CompanyCard(companyDetails: companies[index]),
+                  ),
+                ],
+              )),
+        )
+      ],
+    );
+  }
+
   Widget get _homeView {
     final companyProvider = Provider.of<CrudModelCompany>(context);
     var tema = Theme.of(context);
@@ -218,42 +256,8 @@ class _MyHomePageState extends State<MyHomePage>
                     )
                   ],
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5774,
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  // Box decoration takes a gradient
-                                  gradient: LinearGradient(
-                                    // Where the linear gradient begins and ends
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    // Add one stop for each color. Stops should increase from 0 to 1
-                                    stops: [0.1, 0.99],
-                                    colors: [
-                                      // Colors are easy thanks to Flutter's Colors class.
-                                      Colors.transparent,
-                                      tema.accentColor,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: companies.length,
-                                itemBuilder: (buildContext, index) =>
-                                    CompanyCard(
-                                        companyDetails: companies[index]),
-                              ),
-                            ],
-                          )),
-                    )
-                  ],
-                ),
+                _companyListViewHome(
+                    MediaQuery.of(context).size.height * 0.5774)
               ],
             );
           } else {
@@ -329,8 +333,21 @@ class _MyHomePageState extends State<MyHomePage>
                 controller: controller,
                 children: [
                   _homeView,
-                  Text(
-                      'tab con lista di tutte le aziende e filtro per ricerca'),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              Text('filter'),
+                            ],
+                          ),
+                        ),
+                        _companyListViewHome(
+                            MediaQuery.of(context).size.height * 0.6),
+                      ],
+                    ),
+                  ),
                   Text('tab cosa ci metto?una mappa? una lista di citta?'),
                   // new CompanyList(),
                   // new AuthScreen(),
