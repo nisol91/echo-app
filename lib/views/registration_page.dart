@@ -20,6 +20,12 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
 
+  final FocusNode _nameFocus = FocusNode();
+  final FocusNode _lastnameFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _pwd1Focus = FocusNode();
+  final FocusNode _pwd2Focus = FocusNode();
+
   @override
   initState() {
     firstNameInputController = new TextEditingController();
@@ -28,6 +34,12 @@ class _RegisterPageState extends State<RegisterPage> {
     pwdInputController = new TextEditingController();
     confirmPwdInputController = new TextEditingController();
     super.initState();
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   String emailValidator(String value) {
@@ -75,17 +87,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         return "Please enter a valid first name.";
                       }
                     },
+                    textInputAction: TextInputAction.next,
+                    focusNode: _nameFocus,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(context, _nameFocus, _lastnameFocus);
+                    },
                   ),
                   TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Last Name*', hintText: "Doe"),
-                      controller: lastNameInputController,
-                      cursorColor: tema.accentColor,
-                      validator: (value) {
-                        if (value.length < 3) {
-                          return "Please enter a valid last name.";
-                        }
-                      }),
+                    decoration: InputDecoration(
+                        labelText: 'Last Name*', hintText: "Doe"),
+                    controller: lastNameInputController,
+                    cursorColor: tema.accentColor,
+                    validator: (value) {
+                      if (value.length < 3) {
+                        return "Please enter a valid last name.";
+                      }
+                    },
+                    textInputAction: TextInputAction.next,
+                    focusNode: _lastnameFocus,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(context, _lastnameFocus, _emailFocus);
+                    },
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                         labelText: 'Email*', hintText: "john.doe@gmail.com"),
@@ -93,6 +116,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     cursorColor: tema.accentColor,
                     keyboardType: TextInputType.emailAddress,
                     validator: emailValidator,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _emailFocus,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(context, _emailFocus, _pwd1Focus);
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(
@@ -101,6 +129,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     cursorColor: tema.accentColor,
                     obscureText: true,
                     validator: pwdValidator,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _pwd1Focus,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(context, _pwd1Focus, _pwd2Focus);
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(
@@ -109,6 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     cursorColor: tema.accentColor,
                     obscureText: true,
                     validator: pwdValidator,
+                    focusNode: _pwd2Focus,
                   ),
                   RaisedButton(
                     child: Text("Register"),
