@@ -257,6 +257,15 @@ class _AppStateContainerState extends State<AppStateContainer> {
       });
 
       getUser();
+      setState(() {
+        email = '';
+        id = '';
+      });
+      print('==================');
+      print(id);
+      print(email);
+
+      print('==================');
 
       print('logged out!!!');
     } catch (e) {

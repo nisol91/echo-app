@@ -19,6 +19,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String points;
   bool loaded = false;
+  bool serviceLoaded = false;
+
+  List _favServices;
 
   @override
   initState() {
@@ -29,22 +32,26 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    checkFav();
+    createFavList();
   }
 
-  checkFav() {
-    Firestore.instance
-        .collection("users")
-        .document(AppStateContainer.of(context).id)
-        .get()
-        .then((doc) {
-      print('CRISTOOOOO${doc.data}');
-
-      print('================');
-      print(doc.data.keys
-          .toList()
-          .where((item) => item.contains('Service_fav:')));
-      print('================');
+  void createFavList() {
+    new Future.delayed(new Duration(milliseconds: 5000), () {
+      Firestore.instance
+          .collection("users")
+          .document(AppStateContainer.of(context).id)
+          .collection('Service_favourite')
+          .getDocuments()
+          .then((doc) {
+        print('================');
+        print('CRISTOOOOO${doc.documents[0]['service_name']}');
+        print('================');
+        setState(() {
+          _favServices = doc.documents.toList();
+        });
+        print(_favServices[1]['service_name']);
+        serviceLoaded = true;
+      });
     });
   }
 
@@ -73,7 +80,6 @@ class _ProfilePageState extends State<ProfilePage> {
             lastname = doc.documents[0]['surname'];
             email = doc.documents[0]['email'];
             points = doc.documents[0]['points'].toString();
-
             loaded = true;
           });
         });
@@ -129,16 +135,32 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget get _favServList {
-    // return Container(
-    //   height: MediaQuery.of(context).size.height * 0.5,
-    //   padding: EdgeInsets.all(1),
-    //   child: ListView.builder(
-    //       scrollDirection: Axis.vertical,
-    //       itemCount: _favServices.length,
-    //       itemBuilder: (buildContext, index) {
-    //         return ServiceCard(serviceDetails: _favServices[index]);
-    //       }),
-    // );
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 1,
+        padding: EdgeInsets.all(1),
+        child: (serviceLoaded)
+            ? ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: _favServices.length,
+                itemBuilder: (buildContext, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(_favServices[index]['service_name']),
+                      Text(_favServices[index]['service_name']),
+                    ],
+                  );
+                  // return ServiceCard(serviceDetails: _favServices[index]);
+                })
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[CircularProgressIndicator()],
+              ),
+      ),
+    );
   }
 
   Widget get _profileView {
@@ -207,8 +229,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
-                    child: Row(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -216,7 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             'FavList',
                             style: tema.textTheme.body2,
                           ),
-                        )
+                        ),
+                        _favServList,
                       ],
                     ),
                   ),
@@ -236,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Expanded(
-                    flex: 10,
+                    flex: 8,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
