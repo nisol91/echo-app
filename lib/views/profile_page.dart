@@ -36,20 +36,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void createFavList() {
-    new Future.delayed(new Duration(milliseconds: 5000), () {
+    new Future.delayed(new Duration(milliseconds: 1000), () {
       Firestore.instance
           .collection("users")
           .document(AppStateContainer.of(context).id)
           .collection('Service_favourite')
           .getDocuments()
           .then((doc) {
-        print('================');
-        print('CRISTOOOOO${doc.documents[0]['service_name']}');
-        print('================');
+        // print('================');
+        // print('SERVICE NAME${doc.documents[0]['service_name']}');
+        // print('================');
         setState(() {
           _favServices = doc.documents.toList();
         });
-        print(_favServices[1]['service_name']);
+
+        // print(_favServices[0]['service_name']);
         serviceLoaded = true;
       });
     });
@@ -135,31 +136,55 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget get _favServList {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 1,
-        padding: EdgeInsets.all(1),
-        child: (serviceLoaded)
-            ? ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: _favServices.length,
-                itemBuilder: (buildContext, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Expanded(
+      flex: 3,
+      child: (serviceLoaded)
+          ? ListView.builder(
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              itemCount: _favServices.length,
+              itemBuilder: (buildContext, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(_favServices[index]['service_name']),
-                      Text(_favServices[index]['service_name']),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          elevation: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Column(
+                                children: <Widget>[
+                                  Text(_favServices[index]['service_name']),
+                                  Text(_favServices[index]
+                                      ['service_description']),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
-                  );
-                  // return ServiceCard(serviceDetails: _favServices[index]);
-                })
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator()],
-              ),
-      ),
+                  ),
+                );
+                // return ServiceCard(serviceDetails: _favServices[index]);
+              })
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.grey,
+                  ),
+                )
+              ],
+            ),
     );
   }
 
@@ -230,8 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -240,10 +264,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: tema.textTheme.body2,
                           ),
                         ),
-                        _favServList,
                       ],
                     ),
                   ),
+                  _favServList,
                   Expanded(
                     flex: 2,
                     child: Row(
