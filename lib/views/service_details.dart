@@ -39,10 +39,12 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     Firestore.instance
         .collection("users")
         .document(AppStateContainer.of(context).id)
+        .collection('Service_favourite')
+        .document('Service_fav:${widget.service.id}')
         .get()
         .then((doc) {
-      print('CRISTOOOOO${doc.data}');
-      if (doc.data['Service_fav:${widget.service.id}'] != null) {
+      print('USER SERVICES -> ${doc.data}');
+      if (doc.data != null) {
         setState(() {
           favourite = true;
         });
@@ -154,21 +156,24 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   Firestore.instance
                       .collection("users")
                       .document(container.id)
-                      .updateData({
-                    "Service_fav:${widget.service.id}": [
-                      widget.service.name,
-                      widget.service.description,
-                      widget.service.companyName,
-                    ],
+                      //aggiungo una subcollection all utente
+                      .collection('Service_favourite')
+                      .document("Service_fav:${widget.service.id}")
+                      .setData({
+                    'service_name': widget.service.name,
+                    'service_description': widget.service.description,
+                    'service_company_name': widget.service.companyName,
+                    'service_company_id': widget.service.companyId,
+                    'service_id': widget.service.id,
                   });
                 } else {
                   print('falso');
                   Firestore.instance
                       .collection("users")
                       .document(container.id)
-                      .updateData({
-                    "Service_fav:${widget.service.id}": FieldValue.delete(),
-                  });
+                      .collection('Service_favourite')
+                      .document("Service_fav:${widget.service.id}")
+                      .delete();
                 }
               },
             ),
