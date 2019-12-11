@@ -179,10 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: PKCardSkeleton(
-                      isCircularImage: true,
-                      isBottomLinesActive: true,
-                    ))
+                    child: LinearProgressIndicator())
               ],
             ),
     );
@@ -243,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.grey[500]),
                         ),
                         Text(
-                          points ?? points,
+                          'Total points: ${points ?? points}',
                           style: TextStyle(
                               fontWeight: FontWeight.w900,
                               fontSize: 22,
@@ -290,7 +287,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                           width: MediaQuery.of(context).size.width * 1,
                           height: MediaQuery.of(context).size.width * 0.7,
-                          child: SettingsPage()),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: (serviceLoaded)
+                                  ? SettingsPage()
+                                  : PKCardPageSkeleton(
+                                      totalLines: 2,
+                                    ))),
                     ),
                   ),
                 ],
