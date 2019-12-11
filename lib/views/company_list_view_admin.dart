@@ -6,12 +6,12 @@ import '../services/crud_model_company.dart';
 import 'package:provider/provider.dart';
 import '../widgets/company_card.dart';
 
-class CompanyListView extends StatefulWidget {
+class CompanyListViewAdmin extends StatefulWidget {
   @override
-  _CompanyListViewState createState() => _CompanyListViewState();
+  _CompanyListViewAdminState createState() => _CompanyListViewAdminState();
 }
 
-class _CompanyListViewState extends State<CompanyListView> {
+class _CompanyListViewAdminState extends State<CompanyListViewAdmin> {
   List<Company> companies;
 
   @override

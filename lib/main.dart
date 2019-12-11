@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './views/add_company.dart';
 import './views/profile_page.dart';
 import 'package:flushbar/flushbar.dart';
-import './views/company_list_view.dart';
+import './views/company_list_view_admin.dart';
 import 'package:flutter/material.dart';
 import './views/auth_screen.dart';
 import './state/app_state.dart';
@@ -72,7 +72,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => new MyHomePage(title: 'Echo'),
           '/addCompany': (BuildContext context) => new AddCompany(),
-          '/companyListAdmin': (BuildContext context) => new CompanyListView(),
+          '/companyListAdmin': (BuildContext context) =>
+              new CompanyListViewAdmin(),
         },
         // theme: ThemeData(brightness: Brightness.dark),
         // home: new MyHomePage(),
@@ -143,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage>
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return CompanyListView();
+            return CompanyListViewAdmin();
           },
         ),
       );
@@ -177,42 +178,73 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  Widget _companyListViewHome(height) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: SizedBox(
-              height: height,
-              child: Stack(
+  Widget get _companyListViewHome {
+    final companyProvider = Provider.of<CrudModelCompany>(context);
+    var tema = Theme.of(context);
+
+    return StreamBuilder(
+        stream: companyProvider.fetchCompaniesAsStream(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            print('fatto');
+
+            companies = snapshot.data.documents
+                .map((doc) => Company.fromMap(doc.data, doc.documentID))
+                .toList();
+            return Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5774,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  // Box decoration takes a gradient
+                                  gradient: LinearGradient(
+                                    // Where the linear gradient begins and ends
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    // Add one stop for each color. Stops should increase from 0 to 1
+                                    stops: [0.1, 0.99],
+                                    colors: [
+                                      // Colors are easy thanks to Flutter's Colors class.
+                                      Colors.transparent,
+                                      Theme.of(context).accentColor,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: companies.length,
+                                itemBuilder: (buildContext, index) =>
+                                    CompanyCard(
+                                        companyDetails: companies[index]),
+                              ),
+                            ],
+                          )),
+                    )
+                  ],
+                ),
+              ],
+            );
+          } else {
+            print('loading');
+
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      // Box decoration takes a gradient
-                      gradient: LinearGradient(
-                        // Where the linear gradient begins and ends
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        // Add one stop for each color. Stops should increase from 0 to 1
-                        stops: [0.1, 0.99],
-                        colors: [
-                          // Colors are easy thanks to Flutter's Colors class.
-                          Colors.transparent,
-                          Theme.of(context).accentColor,
-                        ],
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: companies.length,
-                    itemBuilder: (buildContext, index) =>
-                        CompanyCard(companyDetails: companies[index]),
-                  ),
+                  CircularProgressIndicator(),
                 ],
-              )),
-        )
-      ],
-    );
+              ),
+            );
+          }
+        });
   }
 
   Widget get _homeView {
@@ -256,8 +288,42 @@ class _MyHomePageState extends State<MyHomePage>
                     )
                   ],
                 ),
-                _companyListViewHome(
-                    MediaQuery.of(context).size.height * 0.5774)
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5774,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  // Box decoration takes a gradient
+                                  gradient: LinearGradient(
+                                    // Where the linear gradient begins and ends
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    // Add one stop for each color. Stops should increase from 0 to 1
+                                    stops: [0.1, 0.99],
+                                    colors: [
+                                      // Colors are easy thanks to Flutter's Colors class.
+                                      Colors.transparent,
+                                      Theme.of(context).accentColor,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: companies.length,
+                                itemBuilder: (buildContext, index) =>
+                                    CompanyCard(
+                                        companyDetails: companies[index]),
+                              ),
+                            ],
+                          )),
+                    )
+                  ],
+                ),
               ],
             );
           } else {
@@ -343,8 +409,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ],
                           ),
                         ),
-                        _companyListViewHome(
-                            MediaQuery.of(context).size.height * 0.6),
+                        _companyListViewHome
                       ],
                     ),
                   ),

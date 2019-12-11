@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/company_model.dart';
 import '../services/crud_model_company.dart';
-import 'company_list_view.dart';
+import 'company_list_view_admin.dart';
 
 class AddCompany extends StatefulWidget {
   @override
