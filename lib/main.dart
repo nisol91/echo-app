@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'models/company_model.dart';
 import 'services/crud_model_service.dart';
 import 'widgets/company_card.dart';
+import 'widgets/company_list.dart';
 
 void main() {
   setupLocator();
@@ -169,7 +170,12 @@ class _MyHomePageState extends State<MyHomePage>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text('ECHO'),
+              child: Column(
+                children: <Widget>[
+                  Text('ECHO'),
+                  Image(image: AssetImage('assets/echo_logo.png'))
+                ],
+              ),
             ),
             new CircularProgressIndicator(),
           ],
@@ -179,72 +185,9 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Widget get _companyListViewHome {
-    final companyProvider = Provider.of<CrudModelCompany>(context);
-    var tema = Theme.of(context);
-
-    return StreamBuilder(
-        stream: companyProvider.fetchCompaniesAsStream(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            print('fatto');
-
-            companies = snapshot.data.documents
-                .map((doc) => Company.fromMap(doc.data, doc.documentID))
-                .toList();
-            return Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5774,
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  // Box decoration takes a gradient
-                                  gradient: LinearGradient(
-                                    // Where the linear gradient begins and ends
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    // Add one stop for each color. Stops should increase from 0 to 1
-                                    stops: [0.1, 0.99],
-                                    colors: [
-                                      // Colors are easy thanks to Flutter's Colors class.
-                                      Colors.transparent,
-                                      Theme.of(context).accentColor,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: companies.length,
-                                itemBuilder: (buildContext, index) =>
-                                    CompanyCard(
-                                        companyDetails: companies[index]),
-                              ),
-                            ],
-                          )),
-                    )
-                  ],
-                ),
-              ],
-            );
-          } else {
-            print('loading');
-
-            return Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(),
-                ],
-              ),
-            );
-          }
-        });
+    return Container(
+      child: CompanyList(),
+    );
   }
 
   Widget get _homeView {
@@ -288,6 +231,8 @@ class _MyHomePageState extends State<MyHomePage>
                     )
                   ],
                 ),
+                //questa row volendo si potrebbe sostituire
+                //con il widget CompanyList()
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -359,7 +304,10 @@ class _MyHomePageState extends State<MyHomePage>
     return (!appState.isLoading)
         ? new Scaffold(
             appBar: new AppBar(
-              title: new Text(widget.title),
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image(image: AssetImage('assets/echo_logo.png')),
+              ),
               backgroundColor: tema.primaryColor,
               bottom: new TabBar(controller: controller, tabs: <Tab>[
                 new Tab(
@@ -399,20 +347,7 @@ class _MyHomePageState extends State<MyHomePage>
                 controller: controller,
                 children: [
                   _homeView,
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text('filter'),
-                            ],
-                          ),
-                        ),
-                        _companyListViewHome
-                      ],
-                    ),
-                  ),
+                  _companyListViewHome,
                   Text('tab cosa ci metto?una mappa? una lista di citta?'),
                   // new CompanyList(),
                   // new AuthScreen(),

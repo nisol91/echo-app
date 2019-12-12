@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../widgets/company_card.dart';
 
 class CompanyList extends StatefulWidget {
+  bool filter;
+
   @override
   _CompanyListState createState() => _CompanyListState();
 }
@@ -17,6 +19,17 @@ class _CompanyListState extends State<CompanyList> {
   @override
   initState() {
     super.initState();
+  }
+
+  void orderAlfa() {
+    print('sorting...');
+    Firestore.instance
+        .collection("companies")
+        .orderBy('name', descending: false)
+        .getDocuments()
+        .then((doc) {
+      print('OKOKOKOKOKOK');
+    });
   }
 
   @override
