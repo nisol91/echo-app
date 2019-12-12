@@ -23,6 +23,7 @@ class _CompanyListState extends State<CompanyList> {
   bool loadedCompanies = false;
   List<String> filters = [
     'alphabethical',
+    'featured',
     'nearby',
     'filtro3',
     'filtro4',
@@ -46,6 +47,10 @@ class _CompanyListState extends State<CompanyList> {
       case 'alphabethical':
         print('alphabethical');
         orderAlfa();
+        break;
+      case 'featured':
+        print('featured');
+        filterFeatured();
         break;
       case 'nearby':
         print('nearby');
@@ -91,6 +96,28 @@ class _CompanyListState extends State<CompanyList> {
     await Firestore.instance
         .collection("companies")
         .orderBy('name', descending: false)
+        .getDocuments()
+        .then((doc) {
+      companiesFromFetch = doc.documents
+          .map((doc) => Company.fromMap(doc.data, doc.documentID))
+          .toList();
+
+      setState(() {
+        companies = companiesFromFetch;
+      });
+      print(companies);
+      loadedCompanies = true;
+    });
+  }
+
+  void filterFeatured() async {
+    setState(() {
+      loadedCompanies = false;
+    });
+    print('sorting alfab...');
+    await Firestore.instance
+        .collection("companies")
+        .where('featured', isEqualTo: true)
         .getDocuments()
         .then((doc) {
       companiesFromFetch = doc.documents
