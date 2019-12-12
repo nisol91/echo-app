@@ -186,7 +186,9 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget get _companyListViewHome {
     return Container(
-      child: CompanyList(),
+      child: CompanyList(
+        filter: true,
+      ),
     );
   }
 

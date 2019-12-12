@@ -27,7 +27,9 @@ class _CompanyListViewAdminState extends State<CompanyListViewAdmin> {
       appBar: AppBar(
         title: Center(child: Text('Admin Dashboard')),
       ),
-      body: CompanyList(),
+      body: CompanyList(
+        filter: false,
+      ),
     );
     ;
   }
