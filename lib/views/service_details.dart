@@ -1,4 +1,3 @@
-import 'package:blank_flutter_app/views/service_list_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import '../services/crud_model_service.dart';
 import '../models/service_model.dart';
 import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
+import '../widgets/service_list.dart';
 // import 'edit_service.dart';
 
 class ServiceDetails extends StatefulWidget {

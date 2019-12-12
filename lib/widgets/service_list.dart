@@ -6,18 +6,18 @@ import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
 import '../widgets/service_card.dart';
 
-class ServiceListView extends StatelessWidget {
+class ServiceList extends StatelessWidget {
 //   @override
-//   _ServiceListViewState createState() => _ServiceListViewState();
+//   _ServiceListState createState() => _ServiceListState();
 // }
 
-// class _ServiceListViewState extends State<ServiceListView> {
+// class _ServiceListState extends State<ServiceList> {
   List<Service> services;
   List<Service> selectedServices = [];
 
   String companyId;
 
-  ServiceListView({@required this.companyId});
+  ServiceList({@required this.companyId});
 
   // @override
   // initState() {

@@ -291,9 +291,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: (serviceLoaded)
                                   ? SettingsPage()
-                                  : PKCardPageSkeleton(
-                                      totalLines: 2,
-                                    ))),
+                                  : (tema.brightness != Brightness.dark)
+                                      ? PKCardPageSkeleton(
+                                          totalLines: 2,
+                                        )
+                                      : PKDarkCardPageSkeleton(
+                                          totalLines: 2,
+                                        ))),
                     ),
                   ),
                 ],

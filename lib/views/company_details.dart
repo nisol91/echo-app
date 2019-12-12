@@ -7,7 +7,7 @@ import '../models/service_model.dart';
 import '../services/crud_model_service.dart';
 import 'package:provider/provider.dart';
 import 'edit_company.dart';
-import 'service_list_view.dart';
+import '../widgets/service_list.dart';
 
 class CompanyDetails extends StatelessWidget {
   final Company company;
@@ -129,7 +129,7 @@ class CompanyDetails extends StatelessWidget {
               padding: const EdgeInsets.only(top: 50),
               child: Container(
                   color: tema.accentColor,
-                  child: ServiceListView(
+                  child: ServiceList(
                     companyId: company.id,
                   )),
             ),
