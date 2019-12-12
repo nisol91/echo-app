@@ -47,11 +47,17 @@ class _CompanyListState extends State<CompanyList> {
 
   Widget get _filters {
     return Container(
-      child: Row(
-        children: <Widget>[
-          Text('filter button1'),
-          Text('filter 2'),
-        ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: <Widget>[
+            Text('filter button1'),
+            Text('filter button2'),
+            Text('filter button3'),
+            Text('filter button4'),
+            Text('filter button5'),
+          ],
+        ),
       ),
     );
   }
