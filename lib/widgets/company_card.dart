@@ -15,6 +15,7 @@ class CompanyCard extends StatelessWidget {
     var tema = Theme.of(context);
     var container = AppStateContainer.of(context);
     return GestureDetector(
+      onLongPress: () => print('longpress'),
       onTap: () {
         Navigator.push(
             context,
