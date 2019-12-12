@@ -8,8 +8,9 @@ import '../widgets/company_card.dart';
 
 class CompanyList extends StatefulWidget {
   final bool filter;
+  final bool adminList;
 
-  const CompanyList({Key key, this.filter}) : super(key: key);
+  const CompanyList({Key key, this.filter, this.adminList}) : super(key: key);
 
   @override
   _CompanyListState createState() => _CompanyListState();
@@ -17,21 +18,90 @@ class CompanyList extends StatefulWidget {
 
 class _CompanyListState extends State<CompanyList> {
   List<Company> companies;
+  List<Company> companiesFromFetch;
+
+  bool loadedCompanies = false;
+  List<String> filters = [
+    'alphabethical',
+    'nearby',
+    'filtro3',
+    'filtro4',
+    'filtro5'
+  ];
 
   @override
   initState() {
     super.initState();
-    print('FILTRO->${widget.filter}');
   }
 
-  void orderAlfa() {
-    print('sorting...');
-    Firestore.instance
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    getCompanies();
+  }
+
+  void selectFilter(tag) {
+    switch (tag) {
+      case 'alphabethical':
+        print('alphabethical');
+        orderAlfa();
+        break;
+      case 'nearby':
+        print('nearby');
+        break;
+      case 'filtro3':
+        print('filtro3');
+        break;
+      case 'filtro4':
+        print('filtro4');
+        break;
+      default:
+    }
+  }
+
+  void getCompanies() async {
+    //MODO ALTERNATIVO SFRUTTANDO I METODI DELLA CRUD (CHE POI SONO IDENTICI)
+    //A QUELLI CHE USO IO. SOLO CHE E' SCOMODO PERCHE RENDE COMPLESSI I FILTRI.
+    // Provider.of<CrudModelCompany>(context)
+    //     .fetchCompanies()
+    //     .then((companiesFromFetch) => setState(() {
+    //           companies = companiesFromFetch;
+    //         }));
+    // print('COMPANIES->${companies}');
+    // loadedCompanies = true;
+    await Firestore.instance.collection("companies").getDocuments().then((doc) {
+      companiesFromFetch = doc.documents
+          .map((doc) => Company.fromMap(doc.data, doc.documentID))
+          .toList();
+
+      setState(() {
+        companies = companiesFromFetch;
+      });
+      print(companies);
+      loadedCompanies = true;
+    });
+  }
+
+  void orderAlfa() async {
+    setState(() {
+      loadedCompanies = false;
+    });
+    print('sorting alfab...');
+    await Firestore.instance
         .collection("companies")
         .orderBy('name', descending: false)
         .getDocuments()
         .then((doc) {
-      print('OKOKOKOKOKOK');
+      companiesFromFetch = doc.documents
+          .map((doc) => Company.fromMap(doc.data, doc.documentID))
+          .toList();
+
+      setState(() {
+        companies = companiesFromFetch;
+      });
+      print(companies);
+      loadedCompanies = true;
     });
   }
 
@@ -47,17 +117,37 @@ class _CompanyListState extends State<CompanyList> {
 
   Widget get _filters {
     return Container(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: <Widget>[
-            Text('filter button1'),
-            Text('filter button2'),
-            Text('filter button3'),
-            Text('filter button4'),
-            Text('filter button5'),
-          ],
-        ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+              height: 70,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: filters.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Material(
+                        child: InkWell(
+                          onTap: () => selectFilter(filters[index]),
+                          child: Container(
+                            height: 30,
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(filters[index]),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -65,8 +155,6 @@ class _CompanyListState extends State<CompanyList> {
   @override
   Widget build(BuildContext context) {
     var container = AppStateContainer.of(context);
-    final companyProvider = Provider.of<CrudModelCompany>(context);
-
     return Column(
       children: <Widget>[
         (widget.filter)
@@ -84,46 +172,31 @@ class _CompanyListState extends State<CompanyList> {
         Expanded(
           flex: 8,
           child: Container(
-            padding: EdgeInsets.all(1),
-            child: StreamBuilder(
-                stream: companyProvider.fetchCompaniesAsStream(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (container.areYouAdmin == false) {
-                    print('non sei admin');
-                    return Container(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                              'devi essere admin per poter accedere a questa pagina'),
-                        ],
-                      ),
-                    );
-                  } else {
-                    if (snapshot.hasData) {
-                      print('fatto');
-                      companies = snapshot.data.documents
-                          .map((doc) =>
-                              Company.fromMap(doc.data, doc.documentID))
-                          .toList();
-                      return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: companies.length,
-                        itemBuilder: (buildContext, index) =>
-                            CompanyCard(companyDetails: companies[index]),
-                      );
-                    } else {
-                      print('loading');
-                      return Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[CircularProgressIndicator()],
-                        ),
-                      );
-                    }
-                  }
-                }),
-          ),
+              padding: EdgeInsets.all(1),
+              child:
+                  (container.areYouAdmin == false && widget.adminList == true)
+                      ? Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                  'devi essere admin per poter accedere a questa pagina'),
+                            ],
+                          ),
+                        )
+                      : (loadedCompanies)
+                          ? ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: companies.length,
+                              itemBuilder: (buildContext, index) =>
+                                  CompanyCard(companyDetails: companies[index]),
+                            )
+                          : Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[CircularProgressIndicator()],
+                              ),
+                            )),
         ),
       ],
     );

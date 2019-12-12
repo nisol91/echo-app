@@ -188,6 +188,7 @@ class _MyHomePageState extends State<MyHomePage>
     return Container(
       child: CompanyList(
         filter: true,
+        adminList: false,
       ),
     );
   }
@@ -233,8 +234,6 @@ class _MyHomePageState extends State<MyHomePage>
                     )
                   ],
                 ),
-                //questa row volendo si potrebbe sostituire
-                //con il widget CompanyList()
                 Row(
                   children: <Widget>[
                     Expanded(

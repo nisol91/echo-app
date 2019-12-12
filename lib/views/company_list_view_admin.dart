@@ -29,6 +29,7 @@ class _CompanyListViewAdminState extends State<CompanyListViewAdmin> {
       ),
       body: CompanyList(
         filter: false,
+        adminList: true,
       ),
     );
     ;
