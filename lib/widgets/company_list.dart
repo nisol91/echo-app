@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
 import '../models/company_model.dart';
-import '../services/crud_model_company.dart';
-import 'package:provider/provider.dart';
 import '../widgets/company_card.dart';
 
 class CompanyList extends StatefulWidget {
@@ -22,6 +18,8 @@ class _CompanyListState extends State<CompanyList> {
   List<Company> companies;
   List<Company> companiesFromFetch;
   TextEditingController editingController = TextEditingController();
+  GlobalKey<ScaffoldState> _key;
+  bool expandedSearch = false;
 
   bool loadedCompanies = false;
   List<String> filters = [
@@ -172,6 +170,10 @@ class _CompanyListState extends State<CompanyList> {
           children: <Widget>[
             Expanded(
               child: TextField(
+                onTap: () {
+                  expandedSearch = true;
+                  print(expandedSearch);
+                },
                 controller: editingController,
                 onChanged: (value) {
                   filterSearchResults(value);
@@ -234,13 +236,22 @@ class _CompanyListState extends State<CompanyList> {
       children: <Widget>[
         (widget.filter)
             ? Expanded(
-                flex: 3,
-                child: Column(
-                  children: <Widget>[
-                    // Text('FILTER'),
-                    _searchBar,
-                    _filters,
-                  ],
+                flex: (expandedSearch) ? 6 : 3,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                      expandedSearch = false;
+                    }
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      // Text('FILTER'),
+                      _searchBar,
+                      _filters,
+                    ],
+                  ),
                 ),
               )
             : Container(),
