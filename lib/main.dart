@@ -307,7 +307,10 @@ class _MyHomePageState extends State<MyHomePage>
             appBar: new AppBar(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image(image: AssetImage('assets/echo_logo.png')),
+                child: Image(
+                  image: AssetImage('assets/echo_logo.png'),
+                  height: 30,
+                ),
               ),
               backgroundColor: tema.primaryColor,
               bottom: new TabBar(controller: controller, tabs: <Tab>[
