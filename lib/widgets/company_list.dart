@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../app_state_container.dart';
@@ -37,9 +39,11 @@ class _CompanyListState extends State<CompanyList> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     getCompanies();
+
+    //richiama una funz periodicamente
+    // Timer.periodic(Duration(seconds: 60), (Timer t) => getCompanies());
   }
 
   void selectFilter(tag) {
@@ -75,15 +79,19 @@ class _CompanyListState extends State<CompanyList> {
     //         }));
     // print('COMPANIES->${companies}');
     // loadedCompanies = true;
-    await Firestore.instance.collection("companies").getDocuments().then((doc) {
+    print('GETTING=======================');
+    Firestore.instance.collection("companies").snapshots().listen((doc) {
       companiesFromFetch = doc.documents
           .map((doc) => Company.fromMap(doc.data, doc.documentID))
           .toList();
-
+      //se avessi messo collection().getDocuments().then() mi faceva la query una volta
+      // non sarebbe rimasta in ascolto come fa ora. Cosi si aggiorna senza dover
+      //richiamare la funzione periodicamente e si aggiorna solo quando vengono tolti
+      //o aggiunti dei dati
       setState(() {
         companies = companiesFromFetch;
       });
-      print(companies);
+      print('COMPANIES->${companies}');
       loadedCompanies = true;
     });
   }
