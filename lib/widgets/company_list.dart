@@ -119,6 +119,29 @@ class _CompanyListState extends State<CompanyList> {
     });
   }
 
+  void filterSearchResults(value) async {
+    if (value != null) {
+      setState(() {
+        loadedCompanies = false;
+      });
+      print('sorting alfab...');
+      await Firestore.instance
+          .collection("companies")
+          .getDocuments()
+          .then((doc) {
+        companiesFromFetch = doc.documents
+            .map((doc) => Company.fromMap(doc.data, doc.documentID))
+            .where((doc) => doc.name.contains(value))
+            .toList();
+        setState(() {
+          companies = companiesFromFetch;
+        });
+        print(companies);
+        loadedCompanies = true;
+      });
+    }
+  }
+
   void filterFeatured() async {
     setState(() {
       loadedCompanies = false;
@@ -142,23 +165,28 @@ class _CompanyListState extends State<CompanyList> {
   }
 
   Widget get _searchBar {
-    return Container(
-      height: 30,
-      child: Row(
-        children: <Widget>[
-          // Text('searchbar'),
-          Expanded(
-            child: TextField(
-              controller: editingController,
-              decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 40,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: editingController,
+                onChanged: (value) {
+                  filterSearchResults(value);
+                },
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -207,10 +235,10 @@ class _CompanyListState extends State<CompanyList> {
       children: <Widget>[
         (widget.filter)
             ? Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   children: <Widget>[
-                    Text('FILTER'),
+                    // Text('FILTER'),
                     _searchBar,
                     _filters,
                   ],
@@ -218,7 +246,7 @@ class _CompanyListState extends State<CompanyList> {
               )
             : Container(),
         Expanded(
-          flex: 8,
+          flex: 10,
           child: Container(
               padding: EdgeInsets.all(1),
               child:
