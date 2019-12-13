@@ -21,6 +21,7 @@ class CompanyList extends StatefulWidget {
 class _CompanyListState extends State<CompanyList> {
   List<Company> companies;
   List<Company> companiesFromFetch;
+  TextEditingController editingController = TextEditingController();
 
   bool loadedCompanies = false;
   List<String> filters = [
@@ -142,9 +143,21 @@ class _CompanyListState extends State<CompanyList> {
 
   Widget get _searchBar {
     return Container(
+      height: 30,
       child: Row(
         children: <Widget>[
-          Text('searchbar'),
+          // Text('searchbar'),
+          Expanded(
+            child: TextField(
+              controller: editingController,
+              decoration: InputDecoration(
+                  labelText: "Search",
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+            ),
+          ),
         ],
       ),
     );
