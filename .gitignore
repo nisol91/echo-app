@@ -10,3 +10,5 @@ ios/.generated/
 packages
 .flutter-plugins
 ./idea/
+android/app/key.jks
+android/key.properties
