@@ -124,7 +124,6 @@ class _CompanyListState extends State<CompanyList> {
       setState(() {
         loadedCompanies = false;
       });
-      print('sorting alfab...');
       await Firestore.instance
           .collection("companies")
           .getDocuments()
@@ -166,7 +165,7 @@ class _CompanyListState extends State<CompanyList> {
 
   Widget get _searchBar {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       child: Container(
         height: 40,
         child: Row(
