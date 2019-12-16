@@ -152,6 +152,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_registerFormKey.currentState.validate()) {
                         if (pwdInputController.text ==
                             confirmPwdInputController.text) {
+                          if (container.checkIfUserAlreadyExists(
+                                  emailInputController.text) ==
+                              false) {
+                            print('false');
+                          }
                           container
                               .registerUser(emailInputController.text,
                                   pwdInputController.text)

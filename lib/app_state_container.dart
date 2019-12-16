@@ -80,6 +80,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
       print('INIT APP');
       initUser().whenComplete(() => getUser().whenComplete(
           () => startCountdown().whenComplete(() => streamUser())));
+      checkIfUserAlreadyExists(email);
     }
   }
 
@@ -109,6 +110,19 @@ class _AppStateContainerState extends State<AppStateContainer> {
     // streamController.sink.close();
   }
 
+  //===========================================
+  //controllo, in fase di registrazione, che la mail non esista già
+  Future<void> checkIfUserAlreadyExists(email) async {
+    QuerySnapshot utente = await Firestore.instance
+        .collection("users")
+        .where('email', isEqualTo: email)
+        .getDocuments();
+    if (utente.documents.isNotEmpty) {
+      print('UTENTONE${utente.documents}');
+    } else {
+      print('NULLA');
+    }
+  }
   //===========================================
 
   Future<AuthResult> signInWithEmail(String email, String password) async {
