@@ -379,6 +379,7 @@ class AuthScreenState extends State<AuthScreen> {
                                   textAlign: TextAlign.center,
                                   style: new TextStyle(
                                     fontSize: 16.0,
+                                    color: Colors.teal[900],
                                   ),
                                 ),
                               ],
@@ -426,6 +427,7 @@ class AuthScreenState extends State<AuthScreen> {
                                       textAlign: TextAlign.center,
                                       style: new TextStyle(
                                         fontSize: 16.0,
+                                        color: Colors.teal[900],
                                       ),
                                     ),
                                   ],
