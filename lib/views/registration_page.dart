@@ -155,7 +155,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (container.checkIfUserAlreadyExists(
                                   emailInputController.text) ==
                               false) {
-                            print('false');
+                            print('FALSE');
+                          } else {
+                            print('true');
                           }
                           container
                               .registerUser(emailInputController.text,
