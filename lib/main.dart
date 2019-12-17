@@ -196,9 +196,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget get _mapView {
     return Container(
-      height: 200,
-      width: 200,
-      color: Colors.red,
       child: MapView(),
     );
   }
