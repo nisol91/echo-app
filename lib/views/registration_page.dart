@@ -152,55 +152,73 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_registerFormKey.currentState.validate()) {
                         if (pwdInputController.text ==
                             confirmPwdInputController.text) {
-                          if (container.checkIfUserAlreadyExists(
-                                  emailInputController.text) ==
-                              false) {
-                            print('FALSE');
-                          } else {
-                            print('true');
-                          }
-                          container
-                              .registerUser(emailInputController.text,
-                                  pwdInputController.text)
-                              .then((currentUser) => Firestore.instance
-                                  .collection("users")
-                                  .document(currentUser.user.uid)
-                                  .setData({
-                                    "uid": currentUser.user.uid,
-                                    "fname": firstNameInputController.text,
-                                    "surname": lastNameInputController.text,
-                                    "email": emailInputController.text,
-                                    "points": 0,
-                                    "role": 'user',
-                                    "creationDate": Timestamp.now(),
-                                  })
-                                  .then((_) => {
-                                        container.signOut(),
-                                        //per ora alla registration non voglio mettere il login automatico
-                                        //cosi obbligo l'utente a verificare la mail prima di tutto.
-                                        // container.signInWithEmail(
-                                        //     emailInputController.text,
-                                        //     pwdInputController.text),
-                                        firstNameInputController.clear(),
-                                        lastNameInputController.clear(),
-                                        emailInputController.clear(),
-                                        pwdInputController.clear(),
-                                        confirmPwdInputController.clear()
+                          //controllo, in fase di registrazione, che la mail non esista già
+                          Firestore.instance
+                              .collection("users")
+                              .where('email',
+                                  isEqualTo: emailInputController.text)
+                              .getDocuments()
+                              .then((doc) {
+                            print('DOCUMENTONI${doc.documents}');
+                            if (doc.documents.isEmpty) {
+                              container
+                                  .registerUser(emailInputController.text,
+                                      pwdInputController.text)
+                                  .then((currentUser) => Firestore.instance
+                                      .collection("users")
+                                      .document(currentUser.user.uid)
+                                      .setData({
+                                        "uid": currentUser.user.uid,
+                                        "fname": firstNameInputController.text,
+                                        "surname": lastNameInputController.text,
+                                        "email": emailInputController.text,
+                                        "points": 0,
+                                        "role": 'user',
+                                        "creationDate": Timestamp.now(),
                                       })
-                                  .catchError((err) => print(err)))
-                              .catchError((err) => print(err));
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          AppStateContainer.of(context).getUser();
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/', (Route<dynamic> route) => false);
+                                      .then((_) => {
+                                            container.signOut(),
+                                            //per ora alla registration non voglio mettere il login automatico
+                                            //cosi obbligo l'utente a verificare la mail prima di tutto.
+                                            // container.signInWithEmail(
+                                            //     emailInputController.text,
+                                            //     pwdInputController.text),
+                                            firstNameInputController.clear(),
+                                            lastNameInputController.clear(),
+                                            emailInputController.clear(),
+                                            pwdInputController.clear(),
+                                            confirmPwdInputController.clear()
+                                          })
+                                      .catchError((err) => print(err)))
+                                  .catchError((err) => print(err));
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              AppStateContainer.of(context).getUser();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
 
-                          Flushbar(
-                            title: "Hey Ninja",
-                            message:
-                                "Successfully Registered, now verify your email and sign in with your credentials",
-                            duration: Duration(seconds: 3),
-                            backgroundColor: Theme.of(context).accentColor,
-                          )..show(context);
+                              Flushbar(
+                                title: "Hey Ninja",
+                                message:
+                                    "Successfully Registered, now verify your email and sign in with your credentials",
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Theme.of(context).accentColor,
+                              )..show(context);
+                            } else {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              AppStateContainer.of(context).getUser();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
+
+                              Flushbar(
+                                title: "Hey Ninja",
+                                message: "EMAIL ALREADY IN USE",
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Theme.of(context).accentColor,
+                              )..show(context);
+                            }
+                          });
                         } else {
                           showDialog(
                               context: context,
