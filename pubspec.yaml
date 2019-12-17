@@ -18,6 +18,8 @@ dependencies:
   flushbar: ^1.9.1
   transparent_image: ^1.0.0
   pk_skeleton: ^0.0.2
+  flutter_map: ^0.8.0
+  latlong: ^0.6.1
   # redux: ^3.0.0
   # flutter_redux: ^0.5.4
   # redux_logging: ^0.3.0

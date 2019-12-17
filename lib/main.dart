@@ -12,6 +12,7 @@ import 'locator.dart';
 import 'package:provider/provider.dart';
 import 'models/company_model.dart';
 import 'services/crud_model_service.dart';
+import 'views/map_view.dart';
 import 'widgets/company_card.dart';
 import 'widgets/company_list.dart';
 
@@ -193,6 +194,15 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
+  Widget get _mapView {
+    return Container(
+      height: 200,
+      width: 200,
+      color: Colors.red,
+      child: MapView(),
+    );
+  }
+
   Widget get _homeView {
     final companyProvider = Provider.of<CrudModelCompany>(context);
     var tema = Theme.of(context);
@@ -352,7 +362,8 @@ class _MyHomePageState extends State<MyHomePage>
                 children: [
                   _homeView,
                   _companyListViewHome,
-                  Text('tab cosa ci metto?una mappa? una lista di citta?'),
+                  _mapView,
+                  // Text('tab cosa ci metto?una mappa? una lista di citta?'),
                   // new CompanyList(),
                   // new AuthScreen(),
                 ],
