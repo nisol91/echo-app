@@ -27,8 +27,8 @@ class AppStateContainer extends StatefulWidget {
   // On MediaQueries, Theme, etc
   // This is the secret to accessing your AppState all over your app
   static _AppStateContainerState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer)
+    return (context
+            .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>())
         .data;
   }
 
@@ -112,11 +112,14 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   //===========================================
   //controllo, in fase di registrazione, che la mail non esista già
-  Future<bool> checkIfUserAlreadyExists(email) async {
+  Future<bool> checkIfUserAlreadyExists(String email) async {
     QuerySnapshot utente = await Firestore.instance
         .collection("users")
         .where('email', isEqualTo: email)
         .getDocuments();
+    ;
+    print('UTENTONE${utente.documents.toList()}');
+
     if (utente.documents.isNotEmpty) {
       print('UTENTONE${utente.documents}');
       return true;
