@@ -110,25 +110,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
   }
 
   //===========================================
-  //controllo, in fase di registrazione, che la mail non esista già
-  //per ora questa funzione è nel widget
-
-  // Future<bool> checkIfUserAlreadyExists(String email) async {
-  //   QuerySnapshot utente = await Firestore.instance
-  //       .collection("users")
-  //       .where('email', isEqualTo: email)
-  //       .getDocuments();
-  //   print('UTENTONE${utente.documents.toList()}');
-
-  //   if (utente.documents.isNotEmpty) {
-  //     print('UTENTONE${utente.documents}');
-  //     return true;
-  //   } else {
-  //     print('NULLA');
-  //     return false;
-  //   }
-  // }
-  //===========================================
 
   Future<AuthResult> signInWithEmail(String email, String password) async {
     try {
