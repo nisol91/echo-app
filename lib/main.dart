@@ -215,31 +215,34 @@ class _MyHomePageState extends State<MyHomePage>
                 .toList();
             return Column(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: tema.dividerColor, width: 3))),
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: companies.length,
-                            itemBuilder: (buildContext, index) =>
-                                (companies[index].featured == true)
-                                    ? CompanyCard(
-                                        companyDetails: companies[index],
-                                        featuredColor: tema.primaryColor,
-                                      )
-                                    : Container(),
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: tema.dividerColor, width: 3))),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: companies.length,
+                              itemBuilder: (buildContext, index) =>
+                                  (companies[index].featured == true)
+                                      ? CompanyCard(
+                                          companyDetails: companies[index],
+                                          featuredColor: tema.primaryColor,
+                                        )
+                                      : Container(),
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   children: <Widget>[
