@@ -1,6 +1,6 @@
 # Echo
 
-A new Flutter project.
+Prototype of iOS and Android mobile maps app made with flutter and firebase
 
 ## Getting Started
 
